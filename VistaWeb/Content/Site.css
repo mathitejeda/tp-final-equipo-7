@@ -19,3 +19,8 @@ textarea {
         padding: 0;
     }
 }
+
+/* listado turnos */
+.table-responsive {
+    overflow-x: auto;
+}

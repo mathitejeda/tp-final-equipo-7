@@ -11,7 +11,7 @@ namespace VistaWeb
 {
 
 
-    public partial class _Default
+    public partial class ListadoTurnos
     {
     }
 }
