@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Modelo
+namespace Controlador
 {
-    internal class Class1
+    internal class UsuarioNegocio
     {
     }
 }

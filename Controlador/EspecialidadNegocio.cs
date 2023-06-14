@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Controlador
 {
-    internal class Class1
+    internal class EspecialidadNegocio
     {
     }
 }
