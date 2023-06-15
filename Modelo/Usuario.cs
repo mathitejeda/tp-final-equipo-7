@@ -23,7 +23,7 @@ namespace Modelo
         public int Id { get; set; }
         public string User { get; set; }
         public string Pass { get; set; }
-        public TipoUsuario Tipo { get; set; }
+        
         
     }
 }

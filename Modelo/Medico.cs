@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Modelo
 {
-    public class Medico : Usuario
+    public class Medico
     {
         private int id;
         private string nombre;
         private string apellido;
         private List<Especialidad> especialidades;
 
+        public int Id { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public List<Especialidad> Especialidades { get; set; }
