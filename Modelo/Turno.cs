@@ -25,7 +25,7 @@ namespace Modelo
         public int IdMedico { get; set; }
         public DateTime Fecha { get; set; }
         public string Observaciones { get; set; }
-        public EstadoTurno Estado { get; set; }
+        
 
     }
 }

@@ -13,7 +13,7 @@ namespace Modelo
         
         public int Id { get; set; }
         public string Nombre { get; set; }
-
+        public Especialidad() { }
         public Especialidad(int id, string nombre)
         {
             this.id = id;
