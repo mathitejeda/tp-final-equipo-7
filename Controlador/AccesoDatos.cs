@@ -59,6 +59,20 @@ namespace Controlador
                 throw ex;
             }
         }
+        public int EjecutarAccionScalar()
+        {
+            comando.Connection = conexion;
+            try
+            {
+                conexion.Open();
+                return int.Parse(comando.ExecuteScalar().ToString());
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
         public void setearParametro(string nombre, object valor)
         {
