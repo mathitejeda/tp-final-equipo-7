@@ -14,6 +14,7 @@ namespace Controlador
             try
             {
                 string consulta = "INSERT INTO USUARIOS (User,Pass) output inserted.Id VALUES ('@user','@pass')";
+                datos.SetConsulta(consulta);
                 datos.setearParametro("@user", user);
                 datos.setearParametro("@pass", pass);
 
