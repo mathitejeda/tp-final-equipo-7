@@ -8,10 +8,12 @@ namespace Modelo
 {
     enum EstadoTurno
     {
-        Pendiente = 1,
+        cerrado = 0
+        nuevo = 1,
         Cancelado = 2,
         Atendido = 3,
-        Reprogramado = 4
+        Reprogramado = 4,
+		no_asistio = 5
     }
     public class Turno
     {
@@ -26,6 +28,5 @@ namespace Modelo
         public DateTime Fecha { get; set; }
         public string Observaciones { get; set; }
         public EstadoTurno Estado { get; set; }
-
     }
 }

@@ -9,17 +9,17 @@ namespace Modelo
 {
     enum TipoUsuario
     {
-        Medico,
-        Paciente,
-        Recepcionista,
-        Administrador
+        Administrador = 0,
+        Recepcionista = 1,
+        Medico = 2,
+        Paciente = 3,
     }
     public class Usuario
     {
         private int id;
         private string user;
         private string pass;
-        
+
         public int Id { get; set; }
         public string User { get; set; }
         public string Pass { get; set; }

@@ -21,8 +21,5 @@ namespace Modelo
         {
             Especialidades.Add(especialidad);
         }
-        
     }
-
-
 }

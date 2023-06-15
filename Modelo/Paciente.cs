@@ -12,8 +12,8 @@ namespace Modelo
         private string nombre;
         private string apellido;
         private string dni;
-        private string telefono;
         private string direccion;
+        private string telefono;
         private string email;
         private DateTime fechaNacimiento;
         private string obraSocial;
