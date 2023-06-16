@@ -1,10 +1,11 @@
 ﻿<%@ Page Title="Médicos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListadoMedicos.aspx.cs" Inherits="VistaWeb.ListadoMedicos" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container">
         <div class="row">
             <h1 class="mb-4">Listado de Médicos</h1>
 
-            
+
             <div class="col-md-12">
 
                 <div class="table-responsive">
@@ -66,20 +67,75 @@
     </div>
 
 
-        <!-- modal ver medicos -->
-    <div class="modal fade" id="modalVerMedicos" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalVerMedicos" aria-hidden="true">
-        <div class="modal-dialog">
+    <!-- modal ver horarios x médico -->
+    <div class="modal fade" id="modalVerHorarios" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalVerHorarios" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="labelBtnmodalVerMedicos">Médicos para (ESPECIALIDAD)</h3>
+                    <h3 class="modal-title fs-5" id="labelBtnmodalVerHorarios">Ver horarios de NOMBRE_MÉDICO</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="card">
-                      <div class="card-body">
-                        <p><strong>Nombre y apellido: </strong>(NOMBRE MÉDICO)</p>
-                        <p><strong>Matricula: </strong>Matrícula provincial 25485</p>
-                      </div>
+                    <div class="card border-primary mb-3">
+                        <div class="card-header text-primary">
+                            <h5>CARDIOLOGÍA</h5>
+                        </div>
+                        <div class="card-body text-primary">
+                            <h6 class="card-title">Horarios:</h6>
+                            <p class="card-text">
+                                <ul>
+                                    <li>HORARIO 1 - FIN HORARIO 1</li>
+                                    <li>HORARIO 2 - FIN HORARIO 2</li>
+                                    <li>HORARIO 3 - FIN HORARIO 3</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card border-primary mb-3">
+                        <div class="card-header text-primary">
+                            <h5>MEDICINA CLÍNICA</h5>
+                        </div>
+                        <div class="card-body text-primary">
+                            <h6 class="card-title">Horarios:</h6>
+                            <p class="card-text">
+                                <ul>
+                                    <li>HORARIO 1 - FIN HORARIO 1</li>
+                                    <li>HORARIO 2 - FIN HORARIO 2</li>
+                                    <li>HORARIO 3 - FIN HORARIO 3</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card border-primary mb-3">
+                        <div class="card-header text-primary">
+                            <h5>ECOGRAFÍA DE TEJIDOS BLANDOS</h5>
+                        </div>
+                        <div class="card-body text-primary">
+                            <h6 class="card-title">Horarios:</h6>
+                            <p class="card-text">
+                                <ul>
+                                    <li>HORARIO 1 - FIN HORARIO 1</li>
+                                    <li>HORARIO 2 - FIN HORARIO 2</li>
+                                    <li>HORARIO 3 - FIN HORARIO 3</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card border-primary mb-3">
+                        <div class="card-header text-primary">
+                            <h5>OTRA ESPECIALIDAD</h5>
+                        </div>
+                        <div class="card-body text-primary">
+                            <h6 class="card-title">Horarios:</h6>
+                            <p class="card-text">
+                                <ul>
+                                    <li>HORARIO 1 - FIN HORARIO 1</li>
+                                    <li>HORARIO 2 - FIN HORARIO 2</li>
+                                    <li>HORARIO 3 - FIN HORARIO 3</li>
+                                </ul>
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -102,19 +158,19 @@
                     <div class="mb-3">
                         <label for="medico-nombre" class="form-label">Nombre del médico:</label>
                         <input type="text" style="background: #fff" class="form-control" id="medico-nombre" name="nombre" placeholder="NOMBRE_MEDICO" required>
-                        </div>
-                    <div class="mb-3">
-                       <label for="medico-apellido" class="form-label">Apellido del médico:</label>
-                       <input type="text" style="background: #fff" class="form-control" id="medico-apellido" name="apellido" placeholder="APELLIDO_MEDICO" required>
                     </div>
                     <div class="mb-3">
-                       <label for="medico-matricula" class="form-label">Matrícula/s del médico:</label>
-                       <input type="text" style="background: #fff" class="form-control" id="medico-matricula" name="matricula" placeholder="MATRICULAS_MEDICO" required>
+                        <label for="medico-apellido" class="form-label">Apellido del médico:</label>
+                        <input type="text" style="background: #fff" class="form-control" id="medico-apellido" name="apellido" placeholder="APELLIDO_MEDICO" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="medico-matricula" class="form-label">Matrícula/s del médico:</label>
+                        <input type="text" style="background: #fff" class="form-control" id="medico-matricula" name="matricula" placeholder="MATRICULAS_MEDICO" required>
                     </div>
                     <div class="mb-3">
                         <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
                         <select id="especialidades-medico" class="form-select" multiple aria-label="Medicos de la especialidad">
-                          <option>Seleccione una o varias especialidades...</option>
+                            <option>Seleccione una o varias especialidades...</option>
                             <option value="Cardiología">Cardiología</option>
                             <option value="Medicina Clínica">Medicina Clínica</option>
                             <option value="Ecografía de Tejidos Blandos">Ecografía de Tejidos Blandos</option>
@@ -149,19 +205,19 @@
                     <div class="mb-3">
                         <label for="medico-nombre" class="form-label">Nombre del médico:</label>
                         <input type="text" style="background: #fff" class="form-control" id="medico-nombre" name="nombre" placeholder="NOMBRE_MEDICO" required>
-                        </div>
-                    <div class="mb-3">
-                       <label for="medico-apellido" class="form-label">Apellido del médico:</label>
-                       <input type="text" style="background: #fff" class="form-control" id="medico-apellido" name="apellido" placeholder="APELLIDO_MEDICO" required>
                     </div>
                     <div class="mb-3">
-                       <label for="medico-matricula" class="form-label">Matrícula/s del médico:</label>
-                       <input type="text" style="background: #fff" class="form-control" id="medico-matricula" name="matricula" placeholder="MATRICULAS_MEDICO" required>
+                        <label for="medico-apellido" class="form-label">Apellido del médico:</label>
+                        <input type="text" style="background: #fff" class="form-control" id="medico-apellido" name="apellido" placeholder="APELLIDO_MEDICO" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="medico-matricula" class="form-label">Matrícula/s del médico:</label>
+                        <input type="text" style="background: #fff" class="form-control" id="medico-matricula" name="matricula" placeholder="MATRICULAS_MEDICO" required>
                     </div>
                     <div class="mb-3">
                         <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
                         <select id="especialidades-medico" class="form-select" multiple aria-label="Medicos de la especialidad">
-                          <option>Seleccione una o varias especialidades...</option>
+                            <option>Seleccione una o varias especialidades...</option>
                             <option value="Cardiología" selected>Cardiología</option>
                             <option value="Medicina Clínica" selected>Medicina Clínica</option>
                             <option value="Ecografía de Tejidos Blandos" selected>Ecografía de Tejidos Blandos</option>

@@ -71,7 +71,7 @@
 
         <!-- modal ver medicos -->
     <div class="modal fade" id="modalVerMedicos" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalVerMedicos" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnmodalVerMedicos">Médicos para (ESPECIALIDAD)</h3>
