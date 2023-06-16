@@ -2,13 +2,13 @@ use DB_CLINICA
 
 GO
 
-insert into usuario values('admin', '1234')
-insert into usuario values('hugo_recep', '1234')
-insert into usuario values('dramor', '1234')
+insert into usuario (usuario,contrasenia) values('admin', '1234')
+insert into usuario (usuario,contrasenia) values('hugo_recep', '1234')
+insert into usuario (usuario,contrasenia) values('dramor', '1234')
 
 GO
 
-insert into usuario_desc values(3, 'esteban', 'amor')
+insert into usuario_desc (usuario_id,nombre,apellido) values(3, 'esteban', 'amor')
 
 GO
 
