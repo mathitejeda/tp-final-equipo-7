@@ -20,7 +20,7 @@ create table usuario (
 GO
 
 create table usuario_desc (
-	usuario_id int,
+	usuario_id int foreign key references usuario(id),
 	nombre varchar(50) not null,
 	apellido varchar(50) not null,
 	EMail varchar(100) null,
