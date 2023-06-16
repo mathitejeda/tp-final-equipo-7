@@ -7,7 +7,7 @@ using Modelo;
 
 namespace Controlador
 {
-    internal class MedicoNegocio
+    public class MedicoNegocio
     {
         public List<Medico> listar()
         {
@@ -15,7 +15,7 @@ namespace Controlador
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                string consulta = "SELECT * FROM MEDICOS";
+                string consulta = "SELECT ud.usuario_id as Id, ud.nombre as Nombre, ud.apellido as Apellido from usuario_desc ud where ud.tipo=2";
                 datos.SetConsulta(consulta);
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
@@ -28,6 +28,7 @@ namespace Controlador
 
                     //falta sumar especialidades de la db a la lista
                     //aux.Especialidades = especialidades;
+                    listaMedicos.Add(aux);
                 }
                 return listaMedicos;
             }

@@ -22,10 +22,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <asp:Repeater runat="server" ID="MedicoRep">
+                                <ItemTemplate>
+
                             <tr>
-                                <td>1</td>
-                                <td>Juan Ramirez</td>
+                                <td><%#Eval("Id")%></td>
+                                <td><%#Eval("Nombre") %></td>
                                 <td>Matrícula Nacional 999578</td>
+                                
                                 <td>
                                     <span class="badge text-bg-info">Cardiología</span><br />
                                     <span class="badge text-bg-info">Medicina Clínica</span><br />
@@ -49,6 +53,8 @@
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarMedico">Eliminar</button>
                                 </td>
                             </tr>
+                                </ItemTemplate>
+                            </asp:Repeater>
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-between">
