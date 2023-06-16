@@ -27,7 +27,7 @@
 
                             <tr>
                                 <td><%#Eval("Id")%></td>
-                                <td><%#Eval("Nombre") %></td>
+                                <td><%#Eval("Nombre")+" "+Eval("Apellido")%></td>
                                 <td>Matrícula Nacional 999578</td>
                                 
                                 <td>
