@@ -16,6 +16,8 @@
                                 <th>Nombre y Apellido</th>
                                 <th>Matrícula</th>
                                 <th>Especialidades</th>
+                                <th>Horarios</th>
+                                <th>Turnos</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -29,13 +31,20 @@
                                     <span class="badge text-bg-info">Medicina Clínica</span><br />
                                     <span class="badge text-bg-info">Ecografía de Tejidos Blandos</span><br />
                                     <span class="badge text-bg-info">Otra especialidad</span><br />
-
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalVerHorarios">
                                         <i class="bi bi-clock"></i>
-                                        Ver Horarios
+                                        Ver
                                     </button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVerTurnos">
+                                        <i class="bi bi-calendar3"></i>
+                                        Ver
+                                    </button>
+                                </td>
+                                <td>
                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarMedico">Modificar</button>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarMedico">Eliminar</button>
                                 </td>
@@ -137,6 +146,45 @@
                             </p>
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- fin modal ver -->
+
+    <!-- modal ver turnos x médico -->
+    <div class="modal fade" id="modalVerTurnos" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalVerTurnos" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5" id="labelBtnmodalVerTurnos">Ver turnos de NOMBRE_MÉDICO</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card border-dark mb-3">
+                        <div class="card-header text-dark">
+                            <h5>Viernes 16 de Junio 2023 - 10:30hs</h5>
+                        </div>
+                        <div class="card-body text-dark">
+                            <h6 class="card-title">Datos del turno:</h6>
+                            <p class="card-text">
+                                <ul>
+                                    <li><strong>Paciente: </strong> NOMBRE y APELLIDO PACIENTE</li>
+                                    <li><strong>Especialidad: </strong> NOMBRE DE LA ESPECIALIDAD</li>
+                                
+                                </ul>
+                            </p>
+                            <button type="button" class="btn btn-dark">
+                                <i class="bi bi-eye"></i>
+                                Ver turno
+                            </button>
+
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>

@@ -121,7 +121,7 @@
 
         <!-- modal ver -->
     <div class="modal fade" id="modalVerTurno" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnModalAgregarTurno" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnModalVerTurno">Turno para (ESPECIALIDAD)</h3>
@@ -132,6 +132,8 @@
                     <p><strong>Fecha: </strong>Martes 13 de Junio 2023</p>
                     <p><strong>Horario: </strong>10:00hs</p>
                     <p><strong>Médico asignado: </strong>(NOMBRE_MÉDICO) ((ESPECIALIDAD))</p>
+                    <p><strong>Observaciones: </strong>(OBSERVACIONES_DEL_TURNO)</p>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
