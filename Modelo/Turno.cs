@@ -8,17 +8,17 @@ namespace Modelo
 {
     enum EstadoTurno
     {
-        cerrado = 0,
-        nuevo = 1,
+        Cerrado = 0,
+        Nuevo = 1,
         Cancelado = 2,
         Atendido = 3,
         Reprogramado = 4,
-		no_asistio = 5
+		No_asistio = 5
     }
     public class Turno
     {
-        private int idPaciente;
-        private int idMedico;
+        private Paciente idPaciente; 
+        private Medico idMedico;
         private DateTime fecha;
         private string observaciones;
         private EstadoTurno estado;
