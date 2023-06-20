@@ -44,6 +44,7 @@ GO
 create table medico_especialidad (
 	especialidad_id int not null foreign key references especialidad(id),
 	medico_id int not null foreign key references usuario(id),
+	constraint especialidad_repetida unique(especialidad_id, medico_id)
 )
 
 GO
@@ -67,3 +68,10 @@ create table turno (
 )
 
 GO
+
+create table obra_social (
+	usuario_id int not null foreign key references usuario(id) unique,
+	nombre varchar(20) not null,
+	numero_afiliado varchar(50) not null,
+	CONSTRAINT afiliado_repetido unique(nombre, numero_afiliado)
+)

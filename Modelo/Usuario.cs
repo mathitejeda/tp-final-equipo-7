@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Modelo
 {
-    enum TipoUsuario
+    public enum TipoUsuario
     {
         Administrador = 0,
         Recepcionista = 1,
@@ -19,11 +19,18 @@ namespace Modelo
         private int id;
         private string user;
         private string pass;
+        TipoUsuario TipoUsuario { get; set; }
 
         public int Id { get; set; }
         public string User { get; set; }
         public string Pass { get; set; }
-        
-        
+
+        public Usuario () { }
+        public Usuario (string user, string pass, TipoUsuario tipo)
+        {
+            this.user = user;
+            this.pass = pass;
+            this.TipoUsuario = tipo;
+        }
     }
 }

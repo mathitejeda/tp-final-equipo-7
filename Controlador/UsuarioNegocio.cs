@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Modelo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,7 +31,71 @@ namespace Controlador
             {
                 datos.CerrarConexion();
             }
-            
         }
+
+        public int findByUserID(int user_id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            int id = -1;
+            try
+            {
+                datos.SetConsulta($"select id from usuario where id={user_id}");
+                datos.EjecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    id = (int)datos.Lector["id"];
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int findIdByUserName(string user_name)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            int id = -1;
+            try
+            {
+                datos.SetConsulta($"select id from usuario where usuario={user_name}");
+                datos.EjecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    id = (int)datos.Lector["id"];
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int GetUltimoID()
+        {
+            int n = 0;
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.SetConsulta("SELECT TOP(1) A.Id from usuario A ORDER BY Id DESC\r\n");
+                datos.EjecutarLectura();
+                if (datos.Lector.Read())
+                {
+                    n = (int)datos.Lector["Id"];
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+            return n;
+        }
+
     }
 }
