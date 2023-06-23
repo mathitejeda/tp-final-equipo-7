@@ -22,12 +22,13 @@ namespace Controlador
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
                 {
-                    List<Especialidad> especialidades = new List<Especialidad>();
+                   // List<Especialidad> especialidades = new List<Especialidad>();
                     Medico aux = new Medico();
                     aux.Id = (int)datos.Lector["Id"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Apellido = (string)datos.Lector["Apellido"];
-                    especialidades = negocioEspecialidades.getEspecialidadesFromIdMedico(aux.Id);
+                   // especialidades = negocioEspecialidades.getEspecialidadesFromIdMedico(aux.Id);
+                    aux.Especialidades = negocioEspecialidades.getEspecialidadesFromIdMedico(aux.Id);
                     listaMedicos.Add(aux);
                 }
                 return listaMedicos;

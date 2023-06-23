@@ -11,14 +11,16 @@ namespace VistaWeb
 {
     public partial class ListadoMedicos : System.Web.UI.Page
     {
+        public List<Medico> listaMedicos { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             MedicoNegocio medicoNegocio = new MedicoNegocio();
+            
             try
             {
-                List<Medico> lista = medicoNegocio.listar();
-                MedicoRep.DataSource = lista;
-                MedicoRep.DataBind();
+                
+                listaMedicos = medicoNegocio.listar();
+                
             }
             catch (Exception ex)
             {

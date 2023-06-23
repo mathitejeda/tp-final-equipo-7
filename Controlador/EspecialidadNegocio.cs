@@ -7,7 +7,7 @@ using Modelo;
 
 namespace Controlador
 {
-    internal class EspecialidadNegocio
+    public class EspecialidadNegocio
     {
         public List<Especialidad> listar()
         {
@@ -90,7 +90,7 @@ namespace Controlador
             try
             {
                 string consulta = "SELECT es.id as Id, es.detalle as Nombre FROM especialidad es " +
-                    "JOIN medico_especialidad me ON es.id = me.especialidad_id" +
+                    "INNER JOIN medico_especialidad me ON es.id = me.especialidad_id " +
                     "WHERE me.medico_id =  @idMedico";
                 datos.SetConsulta(consulta);
                 datos.setearParametro("@idMedico", idMedico);
@@ -102,7 +102,7 @@ namespace Controlador
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     lista.Add(aux);
                 }
-                    return lista;
+                return lista;
             }
             catch (Exception ex)
             {

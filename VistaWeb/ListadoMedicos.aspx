@@ -22,39 +22,49 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <asp:Repeater runat="server" ID="MedicoRep">
-                                <ItemTemplate>
 
-                            <tr>
-                                <td><%#Eval("Id")%></td>
-                                <td><%#Eval("Nombre")+" "+Eval("Apellido")%></td>
-                                <td>Matrícula Nacional 999578</td>
+                            <% 
+                                foreach (Modelo.Medico medico in listaMedicos)
+                                { 
+                            %>
+                                        
+                                <tr>
+                                    <td><%: medico.Id%> </td>
+                                    <td><%:medico.Nombre+" "+medico.Apellido%></td>
+                                    <td>Matrícula Nacional 999578</td>
                                 
-                                <td>
-                                    <span class="badge text-bg-info">Cardiología</span><br />
-                                    <span class="badge text-bg-info">Medicina Clínica</span><br />
-                                    <span class="badge text-bg-info">Ecografía de Tejidos Blandos</span><br />
-                                    <span class="badge text-bg-info">Otra especialidad</span><br />
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalVerHorarios">
-                                        <i class="bi bi-clock"></i>
-                                        Ver
-                                    </button>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVerTurnos">
-                                        <i class="bi bi-calendar3"></i>
-                                        Ver
-                                    </button>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarMedico">Modificar</button>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarMedico">Eliminar</button>
-                                </td>
-                            </tr>
-                                </ItemTemplate>
-                            </asp:Repeater>
+                                    <td>
+                            
+                                        <% 
+                                            foreach (Modelo.Especialidad especialidad in medico.Especialidades)
+                                            {
+                                        %>
+                                                                               
+                                            <span class="badge text-bg-info"><%:especialidad.Nombre %></span><br />
+                                        <%
+                                            }
+                                        %>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalVerHorarios">
+                                            <i class="bi bi-clock"></i>
+                                            Ver
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVerTurnos">
+                                            <i class="bi bi-calendar3"></i>
+                                            Ver
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarMedico">Modificar</button>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarMedico">Eliminar</button>
+                                    </td>
+                                </tr>
+                            <%
+                                }
+                            %>
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-between">
