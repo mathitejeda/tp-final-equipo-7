@@ -18,30 +18,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Odontología</td>
-                                <td>
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVerMedicos">
-                                        <i class="bi bi-person-fill-add"></i>
-                                        Médicos
-                                    </button>
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarEspecialidad">Modificar</button>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarEspecialidad">Eliminar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Cardiología</td>
-                                <td>
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVerMedicos">
-                                        <i class="bi bi-person-fill-add"></i>
-                                        Médicos
-                                    </button>
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarEspecialidad">Modificar</button>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarEspecialidad">Eliminar</button>
-                                </td>
-                            </tr>
+                            <asp:Repeater runat="server" ID="rowRepeater">
+                                <ItemTemplate>  
+                                    <tr>
+                                        <td><%#Eval("Id")%></td>
+                                        <td><%#Eval("Nombre") %></td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVerMedicos">
+                                                <i class="bi bi-person-fill-add"></i>
+                                                Médicos
+                                            </button>
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarEspecialidad">Modificar</button>
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarEspecialidad">Eliminar</button>
+                                        </td>
+                                    </tr>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                                
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-between">
