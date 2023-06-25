@@ -181,6 +181,29 @@ namespace Controlador
                 accesoDatos.CerrarConexion();
             }
         }
+        public void bajaLogica(int id)
+        {
+            AccesoDatos accesoDatos = new AccesoDatos();
+            try
+            {
+                string consulta = "UPDATE usuario SET estado=0 WHERE id=@id";
+                accesoDatos.SetConsulta(consulta);
+                accesoDatos.setearParametro("@id", id);
+                accesoDatos.EjecutarAccion();
+                consulta = "DELETE FROM medico_especialidad WHERE medico_id=@id";
+                accesoDatos.SetConsulta(consulta);
+                accesoDatos.setearParametro("@id", id);
+                accesoDatos.EjecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                accesoDatos.CerrarConexion();
+            }
+        }
 
     }
 }
