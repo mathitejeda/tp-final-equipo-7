@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Modelo
 {
-    enum EstadoTurno
+    public enum EstadoTurno
     {
         Cerrado = 0,
         Nuevo = 1,
@@ -17,16 +17,15 @@ namespace Modelo
     }
     public class Turno
     {
-        private Paciente idPaciente; 
-        private Medico idMedico;
+        public int id {  get; set; }
+        public Paciente Paciente { get; set; } 
+        public Medico Medico { get; set; }
         private DateTime fecha;
         private string observaciones;
         private EstadoTurno estado;
 
-        public int IdPaciente { get; set; }
-        public int IdMedico { get; set; }
         public DateTime Fecha { get; set; }
         public string Observaciones { get; set; }
-        //public EstadoTurno Estado { get; set; }
+        public EstadoTurno Estado { get; set; }
     }
 }
