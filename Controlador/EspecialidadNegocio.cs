@@ -15,14 +15,14 @@ namespace Controlador
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                string consulta = "SELECT Id,Nombre FROM especialidades";
+                string consulta = "SELECT Id,Detalle FROM especialidad";
                 datos.SetConsulta(consulta);
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
                 {
                     Especialidad aux = new Especialidad();
                     aux.Id = (int)datos.Lector["Id"];
-                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Nombre = (string)datos.Lector["Detalle"];
                     listaEspecialidades.Add(aux);
                 }
                 return listaEspecialidades;
