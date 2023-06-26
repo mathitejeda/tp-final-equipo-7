@@ -16,7 +16,7 @@ namespace Controlador
         {
             List<Paciente> pacientes = new List<Paciente>();
             AccesoDatos datos = new AccesoDatos();
-
+            TurnoNegocio turnoNegocio = new TurnoNegocio();
             try
             {
                 datos.SetConsulta("select ud.usuario_id, ud.nombre, ud.apellido, ud.DNI, ud.direccion, ud.Telefono, ud.email, ud.fecha_nacimiento, os.nombre as obra_social, os.numero_afiliado from usuario_desc ud join usuario u on (u.id=ud.usuario_id) join obra_social os on (os.usuario_id=u.id) where ud.tipo = 3 and u.estado!=0");
@@ -34,6 +34,7 @@ namespace Controlador
                     aux.FechaNacimiento = (DateTime)datos.Lector["fecha_nacimiento"];
                     aux.ObraSocial = (string)datos.Lector["obra_social"];
                     aux.NumeroAfiliado = (string)datos.Lector["numero_afiliado"];
+                    aux.Turnos = turnoNegocio.listTurnosByPacienteID(aux.Id);
                     pacientes.Add(aux);
                 }
             }
@@ -48,6 +49,7 @@ namespace Controlador
             List<Paciente> pacientes = new List<Paciente>();
             AccesoDatos datos = new AccesoDatos();
             Paciente paciente = new Paciente();
+            TurnoNegocio turnoNegocio = new TurnoNegocio();
             try
             {
                 datos.SetConsulta($"select ud.usuario_id, ud.nombre, ud.apellido, ud.DNI, ud.direccion, ud.Telefono, ud.email, ud.fecha_nacimiento, os.nombre as obra_social, os.numero_afiliado from usuario_desc ud join usuario u on (u.id=ud.usuario_id) join obra_social os on (os.usuario_id=u.id) where ud.usuario_id={id}");
@@ -63,6 +65,7 @@ namespace Controlador
                 paciente.FechaNacimiento = (DateTime)datos.Lector["fecha_nacimiento"];
                 paciente.ObraSocial = (string)datos.Lector["obra_social"];
                 paciente.NumeroAfiliado = (string)datos.Lector["numero_afiliado"];
+                paciente.Turnos = turnoNegocio.listTurnosByPacienteID(paciente.Id);
             }
             catch (Exception ex)
             {
