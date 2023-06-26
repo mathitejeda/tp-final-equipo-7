@@ -43,14 +43,40 @@ namespace Controlador
             }
             return pacientes;
         }
+        public Paciente getPacienteById(int id)
+        {
+            List<Paciente> pacientes = new List<Paciente>();
+            AccesoDatos datos = new AccesoDatos();
+            Paciente paciente = new Paciente();
+            try
+            {
+                datos.SetConsulta($"select ud.usuario_id, ud.nombre, ud.apellido, ud.DNI, ud.direccion, ud.Telefono, ud.email, ud.fecha_nacimiento, os.nombre as obra_social, os.numero_afiliado from usuario_desc ud join usuario u on (u.id=ud.usuario_id) join obra_social os on (os.usuario_id=u.id) where ud.usuario_id={id}");
+                datos.EjecutarLectura();
 
+                paciente.Id = (int)datos.Lector["usuario_id"];
+                paciente.Nombre = (string)datos.Lector["nombre"];
+                paciente.Apellido = (string)datos.Lector["apellido"];
+                paciente.Dni = (string)datos.Lector["DNI"];
+                paciente.Direccion = (string)datos.Lector["direccion"];
+                paciente.Telefono = (string)datos.Lector["Telefono"];
+                paciente.Email = (string)datos.Lector["email"];
+                paciente.FechaNacimiento = (DateTime)datos.Lector["fecha_nacimiento"];
+                paciente.ObraSocial = (string)datos.Lector["obra_social"];
+                paciente.NumeroAfiliado = (string)datos.Lector["numero_afiliado"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return paciente;
+        }
         public void agregar(Paciente aux)
         {
             AccesoDatos datos = new AccesoDatos();
             UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
             try
             {
-                string genericPass = aux.FechaNacimiento.Year.ToString() + aux.FechaNacimiento.Day.ToString();
+                string genericPass = aux.FechaNacimiento.Year.ToString() + aux.FechaNacimiento.Day.ToString(); //estaria bueno crear una variable de firstlogin para que la primera vez que se ingrese se requiera obligatoriamente que se cambie la contrasena por motivos de seguridad
                 Usuario usr = new Usuario(aux.Dni, genericPass, TipoUsuario.Paciente);
                 usuarioNegocio.agregar(usr.User, usr.Pass);
                 usr.Id = usuarioNegocio.findIdByUserName(usr.User);
