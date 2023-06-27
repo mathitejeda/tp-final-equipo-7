@@ -28,7 +28,7 @@ create table usuario_desc (
 	Telefono varchar(20) null,
 	Celular varchar(20) null,
 	direccion varchar(50) null,
-	fecha_nacimiento datetime null,
+	fecha_nacimiento date null,
 	tipo int not null default(0),
 )
 
