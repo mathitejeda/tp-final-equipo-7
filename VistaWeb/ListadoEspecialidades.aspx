@@ -35,11 +35,11 @@
                                         <td><%#Eval("Id")%></td>
                                         <td><%#Eval("Nombre") %></td>
                                         <td>
-                                            <asp:LinkButton runat="server" CommandName="modalVerMedicos" CommandArgument='<%#Eval("Nombre")%>' OnCommand="Modal_btn" type="button" class="btn btn-success" Text="Médicos">
+                                            <asp:LinkButton runat="server" CommandName="modalVerMedicos" CommandArgument='<%#Eval("Id")%>' OnCommand="Modal_btn" type="button" class="btn btn-success" Text="Médicos">
                                                    <i class="bi bi-person-fill-add"></i> Médicos
                                             </asp:LinkButton>
-                                            <asp:LinkButton runat="server" CommandName="modalModificarEspecialidad" CommandArgument='<%#Eval("Nombre")%>' OnCommand="Modal_btn" type="button" class="btn btn-warning">Modificar</asp:LinkButton>
-                                            <asp:LinkButton runat="server" CommandName="modalEliminarEspecialidad" CommandArgument='<%#Eval("Nombre")%>' OnCommand="Modal_btn" type="button" class="btn btn-danger">Eliminar</asp:LinkButton>
+                                            <asp:LinkButton runat="server" CommandName="modalModificarEspecialidad" CommandArgument='<%#Eval("Id")%>' OnCommand="Modal_btn" type="button" class="btn btn-warning">Modificar</asp:LinkButton>
+                                            <asp:LinkButton runat="server" CommandName="modalEliminarEspecialidad" CommandArgument='<%#Eval("Id")%>' OnCommand="Modal_btn" type="button" class="btn btn-danger">Eliminar</asp:LinkButton>
                                             
                                         </td>
                                     </tr>
@@ -78,15 +78,28 @@
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="labelBtnmodalVerMedicos">Médicos para <%:EspecialidadActiva%></h3>
+                    <h3 class="modal-title fs-5" id="labelBtnmodalVerMedicos">Médicos para <%:EspecialidadActiva.Nombre%></h3>
                     <button type="button"  class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
 
                     <div class="card border-primary mb-3">
-                      <div class="card-header text-primary">
-                          <h5>NOMBRE DEL MÉDICO</h5>
-                      </div>
+                      <asp:UpdatePanel runat="server">
+                          <ContentTemplate>
+                              <asp:Repeater runat="server" ID="medicRepeater">
+                                  <ItemTemplate>
+
+                                  <div class="card-header text-primary">
+                                      <a href="./ListadoTurnos.aspx?id=<%#Eval("id") %>"> <%#Eval("Apellido")+", "+Eval("Nombre")%></a>
+                                  </div>
+
+                                  </ItemTemplate>
+                              </asp:Repeater>
+                          </ContentTemplate>
+                      </asp:UpdatePanel>
+                       
+
+                        <!--
                       <div class="card-body text-primary">
                         <h6 class="card-title">Horarios:</h6>
                         <p class="card-text">
@@ -97,6 +110,7 @@
                             </ul>
                         </p>
                       </div>
+                        -->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -112,14 +126,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnmodalAgregarEspecialidad">Agregar una nueva especialidad</h3>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body w-100">
 
                     <div class="mb-3">
                         <label for="especialidad-nombre" class="form-label">Nombre de la especialidad:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="especialidad-nombre" name="nombre">
+                        <input runat="server" type="text" style="background: #fff" class="form-control" id="especialidadNombreAdd" name="nombre">
                     </div>
+                    <!--
                     <div class="mb-3">
                         <label for="especialidad-medicos" class="form-label">Médicos asignados a esta especialidad:</label>
                         <select id="especialidad-medicos" class="form-select" multiple aria-label="Medicos de la especialidad">
@@ -127,11 +142,11 @@
                             <option value="Dr. Pérez">Dr. Pérez</option>
                         </select>
                     </div>
-
+                    -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
-                    <button type="button" class="btn btn-primary">Agregar especialidad</button>
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
+                    <asp:button runat="server" type="button" class="btn btn-primary" Text="Agregar especialidad" OnClick="btn_Agregar"></asp:button>
                 </div>
             </div>
         </div>
@@ -150,8 +165,13 @@
 
                     <div class="mb-3">
                         <label for="especialidad-nombre" class="form-label">Nombre de la especialidad:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="especialidad-nombre2" name="nombre" placeholder="<%:EspecialidadActiva%>">
+                        <asp:UpdatePanel ID="modValue" runat="server">
+                            <ContentTemplate>
+                                <input runat="server" type="text" style="background: #fff" class="form-control" id="especialidadNombreMdf" name="nombre">
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
                     </div>
+                    <!--
                     <div class="mb-3">
                         <label for="especialidad-medicos" class="form-label">Médicos asignados a esta especialidad:</label>
                         <select id="especialidad-medicos2" class="form-select" multiple aria-label="Medicos de la especialidad">
@@ -159,11 +179,11 @@
                             <option value="Dr. Pérez" selected>Dr. Pérez</option>
                         </select>
                     </div>
-
+                    -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
-                    <button type="button" class="btn btn-primary">Modificar especialidad</button>
+                    <asp:button runat="server" type="button" class="btn btn-primary" OnClick="btn_Modificar" Text="Modificar especialidad"></asp:button>
                 </div>
             </div>
         </div>
@@ -178,12 +198,12 @@
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <h4>¿Estás seguro de borrar la especialidad <%:EspecialidadActiva %>?</h4>
+                    <h4>¿Estás seguro de borrar la especialidad <%:EspecialidadActiva.Nombre%>?</h4>
                     <h5>Todos los médicos asociados perderán la especialidad</h5>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
-                    <button type="button" class="btn btn-primary">Eliminar</button>
+                    <asp:button runat="server" OnClick="btn_Eliminar" type="button" class="btn btn-primary" Text="Eliminar"></asp:button>
                 </div>
             </div>
         </div>

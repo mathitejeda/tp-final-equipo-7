@@ -43,14 +43,14 @@ namespace Controlador
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                string consulta = "SELECT Id,Nombre FROM especialidades WHERE Id = @id";
+                string consulta = "SELECT Id, Detalle FROM especialidad WHERE Id = @id";
                 datos.SetConsulta(consulta);
                 datos.setearParametro("@id", id);
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
                 {
                     aux.Id = (int)datos.Lector["Id"];
-                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Nombre = (string)datos.Lector["Detalle"];
                 }
                 return aux;
             }
@@ -69,7 +69,7 @@ namespace Controlador
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.SetConsulta("INSERT INTO especialidades VALUES(@nombre)");
+                datos.SetConsulta("INSERT INTO especialidad VALUES(@nombre)");
                 datos.setearParametro("@nombre", nuevo);
                 datos.EjecutarAccion();
             }
@@ -119,7 +119,7 @@ namespace Controlador
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.SetConsulta("UPDATE especialidades SET Nombre = @nombre WHERE Id = @id");
+                datos.SetConsulta("UPDATE especialidad SET detalle = @nombre WHERE Id = @id");
                 datos.setearParametro("@nombre", aux.Nombre);
                 datos.setearParametro("@id", aux.Id);
                 datos.EjecutarAccion();
@@ -139,7 +139,7 @@ namespace Controlador
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.SetConsulta("DELETE FROM especialidades WHERE Id = @id");
+                datos.SetConsulta("DELETE FROM especialidad WHERE Id = @id");
                 datos.setearParametro("@id", id);
                 datos.EjecutarAccion();
             }

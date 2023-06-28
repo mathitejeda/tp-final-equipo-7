@@ -19,5 +19,9 @@ namespace Modelo
             this.id = id;
             this.nombre = nombre;
         }
+        public override string ToString()
+        {
+            return nombre;
+        }
     }
 }

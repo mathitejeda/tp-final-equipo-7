@@ -6,13 +6,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Modelo;
 using Controlador;
+using System.Globalization;
 
 namespace VistaWeb
 {
     public partial class ListadoEspecialidades : System.Web.UI.Page
     {
-        public int activeId;
-        public string EspecialidadActiva { get; set; }
+
+        public Especialidad EspecialidadActiva = new Especialidad(0,"A");
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -20,7 +21,7 @@ namespace VistaWeb
                 EspecialidadNegocio negocio = new EspecialidadNegocio();
                 try
                 {
-                    EspecialidadActiva = "Test";
+                    
                     List<Especialidad> lista = new List<Especialidad>();
                     lista = negocio.listar();
                     rowRepeater.DataSource = lista;
@@ -33,32 +34,73 @@ namespace VistaWeb
             }
         }
 
-        public void setActiveId(int id)
-        {
-            EspecialidadNegocio aux = new EspecialidadNegocio();
-
-            activeId = id;
-            EspecialidadActiva = aux.GetEspecialidad(activeId).Nombre;
-        }
-        
-     
-
-        protected void Medico_Command(object sender, CommandEventArgs e)
-        {
-            string nombre = e.CommandArgument.ToString();
-            EspecialidadActiva= nombre;
-            string modal = e.CommandName.ToString();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "openModal('"+modal+"')", true);
-        }
 
         protected void Modal_btn(object sender, CommandEventArgs e)
         {
             string modal = e.CommandName.ToString();
-            string nombre = e.CommandArgument.ToString();
+            EspecialidadNegocio aux = new EspecialidadNegocio();
+            int id = int.Parse(e.CommandArgument.ToString());
+            EspecialidadActiva = aux.GetEspecialidad(id);
+            if (Session["EspecialidadActiva"]==null) Session.Add("EspecialidadActiva", EspecialidadActiva);
+            else Session["EspecialidadActiva"] = EspecialidadActiva;
             
-            EspecialidadActiva = nombre;
+            if (modal == "modalVerMedicos")
+            {
+                MedicoNegocio auxMedic = new MedicoNegocio();
+                medicRepeater.DataSource = auxMedic.getMedicosFromEspecialidad(EspecialidadActiva.Id);
+                medicRepeater.DataBind();
+            }
+            especialidadNombreMdf.Value= EspecialidadActiva.Nombre;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "openModal('" + modal + "')", true);
 
         }
+
+        protected void btn_Modificar(object sender, EventArgs e)
+        {
+            try
+            {
+                EspecialidadActiva = (Especialidad)Session["EspecialidadActiva"];
+                TextInfo aux = new CultureInfo("es-ES",false).TextInfo;
+                EspecialidadActiva.Nombre = aux.ToTitleCase(especialidadNombreMdf.Value.ToLower());
+                EspecialidadNegocio negocio = new EspecialidadNegocio();
+                negocio.modificar(EspecialidadActiva);
+                Response.Redirect("ListadoEspecialidades.aspx");
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        protected void btn_Agregar(object sender, EventArgs e)
+        {
+            try
+            {
+                TextInfo aux = new CultureInfo("es-ES",false).TextInfo;
+                EspecialidadActiva.Nombre = aux.ToTitleCase(especialidadNombreAdd.Value.ToLower());
+                EspecialidadNegocio negocio = new EspecialidadNegocio();
+                negocio.agregar(EspecialidadActiva.Nombre);
+                Response.Redirect("ListadoEspecialidades.aspx");
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+        protected void btn_Eliminar(object sender, EventArgs e)
+        {
+            try
+            {
+                EspecialidadActiva = (Especialidad)Session["EspecialidadActiva"];
+                EspecialidadNegocio negocio = new EspecialidadNegocio();
+                negocio.eliminar(EspecialidadActiva.Id);
+                Response.Redirect("ListadoEspecialidades.aspx");
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
