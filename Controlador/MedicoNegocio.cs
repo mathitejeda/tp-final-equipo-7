@@ -205,5 +205,40 @@ namespace Controlador
             }
         }
 
+        public List<Medico> getMedicosFromEspecialidad(int id)
+        {
+            List<Medico> listaMedicos = new List<Medico>();
+            AccesoDatos datos = new AccesoDatos();
+            EspecialidadNegocio negocioEspecialidades = new EspecialidadNegocio();
+            try
+            {
+                string consulta =   "SELECT ud.usuario_id as Id, ud.nombre as Nombre, ud.apellido as Apellido " +
+                                    "from usuario_desc ud " +
+                                    "inner join medico_especialidad me on ud.usuario_id=me.medico_id " +
+                                    "where ud.tipo=2 and me.especialidad_id=@id";
+                datos.SetConsulta(consulta);
+                datos.setearParametro("@id", id);
+                datos.EjecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    Medico aux = new Medico();
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    aux.Apellido = (string)datos.Lector["Apellido"];
+                    aux.Especialidades = negocioEspecialidades.getEspecialidadesFromIdMedico(aux.Id);
+                    listaMedicos.Add(aux);
+                }
+                return listaMedicos;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
     }
 }

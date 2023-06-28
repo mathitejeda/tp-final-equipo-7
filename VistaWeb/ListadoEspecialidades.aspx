@@ -1,6 +1,17 @@
 ﻿<%@ Page Title="Especialidades" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListadoEspecialidades.aspx.cs" Inherits="VistaWeb.ListadoEspecialidades" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function openModal( modalName) {
+            $('#'+modalName).modal('show');
+        }
+        function closeModal( modalName) {
+            $('#'+modalName).modal('hide');
+        }
+    </script>
     <div class="container">
         <div class="row">
             <h1 class="mb-4">Listado de Especialidades</h1>
@@ -24,12 +35,12 @@
                                         <td><%#Eval("Id")%></td>
                                         <td><%#Eval("Nombre") %></td>
                                         <td>
-                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVerMedicos">
-                                                <i class="bi bi-person-fill-add"></i>
-                                                Médicos
-                                            </button>
-                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarEspecialidad">Modificar</button>
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarEspecialidad">Eliminar</button>
+                                            <asp:LinkButton runat="server" CommandName="modalVerMedicos" CommandArgument='<%#Eval("Nombre")%>' OnCommand="Modal_btn" type="button" class="btn btn-success" Text="Médicos">
+                                                   <i class="bi bi-person-fill-add"></i> Médicos
+                                            </asp:LinkButton>
+                                            <asp:LinkButton runat="server" CommandName="modalModificarEspecialidad" CommandArgument='<%#Eval("Nombre")%>' OnCommand="Modal_btn" type="button" class="btn btn-warning">Modificar</asp:LinkButton>
+                                            <asp:LinkButton runat="server" CommandName="modalEliminarEspecialidad" CommandArgument='<%#Eval("Nombre")%>' OnCommand="Modal_btn" type="button" class="btn btn-danger">Eliminar</asp:LinkButton>
+                                            
                                         </td>
                                     </tr>
                                 </ItemTemplate>
@@ -67,8 +78,8 @@
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="labelBtnmodalVerMedicos">Médicos para (ESPECIALIDAD)</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <h3 class="modal-title fs-5" id="labelBtnmodalVerMedicos">Médicos para <%:EspecialidadActiva%></h3>
+                    <button type="button"  class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
 
@@ -89,7 +100,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
                 </div>
             </div>
         </div>
@@ -101,13 +112,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnmodalAgregarEspecialidad">Agregar una nueva especialidad</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body w-100">
 
                     <div class="mb-3">
                         <label for="especialidad-nombre" class="form-label">Nombre de la especialidad:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="especialidad-nombre" name="nombre" required>
+                        <input type="text" style="background: #fff" class="form-control" id="especialidad-nombre" name="nombre">
                     </div>
                     <div class="mb-3">
                         <label for="especialidad-medicos" class="form-label">Médicos asignados a esta especialidad:</label>
@@ -119,7 +130,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
                     <button type="button" class="btn btn-primary">Agregar especialidad</button>
                 </div>
             </div>
@@ -133,17 +144,17 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnmodalModificarEspecialidad">Modificar especialidad</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body w-100">
 
                     <div class="mb-3">
                         <label for="especialidad-nombre" class="form-label">Nombre de la especialidad:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="especialidad-nombre" name="nombre" placeholder="NOMBRE_ESPECIALIDAD" required>
+                        <input type="text" style="background: #fff" class="form-control" id="especialidad-nombre2" name="nombre" placeholder="<%:EspecialidadActiva%>">
                     </div>
                     <div class="mb-3">
                         <label for="especialidad-medicos" class="form-label">Médicos asignados a esta especialidad:</label>
-                        <select id="especialidad-medicos" class="form-select" multiple aria-label="Medicos de la especialidad">
+                        <select id="especialidad-medicos2" class="form-select" multiple aria-label="Medicos de la especialidad">
                           <option>Seleccione el/los médico/s...</option>
                             <option value="Dr. Pérez" selected>Dr. Pérez</option>
                         </select>
@@ -151,8 +162,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
-                    <button type="button" class="btn btn-primary">Agregar especialidad</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
+                    <button type="button" class="btn btn-primary">Modificar especialidad</button>
                 </div>
             </div>
         </div>
@@ -164,14 +175,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnmodalEliminarEspecialidad">Eliminar especialidad</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <h4>¿Estás seguro de borrar la especialidad (NOMBRE_ESPECIALIDAD)?</h4>
+                    <h4>¿Estás seguro de borrar la especialidad <%:EspecialidadActiva %>?</h4>
                     <h5>Todos los médicos asociados perderán la especialidad</h5>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
                     <button type="button" class="btn btn-primary">Eliminar</button>
                 </div>
             </div>
