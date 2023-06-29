@@ -152,5 +152,29 @@ namespace Controlador
                 datos.CerrarConexion();
             }
         }
+
+        public void asociarEsp(Medico medico)
+        {
+            foreach (Especialidad especialidad in medico.Especialidades)
+            {
+                AccesoDatos datos = new AccesoDatos();
+                try
+                {
+                        string consulta = "INSERT INTO medico_especialidad (medico_id, especialidad_id) VALUES (@medico_id,@especialidad_id)";
+                        datos.SetConsulta(consulta);
+                        datos.setearParametro("@medico_id", medico.Id);
+                        datos.setearParametro("@especialidad_id", especialidad.Id);
+                        datos.EjecutarAccion();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    datos.CerrarConexion();
+                }
+            }
+        }
     }
 }

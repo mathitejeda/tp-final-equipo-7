@@ -1,6 +1,17 @@
 ﻿<%@ Page Title="Médicos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListadoMedicos.aspx.cs" Inherits="VistaWeb.ListadoMedicos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function openModal( modalName) {
+            $('#'+modalName).modal('show');
+        }
+        function closeModal( modalName) {
+            $('#'+modalName).modal('hide');
+        }
+    </script>
     <div class="container">
         <div class="row">
             <h1 class="mb-4">Listado de Médicos</h1>
@@ -22,28 +33,23 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            <% 
-                                foreach (Modelo.Medico medico in listaMedicos)
-                                { 
-                            %>
+                           <asp:Repeater runat="server" id="rowRepeater">
+                               <ItemTemplate >
                                         
                                 <tr>
-                                    <td><%: medico.Id%> </td>
-                                    <td><%:medico.Nombre+" "+medico.Apellido%></td>
+                                    <td><%#Eval("Id")%> </td>
+                                    <td><%#Eval("Nombre")+" "+Eval("Apellido")%></td>
                                     <td>Matrícula Nacional 999578</td>
                                 
                                     <td>
-                            
-                                        <% 
-                                            foreach (Modelo.Especialidad especialidad in medico.Especialidades)
-                                            {
-                                        %>
+                                    <asp:Repeater runat="server" id="especialidadesRepeater" DataSource='<%#Eval("Especialidades")%>'>
+                                        <ItemTemplate>
+                                                <span class="badge text-bg-info"><%#Eval("Nombre")%></span><br />
+                                            </ItemTemplate>
+                                    </asp:Repeater>
+                                        
                                                                                
-                                            <span class="badge text-bg-info"><%:especialidad.Nombre %></span><br />
-                                        <%
-                                            }
-                                        %>
+                                       
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalVerHorarios">
@@ -58,13 +64,13 @@
                                         </button>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarMedico">Modificar</button>
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarMedico">Eliminar</button>
+                                        <asp:LinkButton runat="server" OnCommand="Modal_btn" CommandArgument='<%#Eval("Id")%>' CommandName="modalModificarMedico" type="button" class="btn btn-warning" Text="Modificar"></asp:LinkButton>
+                                        <asp:button runat="server" OnCommand="Modal_btn" CommandArgument='<%#Eval("Id")%>' CommandName="modalEliminarMedico" type="button" class="btn btn-danger" Text="Eliminar"></asp:button>
                                     </td>
                                 </tr>
-                            <%
-                                }
-                            %>
+                            
+                               </ItemTemplate>
+                           </asp:Repeater>
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-between">
@@ -97,13 +103,13 @@
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="labelBtnmodalVerHorarios">Ver horarios de NOMBRE_MÉDICO</h3>
+                    <h3 class="modal-title fs-5" id="labelBtnmodalVerHorarios">Ver horarios de <%:medicoActivo.Apellido+" "+medicoActivo.Nombre %></h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
                     <div class="card border-primary mb-3">
                         <div class="card-header text-primary">
-                            <h5>CARDIOLOGÍA</h5>
+                            <h5>EN CONSTRUCCION</h5>
                         </div>
                         <div class="card-body text-primary">
                             <h6 class="card-title">Horarios:</h6>
@@ -117,51 +123,6 @@
                         </div>
                     </div>
 
-                    <div class="card border-primary mb-3">
-                        <div class="card-header text-primary">
-                            <h5>MEDICINA CLÍNICA</h5>
-                        </div>
-                        <div class="card-body text-primary">
-                            <h6 class="card-title">Horarios:</h6>
-                            <p class="card-text">
-                                <ul>
-                                    <li>HORARIO 1 - FIN HORARIO 1</li>
-                                    <li>HORARIO 2 - FIN HORARIO 2</li>
-                                    <li>HORARIO 3 - FIN HORARIO 3</li>
-                                </ul>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="card border-primary mb-3">
-                        <div class="card-header text-primary">
-                            <h5>ECOGRAFÍA DE TEJIDOS BLANDOS</h5>
-                        </div>
-                        <div class="card-body text-primary">
-                            <h6 class="card-title">Horarios:</h6>
-                            <p class="card-text">
-                                <ul>
-                                    <li>HORARIO 1 - FIN HORARIO 1</li>
-                                    <li>HORARIO 2 - FIN HORARIO 2</li>
-                                    <li>HORARIO 3 - FIN HORARIO 3</li>
-                                </ul>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="card border-primary mb-3">
-                        <div class="card-header text-primary">
-                            <h5>OTRA ESPECIALIDAD</h5>
-                        </div>
-                        <div class="card-body text-primary">
-                            <h6 class="card-title">Horarios:</h6>
-                            <p class="card-text">
-                                <ul>
-                                    <li>HORARIO 1 - FIN HORARIO 1</li>
-                                    <li>HORARIO 2 - FIN HORARIO 2</li>
-                                    <li>HORARIO 3 - FIN HORARIO 3</li>
-                                </ul>
-                            </p>
-                        </div>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
@@ -176,7 +137,7 @@
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="labelBtnmodalVerTurnos">Ver turnos de NOMBRE_MÉDICO</h3>
+                    <h3 class="modal-title fs-5" id="labelBtnmodalVerTurnos">EN CONSTRUCCION</h3> <!--Ver turnos de NOMBRE_MÉDICO-->
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
@@ -221,35 +182,31 @@
 
                     <div class="mb-3">
                         <label for="medico-nombre" class="form-label">Nombre del médico:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="medico-nombre" name="nombre" placeholder="NOMBRE_MEDICO" required>
+                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoNombreAdd" name="nombre" >
                     </div>
                     <div class="mb-3">
                         <label for="medico-apellido" class="form-label">Apellido del médico:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="medico-apellido" name="apellido" placeholder="APELLIDO_MEDICO" required>
+                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoApellidoAdd" name="apellido" >
                     </div>
                     <div class="mb-3">
                         <label for="medico-matricula" class="form-label">Matrícula/s del médico:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="medico-matricula" name="matricula" placeholder="MATRICULAS_MEDICO" required>
+                        <input type="text" style="background: #fff" class="form-control" id="medicoMatricula" name="matricula" >
                     </div>
                     <div class="mb-3">
                         <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
-                        <select id="especialidades-medico" class="form-select" multiple aria-label="Medicos de la especialidad">
-                            <option>Seleccione una o varias especialidades...</option>
-                            <option value="Cardiología">Cardiología</option>
-                            <option value="Medicina Clínica">Medicina Clínica</option>
-                            <option value="Ecografía de Tejidos Blandos">Ecografía de Tejidos Blandos</option>
-                            <option value="Otra especialidad">Otra especialidad</option>
-                            <option value="">Más especialidades...</option>
-                            <option value="">Más especialidades...</option>
-                            <option value="">Más especialidades...</option>
-                            <option value="">Más especialidades...</option>
-                        </select>
+                        <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" id="especialidadesMedicoAdd" class="form-select" aria-label="Especialidades del médico:">
+                        </asp:CheckBoxList>
+                            <!--
+                            <asp:ListItem value="Cardiología" Text="Cardiología"></asp:ListItem>
+                            <asp:ListItem value="Medicina Clínica"> Medicina Clínica</asp:ListItem>
+                            <asp:ListItem value="Ecografía de Tejidos Blandos"> Ecografía de Tejidos Blandos</asp:ListItem>
+                            -->
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
-                    <button type="button" class="btn btn-primary">Agregar médico</button>
+                    <asp:button runat="server" OnClick="btn_Agregar" type="button" class="btn btn-primary" Text="Agregar médico"></asp:button>
                 </div>
             </div>
         </div>
@@ -262,41 +219,32 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnmodalModificarMedico">Modificar médico</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body w-100">
 
                     <div class="mb-3">
                         <label for="medico-nombre" class="form-label">Nombre del médico:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="medico-nombre" name="nombre" placeholder="NOMBRE_MEDICO" required>
+                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoNombreMdf" name="nombre">
                     </div>
                     <div class="mb-3">
                         <label for="medico-apellido" class="form-label">Apellido del médico:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="medico-apellido" name="apellido" placeholder="APELLIDO_MEDICO" required>
+                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoApellidoMdf" name="apellido">
                     </div>
                     <div class="mb-3">
                         <label for="medico-matricula" class="form-label">Matrícula/s del médico:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="medico-matricula" name="matricula" placeholder="MATRICULAS_MEDICO" required>
+                        <input type="text" style="background: #fff" class="form-control" id="medico-matricula" name="matricula">
                     </div>
                     <div class="mb-3">
                         <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
-                        <select id="especialidades-medico" class="form-select" multiple aria-label="Medicos de la especialidad">
-                            <option>Seleccione una o varias especialidades...</option>
-                            <option value="Cardiología" selected>Cardiología</option>
-                            <option value="Medicina Clínica" selected>Medicina Clínica</option>
-                            <option value="Ecografía de Tejidos Blandos" selected>Ecografía de Tejidos Blandos</option>
-                            <option value="Otra especialidad" selected>Otra especialidad</option>
-                            <option value="">Más especialidades...</option>
-                            <option value="">Más especialidades...</option>
-                            <option value="">Más especialidades...</option>
-                            <option value="">Más especialidades...</option>
-                        </select>
+                        <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" id="especialidadesMedicoMdf" class="form-select" aria-label="Especialidades del médico:">
+                        </asp:CheckBoxList>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
-                    <button type="button" class="btn btn-primary">Modificar médico</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
+                    <asp:button runat="server" OnClick="btn_Modificar" type="button" class="btn btn-primary" Text="Modificar médico"></asp:button>
                 </div>
             </div>
         </div>
@@ -308,15 +256,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnmodalEliminarMedico">Eliminar médico</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <h4>¿Estás seguro de borrar al médico (NOMBRE_MÉDICO)?</h4>
+                    <h4>¿Estás seguro de borrar al médico <%:medicoActivo.Apellido+", "+medicoActivo.Nombre%>?</h4>
                     <h5>Todos los turnos que debe atender serán cambiados a estado PENDIENTE</h5>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
-                    <button type="button" class="btn btn-primary">Eliminar</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
+                    <asp:button runat="server" OnClick="btn_Eliminar" type="button" class="btn btn-primary" Text="Eliminar"></asp:button>
                 </div>
             </div>
         </div>

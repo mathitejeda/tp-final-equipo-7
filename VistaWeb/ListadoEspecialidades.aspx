@@ -35,6 +35,7 @@
                                         <td><%#Eval("Id")%></td>
                                         <td><%#Eval("Nombre") %></td>
                                         <td>
+
                                             <asp:LinkButton runat="server" CommandName="modalVerMedicos" CommandArgument='<%#Eval("Id")%>' OnCommand="Modal_btn" type="button" class="btn btn-success" Text="Médicos">
                                                    <i class="bi bi-person-fill-add"></i> Médicos
                                             </asp:LinkButton>

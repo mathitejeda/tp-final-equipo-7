@@ -16,12 +16,12 @@ namespace Modelo
         public Especialidad() { }
         public Especialidad(int id, string nombre)
         {
-            this.id = id;
-            this.nombre = nombre;
+            Id = id;
+            Nombre = nombre;
         }
         public override string ToString()
         {
-            return nombre;
+            return Nombre;
         }
     }
 }

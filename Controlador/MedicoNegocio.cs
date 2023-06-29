@@ -22,12 +22,10 @@ namespace Controlador
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
                 {
-                   // List<Especialidad> especialidades = new List<Especialidad>();
                     Medico aux = new Medico();
                     aux.Id = (int)datos.Lector["Id"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Apellido = (string)datos.Lector["Apellido"];
-                   // especialidades = negocioEspecialidades.getEspecialidadesFromIdMedico(aux.Id);
                     aux.Especialidades = negocioEspecialidades.getEspecialidadesFromIdMedico(aux.Id);
                     listaMedicos.Add(aux);
                 }
@@ -83,33 +81,22 @@ namespace Controlador
             AccesoDatos accesoDatos = new AccesoDatos();
             try
             {
-                string consulta = "INSERT INTO usuario_desc (usuario_id, nombre,apellido,tipo) VALUES (@id,'@nombre','@apellido',2)";
+                UsuarioNegocio negocioUsuario = new UsuarioNegocio();
+                int id = negocioUsuario.agregar((aux.Nombre + aux.Apellido).Trim(), "1234");
+
+                string consulta = "INSERT INTO usuario_desc (usuario_id, nombre,apellido,tipo) VALUES (@id,@nombre,@apellido,2)";
                 accesoDatos.SetConsulta(consulta);
+                accesoDatos.setearParametro("@id", id);
                 accesoDatos.setearParametro("@nombre", aux.Nombre);
                 accesoDatos.setearParametro("@apellido", aux.Apellido);
-                accesoDatos.setearParametro("@id", aux.Id);
                 accesoDatos.EjecutarAccion();
-                try
-                {
-                    foreach (Especialidad especialidad in aux.Especialidades)
-                    {
-                        consulta = "INSERT INTO medico_especialidad (medico_id, especialidad_id) VALUES (@medico_id,@especialidad_id)";
-                        accesoDatos.SetConsulta(consulta);
-                        accesoDatos.setearParametro("@medico_id", aux.Id);
-                        accesoDatos.setearParametro("@especialidad_id", especialidad.Id);
-                        accesoDatos.EjecutarAccion();
-                    }
-
-                }
-                catch (SqlException ex)
-                {
-                    throw ex;
-                }
-
+                aux.Id = id;
+                EspecialidadNegocio especialidadNegocio = new EspecialidadNegocio();
+                especialidadNegocio.asociarEsp(aux);
             }
             catch (Exception ex)
             {
-                throw ex;
+                 throw ex;
             }
             finally
             {
@@ -122,31 +109,16 @@ namespace Controlador
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                string consulta = "UPDATE usuario_desc SET nombre='@nombre', apellido='@apellido' WHERE usuario_id=@id";
+                string consulta =   "UPDATE usuario_desc SET nombre=@nombre, apellido=@apellido WHERE usuario_id=@id\n" +
+                                    "DELETE FROM medico_especialidad WHERE medico_id=@id2";
                 datos.SetConsulta(consulta);
                 datos.setearParametro("@nombre", aux.Nombre);
                 datos.setearParametro("@apellido", aux.Apellido);
                 datos.setearParametro("@id", aux.Id);
+                datos.setearParametro("@id2", aux.Id);
                 datos.EjecutarAccion();
-                try
-                {
-                    consulta = "DELETE FROM medico_especialidad WHERE medico_id=@id";
-                    datos.SetConsulta(consulta);
-                    datos.setearParametro("@id", aux.Id);
-                    datos.EjecutarAccion();
-                    foreach (Especialidad especialidad in aux.Especialidades)
-                    {
-                        consulta = "INSERT INTO medico_especialidad (medico_id, especialidad_id) VALUES (@medico_id,@especialidad_id)";
-                        datos.SetConsulta(consulta);
-                        datos.setearParametro("@medico_id", aux.Id);
-                        datos.setearParametro("@especialidad_id", especialidad.Id);
-                        datos.EjecutarAccion();
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    throw ex;
-                }
+                EspecialidadNegocio auxEsp = new EspecialidadNegocio();
+                auxEsp.asociarEsp(aux);
             }
             catch (Exception ex)
             {
@@ -163,13 +135,11 @@ namespace Controlador
             AccesoDatos accesoDatos = new AccesoDatos();
             try
             {
-                string consulta = "DELETE FROM usuario_desc WHERE usuario_id=@id";
+                string consulta = "DELETE FROM usuario_desc WHERE usuario_id=@id\nDELETE FROM medico_especialidad WHERE medico_id=@id2\nDELETE FROM usuario where id=@id3";
                 accesoDatos.SetConsulta(consulta);
                 accesoDatos.setearParametro("@id", id);
-                accesoDatos.EjecutarAccion();
-                consulta = "DELETE FROM medico_especialidad WHERE medico_id=@id";
-                accesoDatos.SetConsulta(consulta);
-                accesoDatos.setearParametro("@id", id);
+                accesoDatos.setearParametro("@id2", id);
+                accesoDatos.setearParametro("@id3", id);
                 accesoDatos.EjecutarAccion();
             }
             catch (Exception ex)
