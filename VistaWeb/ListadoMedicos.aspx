@@ -39,8 +39,7 @@
                                 <tr>
                                     <td><%#Eval("Id")%> </td>
                                     <td><%#Eval("Nombre")+" "+Eval("Apellido")%></td>
-                                    <td>Matrícula Nacional 999578</td>
-                                
+                               
                                     <td>
                                     <asp:Repeater runat="server" id="especialidadesRepeater" DataSource='<%#Eval("Especialidades")%>'>
                                         <ItemTemplate>
@@ -206,7 +205,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
-                    <asp:button runat="server" OnClick="btn_Agregar" type="button" class="btn btn-primary" Text="Agregar médico"></asp:button>
+                    <asp:button runat="server" OnClick="btn_Agregar" type="button" class="btn btn-primary" Text="Agregar usuario"></asp:button>
                 </div>
             </div>
         </div>
