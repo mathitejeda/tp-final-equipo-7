@@ -14,6 +14,7 @@ create table usuario (
 	id int primary key not null identity (1,1),
 	usuario varchar(16) not null unique,
 	contrasenia varchar(64) not null,
+	tipo int not null default(0),
 	estado bit default(1), --1 activo, 0 inactivo
 )
 
@@ -29,7 +30,6 @@ create table usuario_desc (
 	Celular varchar(20) null,
 	direccion varchar(50) null,
 	fecha_nacimiento date null,
-	tipo int not null default(0),
 )
 
 GO
