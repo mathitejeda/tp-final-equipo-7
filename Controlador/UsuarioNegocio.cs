@@ -11,15 +11,16 @@ namespace Controlador
 {
     public class UsuarioNegocio
     {
-        public int agregar(string user, string pass)
+        public int agregar(string user, string pass, TipoUsuario tipo = TipoUsuario.Administrador)
         {
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                string consulta = "INSERT INTO USUARIO (usuario,contrasenia) output inserted.Id VALUES (@user,@pass)";
+                string consulta = "INSERT INTO USUARIO (usuario,contrasenia, tipo) output inserted.Id VALUES (@user,@pass, @tipo)";
                 datos.SetConsulta(consulta);
                 datos.setearParametro("@user", user);
                 datos.setearParametro("@pass", pass);
+                datos.setearParametro("@tipo", (int)tipo);
 
                 return datos.EjecutarAccionScalar();
             }

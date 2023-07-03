@@ -79,6 +79,7 @@ namespace Controlador
             try
             {
                 datos.SetConsulta($"select t.id, t.medico_id, t.paciente_id, t.observaciones, t.estado, t.fecha from turno t where t.paciente_id={id}");
+                datos.EjecutarLectura();
                 while (datos.Lector.Read())
                 {
                     Turno aux = new Turno();
@@ -132,7 +133,7 @@ namespace Controlador
                 datos.setearParametro("@paciente_id", turno.Paciente.Id);
                 datos.setearParametro("@observaciones", turno.Observaciones);
                 datos.setearParametro("@estado", EstadoTurno.Nuevo);
-                datos.setearParametro("@fecha", turno.Fecha);
+                datos.setearParametro("@fecha", turno.Fecha.Date);
                 datos.EjecutarAccion();
             }
             catch (Exception ex)
@@ -172,7 +173,7 @@ namespace Controlador
                 datos.setearParametro("@paciente_id", turno.Paciente.Id);
                 datos.setearParametro("@observaciones", turno.Observaciones);
                 datos.setearParametro("@estado", turno.Estado);
-                datos.setearParametro("@fecha", turno.Fecha);
+                datos.setearParametro("@fecha", turno.Fecha.Date);
                 datos.EjecutarAccion();
             }
             catch (Exception ex)

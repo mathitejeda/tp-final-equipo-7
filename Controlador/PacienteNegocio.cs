@@ -19,21 +19,21 @@ namespace Controlador
             TurnoNegocio turnoNegocio = new TurnoNegocio();
             try
             {
-                datos.SetConsulta("select ud.usuario_id, ud.nombre, ud.apellido, ud.DNI, ud.direccion, ud.Telefono, ud.email, ud.fecha_nacimiento, os.nombre as obra_social, os.numero_afiliado from usuario_desc ud join usuario u on (u.id=ud.usuario_id) join obra_social os on (os.usuario_id=u.id) where ud.tipo = 3 and u.estado!=0");
+                datos.SetConsulta("select ud.usuario_id, ud.nombre, ud.apellido, ud.DNI, ud.direccion, ud.Telefono, ud.email, ud.fecha_nacimiento, os.nombre as obra_social, os.numero_afiliado from usuario u join usuario_desc ud on (ud.usuario_id=u.id) left join obra_social os on (os.usuario_id=u.id) where u.tipo=3 and u.estado!=0");
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
                 {
                     Paciente aux = new Paciente();
                     aux.Id = (int)datos.Lector["usuario_id"];
-                    aux.Nombre = (string)datos.Lector["nombre"];
-                    aux.Apellido = (string)datos.Lector["apellido"];
-                    aux.Dni = (string)datos.Lector["DNI"];
-                    aux.Direccion = (string)datos.Lector["direccion"];
-                    aux.Telefono = (string)datos.Lector["Telefono"];
-                    aux.Email = (string)datos.Lector["email"];
+                    aux.Nombre = datos.Lector["nombre"].ToString();
+                    aux.Apellido = datos.Lector["apellido"].ToString();
+                    aux.Dni = datos.Lector["DNI"].ToString();
+                    aux.Direccion = datos.Lector["direccion"].ToString();
+                    aux.Telefono = datos.Lector["Telefono"].ToString();
+                    aux.Email = datos.Lector["email"].ToString();
                     aux.FechaNacimiento = (DateTime)datos.Lector["fecha_nacimiento"];
-                    aux.ObraSocial = (string)datos.Lector["obra_social"];
-                    aux.NumeroAfiliado = (string)datos.Lector["numero_afiliado"];
+                    aux.ObraSocial = datos.Lector["obra_social"].ToString();
+                    aux.NumeroAfiliado = datos.Lector["numero_afiliado"].ToString();
                     aux.Turnos = turnoNegocio.listTurnosByPacienteID(aux.Id);
                     pacientes.Add(aux);
                 }
@@ -41,6 +41,10 @@ namespace Controlador
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
             }
             return pacientes;
         }
@@ -56,7 +60,7 @@ namespace Controlador
                 datos.EjecutarLectura();
 
                 paciente.Id = (int)datos.Lector["usuario_id"];
-                paciente.Nombre = (string)datos.Lector["nombre"];
+                paciente.Nombre = datos.Lector["nombre"].ToString();
                 paciente.Apellido = (string)datos.Lector["apellido"];
                 paciente.Dni = (string)datos.Lector["DNI"];
                 paciente.Direccion = (string)datos.Lector["direccion"];
@@ -71,6 +75,10 @@ namespace Controlador
             {
                 throw ex;
             }
+            finally
+            {
+                datos.CerrarConexion();
+            }
             return paciente;
         }
         public void agregar(Paciente aux)
@@ -81,9 +89,9 @@ namespace Controlador
             {
                 string genericPass = aux.FechaNacimiento.Year.ToString() + aux.FechaNacimiento.Day.ToString(); //estaria bueno crear una variable de firstlogin para que la primera vez que se ingrese se requiera obligatoriamente que se cambie la contrasena por motivos de seguridad
                 Usuario usr = new Usuario(aux.Dni, genericPass, TipoUsuario.Paciente);
-                usuarioNegocio.agregar(usr.User, usr.Pass);
+                usuarioNegocio.agregar(usr.User, usr.Pass, TipoUsuario.Paciente);
                 usr.Id = usuarioNegocio.findIdByUserName(usr.User);
-                datos.SetConsulta("insert into usuario_desc (usuario_id, nombre, apellido, DNI, direccion, Telefono, email, fecha_nacimiento) values (@id, @nombre, @apellido, @dni, @direccion, @telefono, @email, @fecha_nacimiento, @tipo)");
+                datos.SetConsulta("insert into usuario_desc (usuario_id, nombre, apellido, DNI, direccion, Telefono, email, fecha_nacimiento) values (@id, @nombre, @apellido, @dni, @direccion, @telefono, @email, @fecha_nacimiento)");
                 datos.setearParametro("@id", usr.Id);
                 datos.setearParametro("@nombre", aux.Nombre);
                 datos.setearParametro("@apellido", aux.Apellido);
@@ -91,8 +99,7 @@ namespace Controlador
                 datos.setearParametro("@direccion", aux.Direccion);
                 datos.setearParametro("@telefono", aux.Telefono);
                 datos.setearParametro("@email", aux.Email);
-                datos.setearParametro("@fecha_nacimiento", aux.FechaNacimiento.ToString());
-                datos.setearParametro("@tipo", TipoUsuario.Paciente);
+                datos.setearParametro("@fecha_nacimiento", aux.FechaNacimiento.Date);
                 datos.EjecutarAccion();
                 datos.SetConsulta("insert into obra_social (usuario_id, nombre, numero_afiliado) values(@id, @nombre, @afiliado)");
                 datos.setearParametro("@id", usr.Id);
@@ -142,7 +149,7 @@ namespace Controlador
                 datos.setearParametro("@direccion", paciente.Direccion);
                 datos.setearParametro("@telefono", paciente.Telefono);
                 datos.setearParametro("@email", paciente.Email);
-                datos.setearParametro("@fecha_nacimiento", paciente.FechaNacimiento.ToString());
+                datos.setearParametro("@fecha_nacimiento", paciente.FechaNacimiento.Date);
                 datos.EjecutarAccion();
                 datos.SetConsulta("UPDATE obra_social set nombre='@nombre', numero_afiliado='@numero_afiliado' where usuario_id=@id");
                 datos.setearParametro("@id", paciente.Id);

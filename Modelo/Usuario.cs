@@ -28,8 +28,8 @@ namespace Modelo
         public Usuario () { }
         public Usuario (string user, string pass, TipoUsuario tipo)
         {
-            this.user = user;
-            this.pass = pass;
+            this.User = user;
+            this.Pass = pass;
             this.TipoUsuario = tipo;
         }
     }

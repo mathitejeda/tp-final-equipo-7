@@ -17,7 +17,7 @@ namespace Controlador
             EspecialidadNegocio negocioEspecialidades = new EspecialidadNegocio();
             try
             {
-                string consulta = "SELECT ud.usuario_id as Id, ud.nombre as Nombre, ud.apellido as Apellido from usuario_desc ud where ud.tipo=2";
+                string consulta = "SELECT ud.usuario_id as Id, ud.nombre as Nombre, ud.apellido as Apellido from usuario_desc ud where u.tipo=2";
                 datos.SetConsulta(consulta);
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
@@ -48,7 +48,7 @@ namespace Controlador
             EspecialidadNegocio negocioEspcialidades = new EspecialidadNegocio();
             try
             {
-                string consulta = "SELECT ud.usuario_id as Id, ud.nombre as Nombre, ud.apellido as Apellido from usuario_desc ud where ud.tipo=2 and ud.usuario_id=@id";
+                string consulta = "SELECT ud.usuario_id as Id, ud.nombre as Nombre, ud.apellido as Apellido from usuario_desc ud where ud.usuario_id=@id";
                 datos.SetConsulta(consulta);
                 datos.setearParametro("@id", id);
                 datos.EjecutarLectura();
@@ -82,9 +82,9 @@ namespace Controlador
             try
             {
                 UsuarioNegocio negocioUsuario = new UsuarioNegocio();
-                int id = negocioUsuario.agregar((aux.Nombre + aux.Apellido).Trim(), "1234");
+                int id = negocioUsuario.agregar((aux.Nombre + aux.Apellido).Trim(), "1234", TipoUsuario.Medico);
 
-                string consulta = "INSERT INTO usuario_desc (usuario_id, nombre,apellido,tipo) VALUES (@id,@nombre,@apellido,2)";
+                string consulta = "INSERT INTO usuario_desc (usuario_id, nombre,apellido) VALUES (@id,@nombre,@apellido)";
                 accesoDatos.SetConsulta(consulta);
                 accesoDatos.setearParametro("@id", id);
                 accesoDatos.setearParametro("@nombre", aux.Nombre);
@@ -185,7 +185,7 @@ namespace Controlador
                 string consulta =   "SELECT ud.usuario_id as Id, ud.nombre as Nombre, ud.apellido as Apellido " +
                                     "from usuario_desc ud " +
                                     "inner join medico_especialidad me on ud.usuario_id=me.medico_id " +
-                                    "where ud.tipo=2 and me.especialidad_id=@id";
+                                    "where me.especialidad_id=@id";
                 datos.SetConsulta(consulta);
                 datos.setearParametro("@id", id);
                 datos.EjecutarLectura();
