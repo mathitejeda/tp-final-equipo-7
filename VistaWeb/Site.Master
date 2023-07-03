@@ -64,6 +64,9 @@
                    <li class="nav-item">
                     <a class="nav-link" href="ListadoPacientes.aspx">Listado Pacientes</a>
                   </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="ListadoUsuarios.aspx">Listado Usuarios</a>
+                  </li>
                 </ul>
               </div>
     

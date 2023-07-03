@@ -11,7 +11,7 @@ namespace VistaWeb
 {
 
 
-    public partial class ListadoMedicos
+    public partial class ListadoUsuarios
     {
 
         /// <summary>
@@ -24,57 +24,93 @@ namespace VistaWeb
         protected global::System.Web.UI.WebControls.Repeater rowRepeater;
 
         /// <summary>
-        /// Control medicoNombreAdd.
+        /// Control usuarioNombreAdd.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText medicoNombreAdd;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText usuarioNombreAdd;
 
         /// <summary>
-        /// Control medicoApellidoAdd.
+        /// Control usuarioPasswordAdd.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText medicoApellidoAdd;
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword usuarioPasswordAdd;
 
         /// <summary>
-        /// Control especialidadesMedicoAdd.
+        /// Control tipoUsuarioDropdown.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList especialidadesMedicoAdd;
+        protected global::System.Web.UI.WebControls.DropDownList tipoUsuarioDropdown;
 
         /// <summary>
-        /// Control medicoNombreMdf.
+        /// Control usuarioNombrePropioAdd.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText medicoNombreMdf;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText usuarioNombrePropioAdd;
 
         /// <summary>
-        /// Control medicoApellidoMdf.
+        /// Control usuarioApellidoAdd.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText medicoApellidoMdf;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText usuarioApellidoAdd;
 
         /// <summary>
-        /// Control especialidadesMedicoMdf.
+        /// Control nombreUsuarioEdit.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList especialidadesMedicoMdf;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText nombreUsuarioEdit;
+
+        /// <summary>
+        /// Control passwordUsuarioEdit.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText passwordUsuarioEdit;
+
+        /// <summary>
+        /// Control tipoUsuarioDropdownEdit.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList tipoUsuarioDropdownEdit;
+
+        /// <summary>
+        /// Control usuarioNombrePropioEdit.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText usuarioNombrePropioEdit;
+
+        /// <summary>
+        /// Control usuarioApellidoEdit.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText usuarioApellidoEdit;
     }
 }
