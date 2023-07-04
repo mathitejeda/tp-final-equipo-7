@@ -42,6 +42,7 @@ namespace Controlador
         public int agregar(string user, string pass, TipoUsuario tipo = TipoUsuario.Administrador)
         {
             AccesoDatos datos = new AccesoDatos();
+            int id = -1;
             try
             {
                 string consulta = "INSERT INTO USUARIO (usuario,contrasenia, tipo) output inserted.Id VALUES (@user,@pass, @tipo)";
@@ -50,7 +51,7 @@ namespace Controlador
                 datos.setearParametro("@pass", pass);
                 datos.setearParametro("@tipo", (int)tipo);
 
-                return datos.EjecutarAccionScalar();
+                id = datos.EjecutarAccionScalar();
             }
             catch (Exception ex)
             {
@@ -60,6 +61,7 @@ namespace Controlador
             {
                 datos.CerrarConexion();
             }
+            return id;
         }
 
         public void agregar(string user, string pass, string nombre, string apellido, int tipo)
@@ -102,7 +104,7 @@ namespace Controlador
                 datos.setearParametro("@id", aux.Id);
                 datos.EjecutarAccion();
                 ////----------------------------------------------------------------------------------------
-                string consulta2 = "update usuario_desc set nombre=@nombre, apellido=@apellido, tipo=@tipo";
+                string consulta2 = "update usuario_desc set nombre=@nombre, apellido=@apellido where id=@id";
                 datos2.SetConsulta(consulta2);
                 datos2.setearParametro("@nombre", nombre);
                 datos2.setearParametro("@apellido", apellido);
@@ -145,7 +147,7 @@ namespace Controlador
             int id = -1;
             try
             {
-                datos.SetConsulta($"select id from usuario where usuario={user_name}");
+                datos.SetConsulta($"select id from usuario where usuario='{user_name}'");
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
                 {

@@ -17,7 +17,7 @@ namespace Controlador
             EspecialidadNegocio negocioEspecialidades = new EspecialidadNegocio();
             try
             {
-                string consulta = "SELECT ud.usuario_id as Id, ud.nombre as Nombre, ud.apellido as Apellido from usuario_desc ud where u.tipo=2";
+                string consulta = "SELECT ud.usuario_id as Id, ud.nombre as Nombre, ud.apellido as Apellido from usuario_desc ud join usuario u on (u.id=ud.usuario_id) where u.tipo=2";
                 datos.SetConsulta(consulta);
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
@@ -56,8 +56,8 @@ namespace Controlador
                 {
                     aux = new Medico();
                     aux.Id = (int)datos.Lector["Id"];
-                    aux.Nombre = (string)datos.Lector["Nombre"];
-                    aux.Apellido = (string)datos.Lector["Apellido"];
+                    aux.Nombre = datos.Lector["Nombre"].ToString();
+                    aux.Apellido = datos.Lector["Apellido"].ToString();
                     aux.Especialidades = negocioEspcialidades.getEspecialidadesFromIdMedico(aux.Id);
                     return aux;
                 }
