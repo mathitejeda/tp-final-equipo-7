@@ -25,7 +25,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre y Apellido</th>
-                                <th>Matrícula</th>
                                 <th>Especialidades</th>
                                 <th>Horarios</th>
                                 <th>Turnos</th>
@@ -39,6 +38,8 @@
                                 <tr>
                                     <td><%#Eval("Id")%> </td>
                                     <td><%#Eval("Nombre")+" "+Eval("Apellido")%></td>
+                                    
+
                                
                                     <td>
                                     <asp:Repeater runat="server" id="especialidadesRepeater" DataSource='<%#Eval("Especialidades")%>'>
@@ -63,6 +64,7 @@
                                         </button>
                                     </td>
                                     <td>
+                                        <a href="DetalleMedico.aspx?id=<%#Eval("Id")%>" class="btn btn-success">Ver Detalle</a>
                                         <asp:LinkButton runat="server" OnCommand="Modal_btn" CommandArgument='<%#Eval("Id")%>' CommandName="modalModificarMedico" type="button" class="btn btn-warning" Text="Modificar"></asp:LinkButton>
                                         <asp:button runat="server" OnCommand="Modal_btn" CommandArgument='<%#Eval("Id")%>' CommandName="modalEliminarMedico" type="button" class="btn btn-danger" Text="Eliminar"></asp:button>
                                     </td>
@@ -74,8 +76,9 @@
                     </table>
                     <div class="d-flex justify-content-between">
                         <div>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarMedico">Agregar nuevo médico</button>
+                            <a href="AgregarMedico.aspx" class="btn btn-primary">Agregar nuevo médico</a>
                         </div>
+                        <!--
                         <div>
                             <nav aria-label="Menu de navegación del listado">
                                 <ul class="pagination justify-content-center">
@@ -87,6 +90,7 @@
                                 </ul>
                             </nav>
                         </div>
+                        -->
                     </div>
 
                 </div>
@@ -169,7 +173,7 @@
         </div>
     </div>
     <!-- fin modal ver -->
-    <!-- modal agregar medico -->
+    <!-- modal agregar medico 
     <div class="modal fade" id="modalAgregarMedico" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalAgregarMedico" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -195,11 +199,7 @@
                         <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
                         <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" id="especialidadesMedicoAdd" class="form-select" aria-label="Especialidades del médico:">
                         </asp:CheckBoxList>
-                            <!--
-                            <asp:ListItem value="Cardiología" Text="Cardiología"></asp:ListItem>
-                            <asp:ListItem value="Medicina Clínica"> Medicina Clínica</asp:ListItem>
-                            <asp:ListItem value="Ecografía de Tejidos Blandos"> Ecografía de Tejidos Blandos</asp:ListItem>
-                            -->
+                            
                     </div>
 
                 </div>
@@ -210,6 +210,7 @@
             </div>
         </div>
     </div>
+        -->
     <!-- fin modal Agregar -->
 
     <!-- modal Modificar medico-->
@@ -231,10 +232,6 @@
                         <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoApellidoMdf" name="apellido">
                     </div>
                     <div class="mb-3">
-                        <label for="medico-matricula" class="form-label">Matrícula/s del médico:</label>
-                        <input type="text" style="background: #fff" class="form-control" id="medico-matricula" name="matricula">
-                    </div>
-                    <div class="mb-3">
                         <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
                         <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" id="especialidadesMedicoMdf" class="form-select" aria-label="Especialidades del médico:">
                         </asp:CheckBoxList>
@@ -243,6 +240,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
+                    <a href="ModificarMedico.aspx?id=<%:medicoActivo.Id%>" class="btn btn-primary">Más opciones</a>
                     <asp:button runat="server" OnClick="btn_Modificar" type="button" class="btn btn-primary" Text="Modificar médico"></asp:button>
                 </div>
             </div>
