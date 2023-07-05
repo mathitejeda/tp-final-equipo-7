@@ -135,11 +135,11 @@ namespace Controlador
                 accesoDatos.setearParametro("@email", aux.Email);
                 accesoDatos.setearParametro("@fecha_nacimiento", aux.FechaNacimiento.Date);
                 accesoDatos.EjecutarAccion();
-                accesoDatos.SetConsulta("insert into obra_social (usuario_id, nombre, numero_afiliado) values(@id, @nombre, @afiliado)");
-                accesoDatos.setearParametro("@id", usr.Id);
-                accesoDatos.setearParametro("@nombre", aux.ObraSocial);
-                accesoDatos.setearParametro("@afiliado", aux.NumeroAfiliado);
-                accesoDatos.EjecutarAccion();
+                //accesoDatos.SetConsulta("insert into obra_social (usuario_id, nombre, numero_afiliado) values(@id, @nombre, @afiliado)");
+                //accesoDatos.setearParametro("@id", usr.Id);
+                //accesoDatos.setearParametro("@nombre", aux.ObraSocial);
+                //accesoDatos.setearParametro("@afiliado", aux.NumeroAfiliado);
+                //accesoDatos.EjecutarAccion();
             }
             catch (Exception ex)
             {
@@ -174,7 +174,7 @@ namespace Controlador
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.SetConsulta("UPDATE usuario_desc SET nombre='@nombre', apellido='@apellido' DNI='@dni', direccion='@direccion', Telefono='@telefono', email='@email', fecha_nacimiento='@fecha_nacimiento' WHERE usuario_id=@id");
+                datos.SetConsulta("UPDATE usuario_desc SET nombre=@nombre, apellido=@apellido, DNI=@dni, direccion=@direccion, Telefono=@telefono, email=@email, fecha_nacimiento=@fecha_nacimiento WHERE usuario_id=@id");
                 datos.setearParametro("@id", paciente.Id);
                 datos.setearParametro("@nombre", paciente.Nombre);
                 datos.setearParametro("@apellido", paciente.Apellido);
@@ -184,11 +184,10 @@ namespace Controlador
                 datos.setearParametro("@email", paciente.Email);
                 datos.setearParametro("@fecha_nacimiento", paciente.FechaNacimiento.Date);
                 datos.EjecutarAccion();
-                datos.SetConsulta("UPDATE obra_social set nombre='@nombre', numero_afiliado='@numero_afiliado' where usuario_id=@id");
-                datos.setearParametro("@id", paciente.Id);
-                datos.setearParametro("@nombre", paciente.ObraSocial);
-                datos.setearParametro("@afiliado", paciente.NumeroAfiliado);
-                datos.EjecutarAccion();
+                //datos.SetConsulta("UPDATE obra_social set nombre='@nombre', numero_afiliado='@numero_afiliado' where usuario_id=@id");
+                //datos.setearParametro("@nombre", paciente.ObraSocial);
+                //datos.setearParametro("@afiliado", paciente.NumeroAfiliado);
+                //datos.EjecutarAccion();
             }
             catch (Exception ex)
             {
