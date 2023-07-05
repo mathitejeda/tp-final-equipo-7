@@ -58,6 +58,7 @@ namespace Controlador
 
                 throw ex;
             }
+            finally { conexion.Close(); }
         }
         public int EjecutarAccionScalar()
         {

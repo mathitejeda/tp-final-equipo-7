@@ -115,7 +115,6 @@ namespace VistaWeb
             int id = int.Parse(medicoActivo.Id.ToString());
             aux.bajaLogica(id);
             Response.Redirect("ListadoMedicos.aspx");
-            
         }
 
     }

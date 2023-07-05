@@ -85,8 +85,8 @@ namespace Controlador
                     Turno aux = new Turno();
                     aux.id = (int)datos.Lector["id"];
                     aux.Medico = medicoNegocio.getMedico((int)datos.Lector["medico_id"]);
-                    aux.Paciente = pacienteNegocio.getPacienteById((int)datos.Lector["paciente_id"]);
-                    aux.Observaciones = (string)datos.Lector["observaciones"];
+                    aux.Paciente = pacienteNegocio.getPacienteByIdSinTurnos((int)datos.Lector["paciente_id"]);
+                    aux.Observaciones = datos.Lector["observaciones"].ToString();
                     aux.Estado = (EstadoTurno)datos.Lector["estado"];
                     aux.Fecha = (DateTime)datos.Lector["fecha"];
                 }
@@ -94,6 +94,10 @@ namespace Controlador
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
             }
             return turnos;
         }
