@@ -18,7 +18,7 @@ namespace Controlador
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                string consulta = "select id, usuario from usuario order by id asc";
+                string consulta = "select id, usuario, tipo from usuario order by id asc";
                 datos.SetConsulta(consulta);
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
@@ -26,6 +26,7 @@ namespace Controlador
                     Usuario aux = new Usuario();
                     aux.Id = (int)datos.Lector["id"];
                     aux.User = (string)datos.Lector["usuario"];
+                    aux.TipoUsuario = (TipoUsuario)datos.Lector["tipo"];
                     listaUsuarios.Add(aux);
                 }
                 return listaUsuarios;
@@ -39,7 +40,7 @@ namespace Controlador
                 datos.CerrarConexion();
             }
         }
-        public int agregar(string user, string pass, TipoUsuario tipo = TipoUsuario.Administrador)
+        public int agregar(string user, string pass, int tipo)
         {
             AccesoDatos datos = new AccesoDatos();
             int id = -1;
@@ -66,7 +67,7 @@ namespace Controlador
 
         public void agregar(string user, string pass, string nombre, string apellido, int tipo)
         {
-            this.agregar(user, pass); // agrego el user a la tabla usuarios
+            this.agregar(user, pass, tipo); // agrego el user a la tabla usuarios
             int id = this.GetUltimoID();
             AccesoDatos datos = new AccesoDatos();
             try
@@ -79,37 +80,6 @@ namespace Controlador
                 datos.setearParametro("@tipo", tipo);
 
                 datos.EjecutarAccion();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.CerrarConexion();
-            }
-        }
-
-        public void modificar(Usuario aux, string nombre, string apellido)
-        {
-            AccesoDatos datos = new AccesoDatos();
-            AccesoDatos datos2 = new AccesoDatos();
-
-            try
-            {
-                string consulta = "update usuario set usuario=@usuario, contrasenia=@password where id=@id";
-                datos.SetConsulta(consulta);
-                datos.setearParametro("@usuario", aux.User);
-                datos.setearParametro("@password", aux.Pass);
-                datos.setearParametro("@id", aux.Id);
-                datos.EjecutarAccion();
-                ////----------------------------------------------------------------------------------------
-                string consulta2 = "update usuario_desc set nombre=@nombre, apellido=@apellido where id=@id";
-                datos2.SetConsulta(consulta2);
-                datos2.setearParametro("@nombre", nombre);
-                datos2.setearParametro("@apellido", apellido);
-                datos2.setearParametro("@id", aux.Id);
-                datos2.EjecutarAccion();
             }
             catch (Exception ex)
             {

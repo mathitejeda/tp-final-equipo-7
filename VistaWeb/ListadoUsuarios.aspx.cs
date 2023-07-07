@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Controlador;
+using Modelo;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Web;
+using System.Web.Security.AntiXss;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Controlador;
-using Microsoft.Ajax.Utilities;
-using Modelo;
 
 namespace VistaWeb
 {
@@ -15,24 +15,74 @@ namespace VistaWeb
     {
         public List<Usuario> listaUsuario { get; set; }
 
-        public Usuario usuarioActivo = new Usuario();
+        public Usuario usuarioActivo { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+
+                loadUsuarios();
+            }
+        }
+
+        protected void loadUsuarios()
+        {
+            listaUsuario = (List<Usuario>)Session["Usuarios"];
+            if (listaUsuario == null)
+            {
                 UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-                try
+                listaUsuario = usuarioNegocio.listar();
+                Session.Add("Usuarios", listaUsuario);
+            }
+            rowRepeater.DataSource = listaUsuario;
+            rowRepeater.DataBind();
+        }
+
+        protected void rowRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            listaUsuario = (List<Usuario>)Session["Usuarios"];
+
+            if (e.CommandName.ToString() == "ModificarUsuario")
+            {
+                int idUsuario = Convert.ToInt32(e.CommandArgument);
+                usuarioActivo = listaUsuario.Find(x => x.Id == idUsuario);
+                if (Session["usuarioActivo"] == null)
                 {
-                    listaUsuario = usuarioNegocio.listar();
-                    rowRepeater.DataSource = listaUsuario;
-                    rowRepeater.DataBind();
-                
+                    Session.Add("usuarioActivo", usuarioActivo);
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw ex;
+                    Session["usuarioActivo"] = usuarioActivo;
                 }
+                /*
+                lbl_titleModalModificarPaciente.Text = $"Modificar paciente {pacienteActivo.Nombre}";
+                tbx_nombreMod.Text = pacienteActivo.Nombre;
+                tbx_apellidoMod.Text = pacienteActivo.Apellido;
+                tbx_DniMod.Text = pacienteActivo.Dni;
+                tbx_fechaNacMod.Text = pacienteActivo.FechaNacimiento.ToString("yyyy-MM-dd");
+                tbx_direccionMod.Text = pacienteActivo.Direccion;
+                tbx_emailMod.Text = pacienteActivo.Email;
+                tbx_telefonoMod.Text = pacienteActivo.Telefono;
+                */
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalModificarUsuario').modal('show');", true);
+
+            }
+
+            if (e.CommandName.ToString() == "EliminarUsuario")
+            {
+                int idUsuario = Convert.ToInt32(e.CommandArgument);
+                usuarioActivo = listaUsuario.Find(x => x.Id == idUsuario);
+                if (Session["usuarioActivo"] == null)
+                {
+                    Session.Add("usuarioActivo", usuarioActivo);
+                }
+                else
+                {
+                    Session["usuarioActivo"] = usuarioActivo;
+                }
+                //lit_confirmacionUsuario.Text = $"¿Estás seguro de borrar al usuario {usuarioActivo.Nombre}?";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalEliminarUsuario').modal('show');", true);
             }
         }
 
@@ -101,6 +151,7 @@ namespace VistaWeb
         }
         protected void btn_Modificar(object sender, EventArgs e)
         {
+            /*
             usuarioActivo = (Usuario)Session["UsuarioActivo"];
             UsuarioNegocio aux = new UsuarioNegocio();
             Usuario usuario = new Usuario();
@@ -109,6 +160,7 @@ namespace VistaWeb
             usuario.Pass = usuarioActivo.Pass;
             aux.modificar(usuario, usuarioNombrePropioEdit.Value, usuarioApellidoEdit.Value);
             Response.Redirect("ListadoUsuarios.aspx");
+            */
 
         }
         protected void btn_Eliminar(object sender, EventArgs e)
@@ -121,6 +173,5 @@ namespace VistaWeb
             Response.Redirect("ListadoMedicos.aspx");*/
             
         }
-
     }
 }

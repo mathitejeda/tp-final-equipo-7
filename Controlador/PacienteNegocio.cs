@@ -124,7 +124,7 @@ namespace Controlador
             {
                 string genericPass = aux.FechaNacimiento.Year.ToString() + aux.FechaNacimiento.Day.ToString(); //estaria bueno crear una variable de firstlogin para que la primera vez que se ingrese se requiera obligatoriamente que se cambie la contrasena por motivos de seguridad
                 Usuario usr = new Usuario(aux.Dni, genericPass, TipoUsuario.Paciente);
-                usr.Id = usuarioNegocio.agregar(usr.User, usr.Pass, TipoUsuario.Paciente);
+                usr.Id = usuarioNegocio.agregar(usr.User, usr.Pass, (int)TipoUsuario.Paciente);
                 accesoDatos.SetConsulta("insert into usuario_desc (usuario_id, nombre, apellido, DNI, direccion, Telefono, email, fecha_nacimiento) values (@id, @nombre, @apellido, @dni, @direccion, @telefono, @email, @fecha_nacimiento)");
                 accesoDatos.setearParametro("@id", usr.Id);
                 accesoDatos.setearParametro("@nombre", aux.Nombre);

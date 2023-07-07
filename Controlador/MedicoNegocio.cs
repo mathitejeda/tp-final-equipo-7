@@ -98,7 +98,7 @@ namespace Controlador
             {
                 UsuarioNegocio negocioUsuario = new UsuarioNegocio();
 
-                int id = negocioUsuario.agregar(aux.Dni, aux.Dni, TipoUsuario.Medico);
+                int id = negocioUsuario.agregar(aux.Dni, aux.Dni, (int)TipoUsuario.Medico);
 
                 string consulta =   "INSERT INTO usuario_desc (usuario_id, nombre, apellido, email, dni, telefono, direccion, fecha_nacimiento) " +
                                     "VALUES (@id,@nombre,@apellido,@mail,@dni,@telefono,@direccion,@fechaNac)";
