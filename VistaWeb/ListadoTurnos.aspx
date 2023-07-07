@@ -8,42 +8,42 @@
             <!-- VISTA DEL RECEPCIONISTA -->
             <div class="col-md-12">
                 <div class="alert alert-secondary">
-                <div class="d-flex">
+                    <div class="d-flex">
 
-                    <div class="p-1">
-                        <label for="filtro-dia" class="form-label">Día:</label>
-                        <select class="form-select" id="filtro-dia" name="filtro-dia">
-                            <option value="">Todos los días</option>
-                            <option value="lunes">Lunes</option>
-                            <option value="martes">Martes</option>
-                            <option value="miercoles">Miércoles</option>
-                            <option value="jueves">Jueves</option>
-                            <option value="viernes">Viernes</option>
-                            <option value="sabado">Sábado</option>
-                            <option value="domingo">Domingo</option>
-                        </select>
-                    </div>
-                    <div class="p-1">
-                        <label for="filtro-especialidad" class="form-label">Especialidad:</label>
-                        <select class="form-select" id="filtro-especialidad" name="filtro-especialidad">
-                            <option value="">Todas las especialidades</option>
-                            <option value="cardiologia">Cardiología</option>
-                            <option value="clínica">Clínica</option>
-                        </select>
-                    </div>
-                    <div class="p-1">
-                        <label for="filtro-medico" class="form-label">Médico:</label>
-                        <select class="form-select" id="filtro-medico" name="filtro-medico">
-                            <option value="">Todos los médicos</option>
-                            <option value="Dr. Pérez">Dr. Pérez</option>
-                        </select>
-                    </div>
-                    <div class="my-auto pt-4 ml-3">
+                        <div class="p-1">
+                            <label for="filtro-dia" class="form-label">Día:</label>
+                            <select class="form-select" id="filtro-dia" name="filtro-dia">
+                                <option value="">Todos los días</option>
+                                <option value="lunes">Lunes</option>
+                                <option value="martes">Martes</option>
+                                <option value="miercoles">Miércoles</option>
+                                <option value="jueves">Jueves</option>
+                                <option value="viernes">Viernes</option>
+                                <option value="sabado">Sábado</option>
+                                <option value="domingo">Domingo</option>
+                            </select>
+                        </div>
+                        <div class="p-1">
+                            <label for="filtro-especialidad" class="form-label">Especialidad:</label>
+                            <select class="form-select" id="filtro-especialidad" name="filtro-especialidad">
+                                <option value="">Todas las especialidades</option>
+                                <option value="cardiologia">Cardiología</option>
+                                <option value="clínica">Clínica</option>
+                            </select>
+                        </div>
+                        <div class="p-1">
+                            <label for="filtro-medico" class="form-label">Médico:</label>
+                            <select class="form-select" id="filtro-medico" name="filtro-medico">
+                                <option value="">Todos los médicos</option>
+                                <option value="Dr. Pérez">Dr. Pérez</option>
+                            </select>
+                        </div>
+                        <div class="my-auto pt-4 ml-3">
 
-                        <button type="submit" class="btn btn-outline-primary px-4">Filtrar</button>
-                    </div>
+                            <button type="submit" class="btn btn-outline-primary px-4">Filtrar</button>
+                        </div>
 
-                </div>
+                    </div>
 
                 </div>
             </div>
@@ -61,38 +61,36 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Martes 13 de Junio 2023</td>
-                                <td>10:00</td>
-                                <td>Dentista</td>
-                                <td>Dr. Pérez</td>
-                                <td>Juan González</td>
-                                <td>
-                                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalVerTurno">
-                                      <i class="bi bi-eye"></i>
-                                       Ver
-                                    </button>
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarTurno">Modificar</button>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Jueves 15 de Junio 2023</td>
-                                <td>11:30</td>
-                                <td>Cardiología</td>
-                                <td>Dr. Ramírez</td>
-                                <td>María López</td>
-                                <td>
-                                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalVerTurno">
-                                      <i class="bi bi-eye"></i>
-                                       Ver
-                                    </button>
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarTurno">Modificar</button>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar</button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <%if (turnos != null && turnos.Count() > 0)
+                            {%>
+                        <asp:Repeater runat="server" ID="repeaterTurnos">
+                            <ItemTemplate>
+                                <tbody>
+                                    <tr>
+                                        <td>Martes 13 de Junio 2023</td>
+                                        <td>10:00</td>
+                                        <td>Dentista</td>
+                                        <td>Dr. Pérez</td>
+                                        <td>Juan González</td>
+                                        <td>
+                                            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalVerTurno">
+                                                <i class="bi bi-eye"></i>
+                                                Ver
+                                            </button>
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarTurno">Modificar</button>
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                        <%}
+                            else
+                            {%>
+                        <td colspan="7">
+                            <h4>No se encuentra ningún turno con los criterios especificados.</h4>
+                        </td>
+                        <%}%>
                     </table>
                     <div class="d-flex justify-content-between">
                         <div>
@@ -119,7 +117,7 @@
     </div>
 
 
-        <!-- modal ver -->
+    <!-- modal ver -->
     <div class="modal fade" id="modalVerTurno" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnModalAgregarTurno" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -133,7 +131,7 @@
                     <p><strong>Horario: </strong>10:00hs</p>
                     <p><strong>Médico asignado: </strong>(NOMBRE_MÉDICO) ((ESPECIALIDAD))</p>
                     <p><strong>Observaciones: </strong>(OBSERVACIONES_DEL_TURNO)</p>
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
