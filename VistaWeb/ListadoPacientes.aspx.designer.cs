@@ -87,6 +87,24 @@ namespace VistaWeb
         protected global::System.Web.UI.WebControls.Label lbl_email;
 
         /// <summary>
+        /// lbl_titleModalVerTurnos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_titleModalVerTurnos;
+
+        /// <summary>
+        /// repeaterTurnos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater repeaterTurnos;
+
+        /// <summary>
         /// tbx_nombrePaciente control.
         /// </summary>
         /// <remarks>

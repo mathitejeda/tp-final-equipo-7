@@ -54,6 +54,12 @@ namespace VistaWeb
             }
             if (e.CommandName.ToString() == "VerTurnos")
             {
+                int idPaciente = Convert.ToInt32(e.CommandArgument);
+                Modelo.Paciente aux = pacientes.Find(x => x.Id==idPaciente);
+                lbl_titleModalVerTurnos.Text = $"Ver turnos del paciente {aux.Nombre}";
+                pacienteActivo = aux;
+                repeaterTurnos.DataSource = aux.Turnos;
+                repeaterTurnos.DataBind();
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalVerTurnos').modal('show');", true);
             }
             if (e.CommandName.ToString() == "Modificar")

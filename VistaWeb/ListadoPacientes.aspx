@@ -154,25 +154,36 @@
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="labelBtnmodalVerTurnos">Ver turnos del paciente NOMBRE_PACIENTE</h3>
+                    <asp:Label runat="server" ID="lbl_titleModalVerTurnos" class="modal-title fs-5" Text="Ver turnos del paciente NOMBRE_PACIENTE"></asp:Label>
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="card border-dark mb-3">
-                        <div class="card-header text-dark">
-                            <h5>Viernes 16 de Junio 2023 - 10:30hs</h5>
-                        </div>
-                        <div class="card-body text-dark">
-                            <h6 class="card-title">Datos del turno:</h6>
-                            <p class="card-text">
-                                <ul>
-                                    <li><strong>Médico: </strong>NOMBRE Y APELLIDO DEL MÉDICO</li>
-                                    <li><strong>Especialidad: </strong>NOMBRE DE LA ESPECIALIDAD</li>
-                                </ul>
-                            </p>
-                        </div>
-                    </div>
+                    <%if (pacienteActivo != null && pacienteActivo.Turnos != null && pacienteActivo.Turnos.Count() > 0)
+                        {%>
+                            <asp:Repeater runat="server" ID="repeaterTurnos">
+                                <ItemTemplate>
+                                    <div class="card border-dark mb-3">
+                                        <div class="card-header text-dark">
+                                            <h5><%# Eval("fecha") %></h5>
+                                        </div>
+                                        <div class="card-body text-dark">
+                                            <h6 class="card-title">Datos del turno:</h6>
+                                            <p class="card-text">
+                                                <ul>
+                                                    <li><strong>Médico: </strong><%#Eval("Medico.Nombre") + ", " + Eval("Medico.Apellido") %></li>
+                                                    <li><strong>Especialidad: </strong><%# Eval("Especialidad.nombre") %></li>
+                                                </ul>
+                                            </p>
+                                        </div>
+                                    </div>
 
+                                </ItemTemplate>
+                            </asp:Repeater>
+                    <%}
+                        else
+                        {%>
+                            <h4>El paciente no posee ningun turno aun.</h4>
+                    <%} %>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
@@ -265,7 +276,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="paciente-telefono" class="form-label">Telefono particular:</label>
-                        <asp:TextBox runat="server" ID="tbx_telefonoMod" type="number" Style="background: #fff" class="form-control" 
+                        <asp:TextBox runat="server" ID="tbx_telefonoMod" type="number" Style="background: #fff" class="form-control"
                             placeholder="Telefono"></asp:TextBox>
                     </div>
 
@@ -288,7 +299,8 @@
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <h4> <asp:Literal runat="server" ID="lit_confirmacionPaciente" Text="¿Estás seguro de borrar al paciente (NOMBRE_PACIENTE)?"></asp:Literal></h4>
+                    <h4>
+                        <asp:Literal runat="server" ID="lit_confirmacionPaciente" Text="¿Estás seguro de borrar al paciente (NOMBRE_PACIENTE)?"></asp:Literal></h4>
                     <h5>Todos los turnos pendientes serán dados de baja</h5>
                 </div>
                 <div class="modal-footer">
