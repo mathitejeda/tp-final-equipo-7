@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Controlador
 {
@@ -48,16 +49,19 @@ namespace Controlador
             PacienteNegocio pacienteNegocio = new PacienteNegocio();
             try
             {
-                datos.SetConsulta($"select t.id, t.medico_id, t.paciente_id, t.observaciones, t.estado, t.fecha from turno t where t.medico_id={id}");
+                datos.SetConsulta($"select t.id, t.medico_id, t.paciente_id, t.observaciones, t.estado, t.fecha, t.especialidad_id from turno t where t.medico_id={id}");
                 while (datos.Lector.Read())
                 {
                     Turno aux = new Turno();
+                    EspecialidadNegocio especialidadNegocio = new EspecialidadNegocio();
                     aux.id = (int)datos.Lector["id"];
                     aux.Medico = medicoNegocio.getMedico((int)datos.Lector["medico_id"]);
                     aux.Paciente = pacienteNegocio.getPacienteById((int)datos.Lector["paciente_id"]);
                     aux.Observaciones = (string)datos.Lector["observaciones"];
                     aux.Estado = (EstadoTurno)datos.Lector["estado"];
                     aux.Fecha = (DateTime)datos.Lector["fecha"];
+                    aux.Especialidad = especialidadNegocio.GetEspecialidad((int)datos.Lector["especialidad_id"]);
+                    turnos.Add( aux );
                 }
             }
             catch (Exception ex)
@@ -78,17 +82,20 @@ namespace Controlador
             PacienteNegocio pacienteNegocio = new PacienteNegocio();
             try
             {
-                datos.SetConsulta($"select t.id, t.medico_id, t.paciente_id, t.observaciones, t.estado, t.fecha from turno t where t.paciente_id={id}");
+                datos.SetConsulta($"select t.id, t.medico_id, t.paciente_id, t.observaciones, t.estado, t.fecha, t.especialidad_id from turno t where t.paciente_id={id}");
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
                 {
                     Turno aux = new Turno();
+                    EspecialidadNegocio especialidad = new EspecialidadNegocio();
                     aux.id = (int)datos.Lector["id"];
                     aux.Medico = medicoNegocio.getMedico((int)datos.Lector["medico_id"]);
                     aux.Paciente = pacienteNegocio.getPacienteByIdSinTurnos((int)datos.Lector["paciente_id"]);
                     aux.Observaciones = datos.Lector["observaciones"].ToString();
                     aux.Estado = (EstadoTurno)datos.Lector["estado"];
                     aux.Fecha = (DateTime)datos.Lector["fecha"];
+                    aux.Especialidad = especialidad.GetEspecialidad((int)datos.Lector["especialidad_id"]);
+                    turnos.Add( aux );
                 }
             }
             catch (Exception ex)

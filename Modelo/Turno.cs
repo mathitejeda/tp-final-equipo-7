@@ -23,6 +23,7 @@ namespace Modelo
         private DateTime fecha;
         private string observaciones;
         private EstadoTurno estado;
+        public Especialidad Especialidad { get; set; }
 
         public DateTime Fecha { get; set; }
         public string Observaciones { get; set; }
