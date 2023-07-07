@@ -31,6 +31,6 @@ insert into usuario_desc (usuario_id, nombre, apellido, DNI, direccion, Telefono
 
 GO
 
-insert into turno (medico_id, paciente_id, fecha) values(3, 4, '2023-12-17 12:00:00')
+insert into turno (medico_id, paciente_id, fecha, especialidad_id) values(3, 4, '2023-12-17 12:00:00', 1)
 
 GO
