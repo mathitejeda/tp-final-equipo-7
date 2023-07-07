@@ -11,70 +11,79 @@ namespace VistaWeb
 {
 
 
-    public partial class ListadoMedicos
+    public partial class DetalleMedico
     {
 
         /// <summary>
-        /// rowRepeater control.
+        /// nombre control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rowRepeater;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText nombre;
 
         /// <summary>
-        /// medicoNombreAdd control.
+        /// apellido control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText medicoNombreAdd;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText apellido;
 
         /// <summary>
-        /// medicoApellidoAdd control.
+        /// mail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText medicoApellidoAdd;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText mail;
 
         /// <summary>
-        /// especialidadesMedicoAdd control.
+        /// dni control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList especialidadesMedicoAdd;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText dni;
 
         /// <summary>
-        /// medicoNombreMdf control.
+        /// telefono control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText medicoNombreMdf;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText telefono;
 
         /// <summary>
-        /// medicoApellidoMdf control.
+        /// direccion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText medicoApellidoMdf;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText direccion;
 
         /// <summary>
-        /// especialidadesMedicoMdf control.
+        /// fechaNac control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList especialidadesMedicoMdf;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText fechaNac;
+
+        /// <summary>
+        /// especialidadesMedicoLista control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox especialidadesMedicoLista;
     }
 }

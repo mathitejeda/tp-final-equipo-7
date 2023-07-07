@@ -93,7 +93,7 @@ namespace VistaWeb
             TextInfo auxText = new CultureInfo("es-ES", false).TextInfo;
             MedicoNegocio aux = new MedicoNegocio();
             Medico medico = new Medico();
-            medico.Id = medicoActivo.Id;
+            medico= aux.getMedico(medicoActivo.Id);
             medico.Nombre = auxText.ToTitleCase(medicoNombreMdf.Value.ToLower());
             medico.Apellido = auxText.ToTitleCase(medicoApellidoMdf.Value.ToLower());
             medico.Especialidades = new List<Especialidad>();
@@ -113,7 +113,7 @@ namespace VistaWeb
             medicoActivo = (Medico)Session["MedicoActivo"];
             MedicoNegocio aux = new MedicoNegocio();
             int id = int.Parse(medicoActivo.Id.ToString());
-            aux.eliminar(id);
+            aux.bajaLogica(id);
             Response.Redirect("ListadoMedicos.aspx");
         }
 
