@@ -62,14 +62,14 @@ namespace Controlador
                 {
                     paciente.Id = (int)datos.Lector["usuario_id"];
                     paciente.Nombre = datos.Lector["nombre"].ToString();
-                    paciente.Apellido = (string)datos.Lector["apellido"];
-                    paciente.Dni = (string)datos.Lector["DNI"];
-                    paciente.Direccion = (string)datos.Lector["direccion"];
-                    paciente.Telefono = (string)datos.Lector["Telefono"];
-                    paciente.Email = (string)datos.Lector["email"];
+                    paciente.Apellido = datos.Lector["apellido"].ToString();
+                    paciente.Dni = datos.Lector["DNI"].ToString();
+                    paciente.Direccion = datos.Lector["direccion"].ToString();
+                    paciente.Telefono = datos.Lector["Telefono"].ToString();
+                    paciente.Email = datos.Lector["email"].ToString();
                     paciente.FechaNacimiento = (DateTime)datos.Lector["fecha_nacimiento"];
-                    paciente.ObraSocial = (string)datos.Lector["obra_social"];
-                    paciente.NumeroAfiliado = (string)datos.Lector["numero_afiliado"];
+                    paciente.ObraSocial = datos.Lector["obra_social"].ToString();
+                    paciente.NumeroAfiliado = datos.Lector["numero_afiliado"].ToString();
                     paciente.Turnos = turnoNegocio.listTurnosByPacienteID(paciente.Id);
                 }
             }
