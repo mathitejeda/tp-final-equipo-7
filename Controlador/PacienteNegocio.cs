@@ -19,7 +19,7 @@ namespace Controlador
             TurnoNegocio turnoNegocio = new TurnoNegocio();
             try
             {
-                datos.SetConsulta("select ud.usuario_id, ud.nombre, ud.apellido, ud.DNI, ud.direccion, ud.Telefono, ud.email, ud.fecha_nacimiento, os.nombre as obra_social, os.numero_afiliado from usuario u join usuario_desc ud on (ud.usuario_id=u.id) left join obra_social os on (os.usuario_id=u.id) where u.tipo=3 and u.estado!=0");
+                datos.SetConsulta("select ud.usuario_id, ud.nombre, ud.apellido, isnull(ud.DNI, 'No registrado') as DNI, ISNULL(ud.direccion, 'No registrada') as direccion, isnull(ud.Telefono, 'No registrado') as Telefono, isnull(ud.email,'No registrado') as email, isnull(ud.fecha_nacimiento,getdate()) as fecha_nacimiento , isnull(os.nombre, 'Particular') as obra_social, isnull(os.numero_afiliado, 'No tiene') as numero_afiliado from usuario u join usuario_desc ud on (ud.usuario_id=u.id) left join obra_social os on (os.usuario_id=u.id) where u.tipo=3 and u.estado!=0");
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
                 {
@@ -31,6 +31,7 @@ namespace Controlador
                     aux.Direccion = datos.Lector["direccion"].ToString();
                     aux.Telefono = datos.Lector["Telefono"].ToString();
                     aux.Email = datos.Lector["email"].ToString();
+                    
                     aux.FechaNacimiento = (DateTime)datos.Lector["fecha_nacimiento"];
                     aux.ObraSocial = datos.Lector["obra_social"].ToString();
                     aux.NumeroAfiliado = datos.Lector["numero_afiliado"].ToString();

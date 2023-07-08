@@ -24,22 +24,22 @@ namespace VistaWeb
         protected global::System.Web.UI.WebControls.Repeater rowRepeater;
 
         /// <summary>
-        /// Control usuarioNombreAdd.
+        /// Control tbx_NombreUsuario.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText usuarioNombreAdd;
+        protected global::System.Web.UI.WebControls.TextBox tbx_NombreUsuario;
 
         /// <summary>
-        /// Control usuarioPasswordAdd.
+        /// Control tbx_PasswordUsuario.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputPassword usuarioPasswordAdd;
+        protected global::System.Web.UI.WebControls.TextBox tbx_PasswordUsuario;
 
         /// <summary>
         /// Control tipoUsuarioDropdown.
@@ -51,66 +51,93 @@ namespace VistaWeb
         protected global::System.Web.UI.WebControls.DropDownList tipoUsuarioDropdown;
 
         /// <summary>
-        /// Control usuarioNombrePropioAdd.
+        /// Control tbx_NombrePropioUser.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText usuarioNombrePropioAdd;
+        protected global::System.Web.UI.WebControls.TextBox tbx_NombrePropioUser;
 
         /// <summary>
-        /// Control usuarioApellidoAdd.
+        /// Control tbx_ApellidoUser.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText usuarioApellidoAdd;
+        protected global::System.Web.UI.WebControls.TextBox tbx_ApellidoUser;
 
         /// <summary>
-        /// Control nombreUsuarioEdit.
+        /// Control labelBtnmodalModificarUsuario.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText nombreUsuarioEdit;
+        protected global::System.Web.UI.WebControls.Label labelBtnmodalModificarUsuario;
 
         /// <summary>
-        /// Control passwordUsuarioEdit.
+        /// Control tbx_NombreUsuarioMod.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText passwordUsuarioEdit;
+        protected global::System.Web.UI.WebControls.TextBox tbx_NombreUsuarioMod;
 
         /// <summary>
-        /// Control tipoUsuarioDropdownEdit.
+        /// Control tbx_PasswordUsuarioMod.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList tipoUsuarioDropdownEdit;
+        protected global::System.Web.UI.WebControls.TextBox tbx_PasswordUsuarioMod;
 
         /// <summary>
-        /// Control usuarioNombrePropioEdit.
+        /// Control tipoUsuarioDropdownEditMod.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText usuarioNombrePropioEdit;
+        protected global::System.Web.UI.WebControls.DropDownList tipoUsuarioDropdownEditMod;
 
         /// <summary>
-        /// Control usuarioApellidoEdit.
+        /// Control tbx_NombrePropioUserMod.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText usuarioApellidoEdit;
+        protected global::System.Web.UI.WebControls.TextBox tbx_NombrePropioUserMod;
+
+        /// <summary>
+        /// Control tbx_ApellidoUserMod.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbx_ApellidoUserMod;
+
+        /// <summary>
+        /// Control labelBtnmodalEliminarUsuario.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelBtnmodalEliminarUsuario;
+
+        /// <summary>
+        /// Control lbl_BorrarUsuario.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_BorrarUsuario;
     }
 }

@@ -12,7 +12,7 @@ namespace Modelo
         Administrador = 0,
         Recepcionista = 1,
         Medico = 2,
-        Paciente = 3,
+        Paciente = 3
     }
     public class Usuario
     {

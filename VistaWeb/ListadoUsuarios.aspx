@@ -7,6 +7,11 @@
 
     <div class="container">
         <div class="row">
+            
+            <div id="#errorUser" class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Ha ocurrido un error.</strong> El usuario ingresado ya existe. Prueba con otro
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <h1 class="mb-4">Listado de Usuarios (admin)</h1>
 
 
@@ -72,7 +77,7 @@
                     </table>
                     <div class="d-flex justify-content-between">
                         <div>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarUsuario">Agregar nuevo usuario</button>
+                            <button type="button" id="agregarUser" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarUsuario">Agregar nuevo usuario</button>
                         </div>
                         <div>
                             <nav aria-label="Menu de navegación del listado">
@@ -105,18 +110,18 @@
                 <div class="modal-body">
 
                     <div class="mb-3">
-                        <label for="usuario-nombre" class="form-label">Nombre del usuario:</label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="usuarioNombreAdd" name="usuario" required>
+                        <label for="tbx_NombreUsuario" class="form-label">Nombre del usuario:</label>
+                        <asp:TextBox runat="server" type="text" ID="tbx_NombreUsuario" Style="background: #fff" class="form-control" name="usuario" placeholder="Nombre de usuario" required="true"></asp:TextBox>
                     </div>
                     <div class="mb-3">
-                        <label for="medico-apellido" class="form-label">Contraseña:</label>
-                        <input runat="server" type="password" style="background: #fff" class="form-control" id="usuarioPasswordAdd" name="password" required>
-                    </div>
+                        <label for="tbx_PasswordUsuario" class="form-label">Contraseña del usuario:</label>
+                        <asp:TextBox runat="server" type="password" ID="tbx_PasswordUsuario" Style="background: #fff" class="form-control" name="contraseña" placeholder="Ingresa una contraseña" required="true"></asp:TextBox>
+                   </div>
                     <div class="mb-3">
                         <label for="tipoUsuarioDropdown" class="form-label">Elegí un rol para este usuario:</label>
                         <asp:DropDownList CssClass="form-select" ID="tipoUsuarioDropdown" runat="server">
-                            <asp:ListItem Text="Elegí una opción..." Selected="True"></asp:ListItem>
-                            <asp:ListItem value="Administrador" Text="Administrador"></asp:ListItem>
+                            <asp:ListItem value="" Text="Elegí una opción..." Selected="True"></asp:ListItem>
+                            <asp:ListItem value="Administrador" Text="Administrador">Administrador</asp:ListItem>
                             <asp:ListItem value="Recepcionista">Recepcionista</asp:ListItem>
                             <asp:ListItem value="Médico">Médico</asp:ListItem>
                             <asp:ListItem value="Paciente">Paciente</asp:ListItem>
@@ -124,17 +129,18 @@
                     </div>
                     <div class="mb-3">
                         <h4>Datos personales</h4>
-                        <label for="usuarioNombrePropioAdd" class="form-label">Nombre: </label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="usuarioNombrePropioAdd" name="nombre" required>
-                        <label for="usuarioApellidoAdd" class="form-label">Apellido: </label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="usuarioApellidoAdd" name="apellido" required>
+                        
+                        <label for="tbx_NombrePropioUser" class="form-label">Nombre:</label>
+                        <asp:TextBox runat="server" type="text" ID="tbx_NombrePropioUser" Style="background: #fff" class="form-control" name="Nombre" placeholder="Ingresa el nombre" required="true"></asp:TextBox>
+                        <label for="tbx_ApellidoUser" class="form-label">Apellido:</label>
+                        <asp:TextBox runat="server" type="text" ID="tbx_ApellidoUser" Style="background: #fff" class="form-control" name="Nombre" placeholder="Ingresa el apellido" required="true"></asp:TextBox>
 
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
-                    <asp:button runat="server" OnClick="btn_Agregar" type="button" class="btn btn-primary" Text="Agregar médico"></asp:button>
+                    <asp:LinkButton runat="server" OnClick="btn_Agregar" type="button" class="btn btn-primary">Agregar usuario</asp:LinkButton>
                 </div>
             </div>
         </div>
@@ -146,22 +152,22 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="labelBtnmodalModificarUsuario">Modificar un usuario</h3>
+                    <h5><asp:Label ID="labelBtnmodalModificarUsuario" runat="server" Text="Modificar un usuario"></asp:Label></h5>
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar" onclick="closeModal('modalVerDatos')"></button>
                 </div>
                 <div class="modal-body">
 
                     <div class="mb-3">
-                        <label for="nombreUsuarioEdit" class="form-label">Nombre del usuario:</label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="nombreUsuarioEdit" name="usuario" required>
+                        <label for="tbx_NombreUsuarioMod" class="form-label">Nombre del usuario:</label>
+                        <asp:TextBox runat="server" type="text" ID="tbx_NombreUsuarioMod" Style="background: #fff" class="form-control" name="usuario" placeholder="Nombre de usuario" required="true"></asp:TextBox>
                     </div>
                     <div class="mb-3">
-                        <label for="passwordUsuarioEdit" class="form-label">Contraseña:</label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="passwordUsuarioEdit" name="password" required>
-                    </div>
+                        <label for="tbx_PasswordUsuarioMod" class="form-label">Contraseña del usuario:</label>
+                        <asp:TextBox runat="server" type="password" ID="tbx_PasswordUsuarioMod" Style="background: #fff" class="form-control" name="contraseña" placeholder="Ingresa una contraseña" required="true"></asp:TextBox>
+                   </div>
                     <div class="mb-3">
-                        <label for="tipoUsuarioDropdownEdit" class="form-label">Elegí un rol para este usuario:</label>
-                        <asp:DropDownList CssClass="form-select" ID="tipoUsuarioDropdownEdit" runat="server">
+                        <label for="tipoUsuarioDropdownEditMod" class="form-label">Elegí un rol para este usuario:</label>
+                        <asp:DropDownList CssClass="form-select" ID="tipoUsuarioDropdownEditMod" runat="server">
                             <asp:ListItem Value="" Selected="True">Elegí una opción</asp:ListItem>
                             <asp:ListItem value="Administrador" Text="Administrador"></asp:ListItem>
                             <asp:ListItem value="Recepcionista">Recepcionista</asp:ListItem>
@@ -171,17 +177,18 @@
                     </div>
                     <div class="mb-3">
                         <h4>Datos personales</h4>
-                        <label for="usuarioNombrePropioEdit" class="form-label">Nombre: </label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="usuarioNombrePropioEdit" name="nombre" required>
-                        <label for="usuarioApellidoEdit" class="form-label">Apellido: </label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="usuarioApellidoEdit" name="apellido" required>
+                        
+                        <label for="tbx_NombrePropioUserMod" class="form-label">Nombre:</label>
+                        <asp:TextBox runat="server" type="text" ID="tbx_NombrePropioUserMod" Style="background: #fff" class="form-control" name="Nombre" placeholder="Ingresa el nombre" required="true"></asp:TextBox>
+                        <label for="tbx_ApellidoUserMod" class="form-label">Apellido:</label>
+                        <asp:TextBox runat="server" type="text" ID="tbx_ApellidoUserMod" Style="background: #fff" class="form-control" name="Nombre" placeholder="Ingresa el apellido" required="true"></asp:TextBox>
 
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
-                    <asp:button runat="server" OnClick="btn_Modificar" type="button" class="btn btn-primary" Text="Modificar usuario"></asp:button>
+                    <asp:LinkButton runat="server" OnClick="btn_Modificar" type="button" class="btn btn-primary" Text="Modificar usuario"></asp:LinkButton>
                 </div>
             </div>
         </div>
@@ -191,16 +198,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="labelBtnmodalEliminarUsuario">Eliminar usuario</h3>
+                    <h5><asp:Label ID="labelBtnmodalEliminarUsuario" runat="server" Text="Eliminar un usuario"></asp:Label></h5>
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar" onclick="closeModal('modalVerDatos')"></button>
                 </div>
                 <div class="modal-body">
-                    <h4>¿Estás seguro de borrar al usuario <%//:medicoActivo.Apellido+", "+medicoActivo.Nombre%>?</h4>
+                    <asp:Label ID="lbl_BorrarUsuario" runat="server" CssClass="">¿Estás seguro de borrar al usuario USER?</asp:Label>
                     <h5>Se eliminarán todos los datos relacionados a este usuario.</h5>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
-                    <asp:button runat="server" OnClick="btn_Eliminar" type="button" class="btn btn-primary" Text="Eliminar usuario"></asp:button>
+                    <asp:LinkButton runat="server" OnClick="btn_Eliminar" type="button" class="btn btn-primary" Text="Eliminar usuario"></asp:LinkButton>
                 </div>
             </div>
         </div>
