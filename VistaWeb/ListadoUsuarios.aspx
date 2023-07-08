@@ -6,14 +6,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <div class="container">
-        <div class="row">
+        <div class="row" id="fila">
             
-            <div id="#errorUser" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div id="nuevoUser" class="alert alert-primary alert-dismissible fade show" role="alert" style="display:none;">
+              <strong>Registro exitoso.</strong> Se ha ingresado un nuevo usuario.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            
+            <div id="errorUser" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
               <strong>Ha ocurrido un error.</strong> El usuario ingresado ya existe. Prueba con otro
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <h1 class="mb-4">Listado de Usuarios (admin)</h1>
 
+            <div id="modificarUser" class="alert alert-secondary alert-dismissible fade show" role="alert" style="display:none;">
+              <strong>Modificación exitosa.</strong> Se han modificado los datos del usuario.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div id="eliminarUser" class="alert alert-primary alert-dismissible fade show" role="alert" style="display:none;">
+              <strong>Registro eliminado.</strong> Se eliminó con éxito al usuario.
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <h1 class="mb-4">Listado de Usuarios (admin)</h1>
 
             <div class="col-md-12">
                 <!--
@@ -75,10 +90,12 @@
                            </asp:Repeater>
                         </tbody>
                     </table>
+
                     <div class="d-flex justify-content-between">
                         <div>
                             <button type="button" id="agregarUser" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarUsuario">Agregar nuevo usuario</button>
                         </div>
+                        <!--
                         <div>
                             <nav aria-label="Menu de navegación del listado">
                                 <ul class="pagination justify-content-center">
@@ -90,6 +107,7 @@
                                 </ul>
                             </nav>
                         </div>
+                        -->
                     </div>
 
                 </div>
@@ -111,12 +129,14 @@
 
                     <div class="mb-3">
                         <label for="tbx_NombreUsuario" class="form-label">Nombre del usuario:</label>
-                        <asp:TextBox runat="server" type="text" ID="tbx_NombreUsuario" Style="background: #fff" class="form-control" name="usuario" placeholder="Nombre de usuario" required="true"></asp:TextBox>
+                        <asp:TextBox runat="server" type="text" ID="tbx_NombreUsuario" Style="background: #fff" class="form-control" name="usuario" placeholder="Nombre de usuario"></asp:TextBox>
+                        <asp:RequiredFieldValidator ControlToValidate="tbx_NombreUsuario" ID="RequiredUser" runat="server" ErrorMessage="* usuario requerido." ForeColor="red" ValidationGroup="input-usuario" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
                     <div class="mb-3">
                         <label for="tbx_PasswordUsuario" class="form-label">Contraseña del usuario:</label>
                         <asp:TextBox runat="server" type="password" ID="tbx_PasswordUsuario" Style="background: #fff" class="form-control" name="contraseña" placeholder="Ingresa una contraseña" required="true"></asp:TextBox>
-                   </div>
+                        <asp:RequiredFieldValidator ControlToValidate="tbx_PasswordUsuario" ID="RequiredFieldValidator1" runat="server" ErrorMessage="* contraseña requerida." ForeColor="red" ValidationGroup="input-usuario" Display="Dynamic"></asp:RequiredFieldValidator>
+                    </div>
                     <div class="mb-3">
                         <label for="tipoUsuarioDropdown" class="form-label">Elegí un rol para este usuario:</label>
                         <asp:DropDownList CssClass="form-select" ID="tipoUsuarioDropdown" runat="server">
@@ -126,21 +146,24 @@
                             <asp:ListItem value="Médico">Médico</asp:ListItem>
                             <asp:ListItem value="Paciente">Paciente</asp:ListItem>
                         </asp:DropDownList>
+                        <asp:RequiredFieldValidator ErrorMessage="* rol requerido" ControlToValidate="tipoUsuarioDropdown" InitialValue="" runat="server" ForeColor="Red" ValidationGroup="input-usuario"/>
                     </div>
                     <div class="mb-3">
                         <h4>Datos personales</h4>
                         
                         <label for="tbx_NombrePropioUser" class="form-label">Nombre:</label>
                         <asp:TextBox runat="server" type="text" ID="tbx_NombrePropioUser" Style="background: #fff" class="form-control" name="Nombre" placeholder="Ingresa el nombre" required="true"></asp:TextBox>
+                        <asp:RequiredFieldValidator ControlToValidate="tbx_NombrePropioUser" ID="RequiredFieldValidator2" runat="server" ErrorMessage="* usuario requerido." ForeColor="red" ValidationGroup="input-usuario" Display="Dynamic"></asp:RequiredFieldValidator>
+                        <br />
                         <label for="tbx_ApellidoUser" class="form-label">Apellido:</label>
                         <asp:TextBox runat="server" type="text" ID="tbx_ApellidoUser" Style="background: #fff" class="form-control" name="Nombre" placeholder="Ingresa el apellido" required="true"></asp:TextBox>
-
+                        <asp:RequiredFieldValidator ControlToValidate="tbx_ApellidoUser" ID="RequiredFieldValidator3" runat="server" ErrorMessage="* usuario requerido." ForeColor="red" ValidationGroup="input-usuario" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
-                    <asp:LinkButton runat="server" OnClick="btn_Agregar" type="button" class="btn btn-primary">Agregar usuario</asp:LinkButton>
+                    <asp:LinkButton runat="server" OnClick="volver_Click" type="button" class="btn btn-outline-primary">Volver</asp:LinkButton>
+                    <asp:LinkButton ID="btn_AgregarUser" runat="server" OnClick="btn_Agregar" type="button" class="btn btn-primary" ValidationGroup="input-usuario" >Agregar usuario</asp:LinkButton>
                 </div>
             </div>
         </div>
@@ -160,11 +183,14 @@
                     <div class="mb-3">
                         <label for="tbx_NombreUsuarioMod" class="form-label">Nombre del usuario:</label>
                         <asp:TextBox runat="server" type="text" ID="tbx_NombreUsuarioMod" Style="background: #fff" class="form-control" name="usuario" placeholder="Nombre de usuario" required="true"></asp:TextBox>
+                        <asp:RequiredFieldValidator ControlToValidate="tbx_NombreUsuarioMod" ID="RequiredFieldValidator4" runat="server" ErrorMessage="* usuario requerido." ForeColor="red" ValidationGroup="input-usuario-mod" Display="Dynamic"></asp:RequiredFieldValidator>
+
                     </div>
                     <div class="mb-3">
                         <label for="tbx_PasswordUsuarioMod" class="form-label">Contraseña del usuario:</label>
                         <asp:TextBox runat="server" type="password" ID="tbx_PasswordUsuarioMod" Style="background: #fff" class="form-control" name="contraseña" placeholder="Ingresa una contraseña" required="true"></asp:TextBox>
-                   </div>
+                        <asp:RequiredFieldValidator ControlToValidate="tbx_PasswordUsuarioMod" ID="RequiredFieldValidator5" runat="server" ErrorMessage="* contraseña requerida." ForeColor="red" ValidationGroup="input-usuario-mod" Display="Dynamic"></asp:RequiredFieldValidator>
+                    </div>
                     <div class="mb-3">
                         <label for="tipoUsuarioDropdownEditMod" class="form-label">Elegí un rol para este usuario:</label>
                         <asp:DropDownList CssClass="form-select" ID="tipoUsuarioDropdownEditMod" runat="server">
@@ -174,21 +200,27 @@
                             <asp:ListItem value="Médico">Médico</asp:ListItem>
                             <asp:ListItem value="Paciente">Paciente</asp:ListItem>
                         </asp:DropDownList>
+                        <asp:RequiredFieldValidator ErrorMessage="* rol requerido" ControlToValidate="tipoUsuarioDropdownEditMod" InitialValue="" runat="server" ForeColor="Red" ValidationGroup="input-usuario-mod"/>
+
                     </div>
                     <div class="mb-3">
                         <h4>Datos personales</h4>
                         
                         <label for="tbx_NombrePropioUserMod" class="form-label">Nombre:</label>
                         <asp:TextBox runat="server" type="text" ID="tbx_NombrePropioUserMod" Style="background: #fff" class="form-control" name="Nombre" placeholder="Ingresa el nombre" required="true"></asp:TextBox>
+                        <asp:RequiredFieldValidator ControlToValidate="tbx_NombrePropioUserMod" ID="RequiredFieldValidator6" runat="server" ErrorMessage="* nombre requerido." ForeColor="red" ValidationGroup="input-usuario-mod" Display="Dynamic"></asp:RequiredFieldValidator>
+
+                        <br />
                         <label for="tbx_ApellidoUserMod" class="form-label">Apellido:</label>
                         <asp:TextBox runat="server" type="text" ID="tbx_ApellidoUserMod" Style="background: #fff" class="form-control" name="Nombre" placeholder="Ingresa el apellido" required="true"></asp:TextBox>
+                        <asp:RequiredFieldValidator ControlToValidate="tbx_ApellidoUserMod" ID="RequiredFieldValidator7" runat="server" ErrorMessage="* apellido requerido." ForeColor="red" ValidationGroup="input-usuario-mod" Display="Dynamic"></asp:RequiredFieldValidator>
 
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
-                    <asp:LinkButton runat="server" OnClick="btn_Modificar" type="button" class="btn btn-primary" Text="Modificar usuario"></asp:LinkButton>
+                    <asp:LinkButton runat="server" OnClick="btn_Modificar" type="button" class="btn btn-primary" Text="Modificar usuario" ValidationGroup="input-usuario-mod"></asp:LinkButton>
                 </div>
             </div>
         </div>
@@ -202,8 +234,8 @@
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar" onclick="closeModal('modalVerDatos')"></button>
                 </div>
                 <div class="modal-body">
-                    <asp:Label ID="lbl_BorrarUsuario" runat="server" CssClass="">¿Estás seguro de borrar al usuario USER?</asp:Label>
-                    <h5>Se eliminarán todos los datos relacionados a este usuario.</h5>
+                    <asp:Label ID="lbl_BorrarUsuario" runat="server" CssClass="">¿Estás seguro de borrar este usuario?</asp:Label>
+                    <h6>Se eliminarán todos los datos relacionados a este usuario.</h6>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>

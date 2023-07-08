@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Security.AntiXss;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace VistaWeb
@@ -18,7 +20,7 @@ namespace VistaWeb
 
         public Usuario usuarioActivo { get; set; }
 
-        protected void limpiar_Form()
+        public void limpiar_Form()
         {
             tbx_NombreUsuario.Text = "";
             tbx_PasswordUsuario.Text = "";
@@ -29,6 +31,7 @@ namespace VistaWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
             if (!IsPostBack)
             {
 
@@ -140,6 +143,13 @@ namespace VistaWeb
                     Session.Add("Usuarios", listaUsuario);
                     rowRepeater.DataSource = listaUsuario;
                     rowRepeater.DataBind();
+                    string script = @"<script>
+                     var divNuevoUser = document.getElementById('nuevoUser');
+                     if (divNuevoUser) {
+                         divNuevoUser.style.display = 'block';
+                     }
+                     </script>";
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowNuevoDiv", script);
                     limpiar_Form();
                 }
                 catch (Exception ex)
@@ -149,6 +159,15 @@ namespace VistaWeb
             } else
             {
                 // MSJ DE ERROR
+                string script = @"<script>
+                     var divErrorUser = document.getElementById('errorUser');
+                     if (divErrorUser) {
+                         divErrorUser.style.display = 'block';
+                     }
+                 </script>";
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowErrorDiv", script);
+                limpiar_Form();
+
             }
 
         }
@@ -157,6 +176,23 @@ namespace VistaWeb
             
             usuarioActivo = (Usuario)Session["UsuarioActivo"];
             listaUsuario = (List<Usuario>)Session["Usuarios"];
+            UsuarioNegocio aux = new UsuarioNegocio();
+
+            if (tbx_NombreUsuarioMod.Text != usuarioActivo.User)
+            {
+                if (aux.findIdByUserName(tbx_NombreUsuarioMod.Text) != -1)
+                {
+                    string script2 = @"<script>
+                     var divErrorUser = document.getElementById('errorUser');
+                     if (divErrorUser) {
+                         divErrorUser.style.display = 'block';
+                     }
+                     </script>";
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowErrorDiv", script2);
+                    limpiar_Form();
+                    return;
+                }
+            }
 
             usuarioActivo.User = tbx_NombreUsuarioMod.Text;
             usuarioActivo.Pass = tbx_PasswordUsuarioMod.Text;
@@ -164,18 +200,25 @@ namespace VistaWeb
             string nombreUser = tbx_NombrePropioUserMod.Text;
             string apellidoUser = tbx_ApellidoUserMod.Text;
             
-            UsuarioNegocio aux = new UsuarioNegocio();
-           
-            aux.modificar(usuarioActivo, nombreUser, apellidoUser);
-            Response.Redirect("ListadoUsuarios.aspx");
+                    aux.modificar(usuarioActivo, nombreUser, apellidoUser);
 
-            listaUsuario = (List<Usuario>)Session["Usuarios"];
+                    listaUsuario = (List<Usuario>)Session["Usuarios"];
 
-            listaUsuario.Add(usuarioActivo);
-            Session.Add("Usuarios", listaUsuario);
-            rowRepeater.DataSource = listaUsuario;
-            rowRepeater.DataBind();
 
+                    //listaUsuario.Add(usuarioActivo);
+                    //Session.Add("Usuarios", listaUsuario);
+                    rowRepeater.DataSource = listaUsuario;
+                    rowRepeater.DataBind();
+                    //Response.Redirect("ListadoUsuarios.aspx");
+
+                    string script = @"<script>
+                     var divModificarUser = document.getElementById('modificarUser');
+                     if (divModificarUser) {
+                         divModificarUser.style.display = 'block';
+                     }
+                 </script>";
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowModificarDiv", script);
+                     
 
         }
 
@@ -191,11 +234,34 @@ namespace VistaWeb
             rowRepeater.DataSource = listaUsuario;
             rowRepeater.DataBind();
 
+
+            string script = @"<script>
+                     var divEliminar = document.getElementById('eliminarUser');
+                     if (divEliminar) {
+                         divEliminar.style.display = 'block';
+                     }
+                 </script>";
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowEliminarDiv", script);
+
         }
 
         protected void volver_Click(object sender, EventArgs e)
         {
-            limpiar_Form();
+            //limpiar_Form();
+            tbx_NombreUsuario.Text = "";
+            tbx_PasswordUsuario.Text = "";
+            tipoUsuarioDropdown.SelectedIndex = 0;
+            tbx_NombrePropioUser.Text = "";
+            tbx_ApellidoUser.Text = "";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalAgregarUsuario').modal('hide');", true);
+        }
+
+        protected void validarInput(object sender, EventArgs e)
+        {
+            if(tbx_NombreUsuario.Text == "")
+            {
+                btn_AgregarUser.Enabled = false;
+            }
         }
     }
 }
