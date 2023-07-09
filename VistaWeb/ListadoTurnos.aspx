@@ -1,6 +1,10 @@
 ﻿<%@ Page Title="Turnos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListadoTurnos.aspx.cs" Inherits="VistaWeb.ListadoTurnos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
     <div class="container">
         <div class="row">
             <h1>Listado de Turnos</h1>
@@ -63,7 +67,7 @@
                         </thead>
                         <%if (turnos != null && turnos.Count() > 0)
                             {%>
-                        <asp:Repeater runat="server" ID="repeaterTurnos">
+                        <asp:Repeater runat="server" ID="repeaterTurnos" OnItemCommand="repeaterTurnos_ItemCommand">
                             <ItemTemplate>
                                 <tbody>
                                     <tr>
@@ -73,12 +77,12 @@
                                         <td>Dr. Pérez</td>
                                         <td>Juan González</td>
                                         <td>
-                                            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalVerTurno">
+                                            <asp:LinkButton runat="server" type="button" ID="btn_detalleTurno" class="btn btn-info" CommandName="Detalle" CommandArgument='<%#Eval("Id")%>'>
                                                 <i class="bi bi-eye"></i>
                                                 Ver
-                                            </button>
-                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalModificarTurno">Modificar</button>
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminarTurno">Eliminar</button>
+                                            </asp:LinkButton>
+                                            <asp:LinkButton runat="server" ID="btn_modificarTurno" type="button" class="btn btn-warning" CommandName="Modificar" CommandArgument='<%#Eval("Id")%>'>Modificar</asp:LinkButton>
+                                            <asp:LinkButton runat="server" ID="btn_eliminarTurno" type="button" class="btn btn-danger" CommandName="Eliminar" CommandArgument='<%#Eval("Id")%>'>Eliminar</asp:LinkButton>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -122,19 +126,30 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="labelBtnModalVerTurno">Turno para (ESPECIALIDAD)</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <asp:Label runat="server" ID="lbl_titulo" Text="Turno para (ESPECIALIDAD)" CssClass="modal-title fs-5"></asp:Label>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Paciente: </strong>(NOMBRE PACIENTE)</p>
-                    <p><strong>Fecha: </strong>Martes 13 de Junio 2023</p>
-                    <p><strong>Horario: </strong>10:00hs</p>
-                    <p><strong>Médico asignado: </strong>(NOMBRE_MÉDICO) ((ESPECIALIDAD))</p>
-                    <p><strong>Observaciones: </strong>(OBSERVACIONES_DEL_TURNO)</p>
+                    <p>
+                        <strong>Paciente: </strong>
+                        <asp:Label runat="server" ID="lbl_nombrePaciente" Text="Nombre de paciente"></asp:Label>
+                    </p>
+                    <p>
+                        <strong>Fecha y hora: </strong>
+                        <asp:Label runat="server" ID="lbl_fecha" Text="fecha"></asp:Label>
+                    </p>
+                    <p>
+                        <strong>Médico asignado: </strong>
+                        <asp:Label runat="server" ID="lbl_medico" Text="Apellido, nombre - especialidad"></asp:Label>
+                    </p>
+                    <p>
+                        <strong>Observaciones: </strong>
+                        <asp:Label runat="server" ID="lbl_observaciones" Text="Observaciones"></asp:Label>
+                    </p>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
                 </div>
             </div>
         </div>
