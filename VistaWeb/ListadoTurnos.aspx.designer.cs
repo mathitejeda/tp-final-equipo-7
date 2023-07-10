@@ -24,6 +24,15 @@ namespace VistaWeb
         protected global::System.Web.UI.WebControls.Repeater repeaterTurnos;
 
         /// <summary>
+        /// btn_agregarTurno control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btn_agregarTurno;
+
+        /// <summary>
         /// lbl_titulo control.
         /// </summary>
         /// <remarks>
@@ -67,5 +76,23 @@ namespace VistaWeb
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbl_observaciones;
+
+        /// <summary>
+        /// ddl_especialidad control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_especialidad;
+
+        /// <summary>
+        /// ddl_medicos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_medicos;
     }
 }

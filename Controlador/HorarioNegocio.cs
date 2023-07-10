@@ -28,9 +28,9 @@ namespace Controlador
                 {
                     Horario aux = new Horario();
                     aux.Medico = negocioMedico.getMedico((int)datos.Lector["medico_id"]);
-                    aux.DiaSem = (Byte)datos.Lector["dia"];
-                    aux.HsEntrada = (Byte)datos.Lector["hora_entrada"];
-                    aux.HsSalida = (Byte)datos.Lector["hora_salida"];
+                    aux.DiaSem = datos.Lector.GetByte(1);
+                    aux.HsEntrada = datos.Lector.GetByte(2);
+                    aux.HsSalida = datos.Lector.GetByte(3);
                     aux.Especialidad = especialidadNegocio.GetEspecialidad((int)datos.Lector["especialidad_id"]);
                     listaHorarios.Add(aux);
                 }

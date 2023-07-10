@@ -98,7 +98,7 @@
                     </table>
                     <div class="d-flex justify-content-between">
                         <div>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarTurno">Agregar un turno</button>
+                            <asp:LinkButton runat="server" ID="btn_agregarTurno" CssClass="btn btn-primary" Text="Agregar un turno" OnClick="btn_agregarTurno_Click" ></asp:LinkButton>
                         </div>
                         <div>
                             <nav aria-label="Menu de navegación del listado">
@@ -161,11 +161,27 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnModalAgregarTurno">Agregar turno</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
 
                     <!-- Inicio Form Datos Turno -->
+                    <div class="mb-3">
+                        <label for="turno-especialidad" class="form-label">Especialidad:</label>
+                        <asp:DropDownList runat="server" ID="ddl_especialidad" CssClass="form-select" OnSelectedIndexChanged="ddl_especialidad_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                    </div>
+                    <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+<ContentTemplate>
+                            <div class="mb-3">
+                                <label for="turno-medico" class="form-label">Medico:</label>
+                                <asp:DropDownList runat="server" ID="ddl_medicos" CssClass="form-select"></asp:DropDownList>
+                            </div>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="ddl_especialidad" EventName="SelectedIndexChanged" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+
                     <div class="mb-3">
                         <label for="turno-fecha" class="form-label">Fecha:</label>
                         <input type="date" class="form-control" id="turno-fecha" name="fecha" required>
@@ -179,21 +195,7 @@
                             <option value="12:00">12:00</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label for="turno-especialidad" class="form-label">Especialidad:</label>
-                        <select class="form-select" id="turno-especialidad" name="especialidad" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="cardiología">Cardiología</option>
-                            <option value="clínica">Clínica</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="turno-medico" class="form-label">Médico:</label>
-                        <select class="form-select" id="turno-medico" name="medico" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="Dr. Pérez">Dr. Pérez</option>
-                        </select>
-                    </div>
+
                     <div class="mb-3">
                         <label for="turno-paciente" class="form-label">Paciente:</label>
                         <select class="form-select" id="turno-paciente" name="paciente" required>
@@ -206,7 +208,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
                     <button type="button" class="btn btn-primary">Agregar turno</button>
                 </div>
             </div>
@@ -239,18 +241,18 @@
                         </select>
                     </div>
                     <div class="mb-3">
+                        <label for="medico" class="form-label">Médico:</label>
+                        <select class="form-select" id="medico" name="medico" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="Dr. Pérez">Dr. Pérez</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label for="especialidad" class="form-label">Especialidad:</label>
                         <select class="form-select" id="especialidad" name="especialidad" required>
                             <option value="">Seleccionar...</option>
                             <option value="cardiología">Cardiología</option>
                             <option value="clínica">Clínica</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="medico" class="form-label">Médico:</label>
-                        <select class="form-select" id="medico" name="medico" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="Dr. Pérez">Dr. Pérez</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -278,15 +280,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnModalEliminarTurno">Eliminar turno</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <h4>¿Estás seguro de borrar el turno del (NOMBRE_PACIENTE)?</h4>
-                    <h5>Fecha: dd/mm/aaaa a las HH:ss</h5>
+                    <h4>¿Estás seguro de borrar el turno?</h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
-                    <button type="button" class="btn btn-primary">Eliminar</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
+                    <asp:LinkButton runat="server" class="btn btn-primary" Text="Eliminar" OnClick="eliminarTurno"></asp:LinkButton>
                 </div>
             </div>
         </div>

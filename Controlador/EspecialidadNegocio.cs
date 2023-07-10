@@ -22,7 +22,7 @@ namespace Controlador
                 {
                     Especialidad aux = new Especialidad();
                     aux.Id = (int)datos.Lector["Id"];
-                    aux.Nombre = (string)datos.Lector["Detalle"];
+                    aux.Nombre = datos.Lector["Detalle"].ToString();
                     listaEspecialidades.Add(aux);
                 }
                 return listaEspecialidades;
@@ -50,7 +50,7 @@ namespace Controlador
                 while (datos.Lector.Read())
                 {
                     aux.Id = (int)datos.Lector["Id"];
-                    aux.Nombre = (string)datos.Lector["Detalle"];
+                    aux.Nombre = datos.Lector["Detalle"].ToString();
                 }
                 return aux;
             }

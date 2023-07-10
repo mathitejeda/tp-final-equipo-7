@@ -22,7 +22,7 @@ insert into medico_especialidad values(1,3)
 
 GO
 
-insert into horarios (medico_id, hora_entrada, hora_salida, dia) values (3, 08, 16, 1)
+insert into horarios (medico_id, hora_entrada, hora_salida, dia) values (3, 08, 16, 1, 1)
 
 GO
 
