@@ -256,12 +256,5 @@ namespace VistaWeb
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalAgregarUsuario').modal('hide');", true);
         }
 
-        protected void validarInput(object sender, EventArgs e)
-        {
-            if(tbx_NombreUsuario.Text == "")
-            {
-                btn_AgregarUser.Enabled = false;
-            }
-        }
     }
 }
