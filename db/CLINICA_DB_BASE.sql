@@ -1,13 +1,13 @@
 use master
+GO
 
+DROP DATABASE DB_CLINICA
 GO
 
 Create database DB_CLINICA
-
 GO
 
 use DB_CLINICA
-
 GO
 
 create table usuario (
@@ -17,7 +17,6 @@ create table usuario (
 	tipo int not null default(0),
 	estado bit default(1), --1 activo, 0 inactivo
 )
-
 GO
 
 create table usuario_desc (
@@ -31,14 +30,13 @@ create table usuario_desc (
 	direccion varchar(50) null,
 	fecha_nacimiento date null,
 )
-
 GO
 
 create table especialidad (
 	id int primary key identity (1,1),
-	detalle varchar(50) not null
+	detalle varchar(50) not null,
+	CONSTRAINT especialidad_unica UNIQUE(detalle)
 )
-
 GO
 
 create table medico_especialidad (
@@ -51,22 +49,22 @@ GO
 
 create table horarios (
 	medico_id int not null foreign key references usuario(id),
+	especialidad_id int FOREIGN key references especialidad(id),
 	hora_entrada tinyint,
 	hora_salida tinyint,
 	dia tinyint,
 )
-
 GO
 
 create table turno (
 	id int primary key identity(1,1),
 	medico_id int not null foreign key references usuario(id),
+	especialidad_id int FOREIGN key references especialidad(id),
 	paciente_id int not null foreign key references usuario(id),
 	observaciones varchar(512),
 	estado int default(1), --1 representa un estado nuevo,
 	fecha datetime,
 )
-
 GO
 
 create table obra_social (
@@ -75,3 +73,4 @@ create table obra_social (
 	numero_afiliado varchar(50) not null,
 	CONSTRAINT afiliado_repetido unique(nombre, numero_afiliado)
 )
+GO
