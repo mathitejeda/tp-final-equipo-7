@@ -29,10 +29,10 @@ namespace Controlador
                     aux.Id = (int)datos.Lector["Id"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Apellido = (string)datos.Lector["Apellido"];
-                    aux.Mail = datos.Lector["Email"] == DBNull.Value ? null : (string)datos.Lector["Email"];
-                    aux.Dni = datos.Lector["DNI"] == DBNull.Value ? null : (string)datos.Lector["DNI"];
-                    aux.Telefono =  datos.Lector["Telefono"] == DBNull.Value ? null : (string)datos.Lector["Telefono"];
-                    aux.Direccion = datos.Lector["Direccion"] == DBNull.Value ? null : (string)datos.Lector["Direccion"];
+                    aux.Mail = datos.Lector["Email"].ToString();
+                    aux.Dni = datos.Lector["DNI"].ToString();
+                    aux.Telefono = datos.Lector["Telefono"].ToString();
+                    aux.Direccion = datos.Lector["Direccion"].ToString();
                     aux.FechaNacimiento = datos.Lector["Fecha_Nacimiento"] == DBNull.Value ? DateTime.MinValue : (DateTime)datos.Lector["Fecha_Nacimiento"];
                     aux.Especialidades = negocioEspecialidades.getEspecialidadesFromIdMedico(aux.Id);
                     listaMedicos.Add(aux);
@@ -68,10 +68,10 @@ namespace Controlador
                     aux.Id = (int)datos.Lector["Id"];
                     aux.Nombre = (string)datos.Lector["Nombre"];
                     aux.Apellido = (string)datos.Lector["Apellido"];
-                    aux.Mail = datos.Lector["Email"] == DBNull.Value ? null : (string)datos.Lector["Email"];
-                    aux.Dni = datos.Lector["DNI"] == DBNull.Value ? null : (string)datos.Lector["DNI"];
-                    aux.Telefono = datos.Lector["Telefono"] == DBNull.Value ? null : (string)datos.Lector["Telefono"];
-                    aux.Direccion = datos.Lector["Direccion"] == DBNull.Value ? null : (string)datos.Lector["Direccion"];
+                    aux.Mail = datos.Lector["Email"].ToString();
+                    aux.Dni = datos.Lector["DNI"].ToString();
+                    aux.Telefono = datos.Lector["Telefono"].ToString();
+                    aux.Direccion = datos.Lector["Direccion"].ToString();
                     aux.FechaNacimiento = datos.Lector["Fecha_Nacimiento"] == DBNull.Value ? DateTime.MinValue : (DateTime)datos.Lector["Fecha_Nacimiento"];
                     aux.Especialidades = negocioEspcialidades.getEspecialidadesFromIdMedico(aux.Id);
                     return aux;
@@ -205,7 +205,6 @@ namespace Controlador
         {
             List<Medico> listaMedicos = new List<Medico>();
             AccesoDatos datos = new AccesoDatos();
-            EspecialidadNegocio negocioEspecialidades = new EspecialidadNegocio();
             try
             {
                 string consulta =   "SELECT ud.usuario_id as Id " +
