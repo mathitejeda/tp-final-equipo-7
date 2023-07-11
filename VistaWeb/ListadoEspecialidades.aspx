@@ -82,44 +82,40 @@
                     <h3 class="modal-title fs-5" id="labelBtnmodalVerMedicos">Médicos para <%:EspecialidadActiva.Nombre%></h3>
                     <button type="button"  class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="modal-body">
+                    <div class="modal-body">
+                            <asp:Repeater runat="server" ID="medicRepeater" OnItemDataBound="medicRepeater_ItemDataBound">
+                                <ItemTemplate>
+                            <div class="card border-primary mb-3">
 
-                    <div class="card border-primary mb-3">
-                      <asp:UpdatePanel runat="server">
-                          <ContentTemplate>
-                              <asp:Repeater runat="server" ID="medicRepeater" OnItemDataBound="medicRepeater_ItemDataBound">
-                                  <ItemTemplate>
-
-                                  <div class="card-header text-primary">
-                                      <a href="./ListadoTurnos.aspx?id=<%#Eval("id") %>"> <%#Eval("Apellido")+", "+Eval("Nombre")%></a>
-                                  </div>
+                                <div class="card-header text-primary">
+                                    <a href="./ListadoTurnos.aspx?id=<%#Eval("id") %>"> <%#Eval("Apellido")+", "+Eval("Nombre")%></a>
+                                </div>
 
                        
-                                  <div class="card-body text-primary">
-                                    <h6 class="card-title">Horarios:</h6>
-                                    <p class="card-text">
-                                        <ul>
-                                            <asp:Repeater ID="horarios" runat="server">
-                                                <ItemTemplate>
-                                                    <li><%#Eval("DiaSem")+": "+Eval("HsEntrada")+" - "+Eval("HsSalida")%></li>
-                                                </ItemTemplate>
-                                            </asp:Repeater>                               
+                                <div class="card-body text-primary">
+                                <h6 class="card-title">Horarios:</h6>
+                                <p class="card-text">
+                                    <ul>
+                                        <asp:Repeater ID="horarios" runat="server">
+                                            <ItemTemplate>
+                                                <li><%#Eval("DiaSem")+": "+Eval("HsEntrada")+" - "+Eval("HsSalida")%></li>
+                                            </ItemTemplate>
+                                        </asp:Repeater>                               
                                 
-                                        </ul>
-                                    </p>
-                                  </ItemTemplate>
-                              </asp:Repeater>
-                          </ContentTemplate>
-                      </asp:UpdatePanel>
-                      </div>
+                                    </ul>
+                                </p>
+                                    </div>
+                                </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                      </div> 
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
                 </div>
             </div>
         </div>
-    </div>
+        
     <!-- fin modal ver -->
     <!-- modal agregar esp -->
     <div class="modal fade" id="modalAgregarEspecialidad" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalAgregarEspecialidad" aria-hidden="true">

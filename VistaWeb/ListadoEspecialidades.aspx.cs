@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using Modelo;
 using Controlador;
 using System.Globalization;
+using System.Web.UI.HtmlControls;
 
 namespace VistaWeb
 {
@@ -50,6 +51,7 @@ namespace VistaWeb
                 medicRepeater.DataSource = auxMedic.getMedicosFromEspecialidad(EspecialidadActiva.Id);
                 medicRepeater.DataBind();
             }
+            
             especialidadNombreMdf.Value= EspecialidadActiva.Nombre;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "openModal('" + modal + "')", true);
 
