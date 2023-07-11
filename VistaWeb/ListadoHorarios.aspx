@@ -12,22 +12,22 @@
               <strong>Registro exitoso.</strong> Se ha ingresado un nuevo horario.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            <!--
-            <div id="errorUser" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
-              <strong>Ha ocurrido un error.</strong> El usuario ingresado ya existe. Prueba con otro
+            
+            <div id="errorHorario" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
+              <strong>Ha ocurrido un error.</strong> El horario ingresado genera conflictos. Intenta nuevamente
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <div id="modificarUser" class="alert alert-secondary alert-dismissible fade show" role="alert" style="display:none;">
-              <strong>Modificación exitosa.</strong> Se han modificado los datos del usuario.
+            <div id="modificarHorario" class="alert alert-secondary alert-dismissible fade show" role="alert" style="display:none;">
+              <strong>Modificación exitosa.</strong> Se han modificado los datos del horario.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-            <div id="eliminarUser" class="alert alert-primary alert-dismissible fade show" role="alert" style="display:none;">
+            <div id="eliminarHorario" class="alert alert-primary alert-dismissible fade show" role="alert" style="display:none;">
               <strong>Registro eliminado.</strong> Se eliminó con éxito al usuario.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-            -->
+            
             <h1 class="mb-4">Horarios</h1>
 
             <div class="col-md-12">
@@ -57,8 +57,8 @@
                                    <td><%#Eval("HsSalida")%>:00 hs</td>     
                                    <td>
                                        <p>acciones</p>
-                                        <!--<asp:LinkButton runat="server" ID="btn_modificarUsuario" type="button" CssClass="btn btn-warning" CommandArgument='<%//#Eval("Id")%>' CommandName="ModificarUsuario">Modificar</asp:LinkButton>
-                                        <asp:LinkButton runat="server" ID="btn_eliminarUsuario" type="button" CssClass="btn btn-danger" CommandArgument='<%//#Eval("Id")%>' CommandName="EliminarUsuario">Eliminar</asp:LinkButton>-->
+                                        <asp:LinkButton runat="server" ID="btn_modificarHorario" OnClick="btn_modificarHorario_Click1" type="button" CssClass="btn btn-warning" CommandArgument='<%#Eval("Id")%>' CommandName="ModificarHorario">Modificar</asp:LinkButton>
+                                        <asp:LinkButton runat="server" ID="btn_eliminarHorario" type="button" CssClass="btn btn-danger" CommandArgument='<%#Eval("Id")%>' CommandName="EliminarHorario">Eliminar</asp:LinkButton>
                                    </td>
                                 </tr>
                             
@@ -137,7 +137,7 @@
                         <div class="col">
                             <label for="MainContent_tbxHsEntrada" class="form-label">Hora ingreso:</label>
                             <div class="input-group">
-                                <asp:TextBox Class="horario" ID="tbxHsEntrada" runat="server" CssClass="form-control" Style="background: #fff;" TextMode="Number" ValidationGroup="input-horarios"></asp:TextBox>
+                                <asp:TextBox Class="horario" ID="tbxHsEntrada" runat="server" CssClass="form-control horario" Style="background: #fff;" TextMode="Number" ValidationGroup="input-horarios"></asp:TextBox>
                                 <span class="input-group-text">00 hs</span>
                             </div>
                             <asp:CustomValidator ID="ValidarHsEntrada" runat="server" ErrorMessage="* ingrese hora válida (0 a 23hs)" Display="Dynamic" MinimumValue="0" MaximumValue="23" ControlToValidate="tbxHsEntrada" ForeColor="Red" ValidationGroup="input-horario"></asp:CustomValidator>
@@ -146,7 +146,7 @@
                         <div class="col">
                             <label for="MainContent_tbxHsSalida" class="form-label">Hora salida:</label>
                             <div class="input-group">
-                                <asp:TextBox Class="horario" ID="tbxHsSalida" runat="server" CssClass="form-control" Style="background: #fff;" TextMode="Number" ValidationGroup="input-horarios"></asp:TextBox>
+                                <asp:TextBox Class="horario" ID="tbxHsSalida" runat="server" CssClass="form-control horario" Style="background: #fff;" TextMode="Number" ValidationGroup="input-horarios"></asp:TextBox>
                                 <span class="input-group-text">00 hs</span>
                             </div>
                             <asp:CustomValidator ID="ValidarHsSalida" runat="server" ErrorMessage="* ingrese hora válida (0 a 23hs)" Display="Dynamic" MinimumValue="0" MaximumValue="23" ControlToValidate="tbxHsSalida" ForeColor="Red" ValidationGroup="input-horario" ></asp:CustomValidator>
@@ -167,4 +167,96 @@
     </div>
     <!-- fin modal Agregar -->
 
-</asp:Content>
+     <!-- modal modificarHorario-->
+    <div class="modal fade" id="modalModificarHorario" tabindex="-1" data-bs-backdrop="static" data-keyboard="false" aria-labelledby="labelBtnmodalmodalModificarHorario" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>
+                        <asp:Label id="labelBtnmodalmodalModificarHorario" CssClass="modal-title fs-5" runat="server" Text="Modificar un horario"></asp:Label>
+                        </h3>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label for="MainContent_ddlMedicoAsignadoMod" class="form-label">Médico asignado:</label>
+                                <asp:DropDownList CssClass="form-select" ID="ddlMedicoAsignadoMod" runat="server" OnSelectedIndexChanged="ddlMedicoAsignadoMod_SelectedIndexChanged" AutoPostBack="true">
+                                    <asp:ListItem value="" Text="Elegí un médico..." Selected="True"></asp:ListItem>
+                                </asp:DropDownList>
+                        <asp:RequiredFieldValidator ErrorMessage="* médico requerido" ControlToValidate="ddlMedicoAsignadoMod" InitialValue="" runat="server" ForeColor="Red" ValidationGroup="input-horarioMod" Display="Dynamic"/>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="MainContent_ddlEspecialidadMod" class="form-label">Especialidad:</label>
+                                <asp:DropDownList CssClass="form-select" ID="ddlEspecialidadMod" runat="server">
+                                    <asp:ListItem value="" Text="Elegí una especialidad..." Selected="True"></asp:ListItem>
+                                </asp:DropDownList>
+                        <asp:RequiredFieldValidator ErrorMessage="* especialidad requerida" ControlToValidate="ddlEspecialidadMod" InitialValue="" runat="server" ForeColor="Red" ValidationGroup="input-horarioMod" Display="Dynamic"/>
+                    </div>
+
+                     <div class="mb-3">
+                        <label for="MainContent_ddlDiaAtencionMod" class="form-label">Día de atención:</label>
+                        <asp:DropDownList CssClass="form-select" ID="ddlDiaAtencionMod" runat="server">
+                            <asp:ListItem value="" Text="Elegí una opción..." Selected="True"></asp:ListItem>
+                            <asp:ListItem value="1" Text="Lunes"></asp:ListItem>
+                            <asp:ListItem value="2" Text="Martes"></asp:ListItem>
+                            <asp:ListItem value="3" Text="Miércoles"></asp:ListItem>
+                            <asp:ListItem value="4" Text="Jueves"></asp:ListItem>
+                            <asp:ListItem value="5" Text="Viernes"></asp:ListItem>
+                            <asp:ListItem value="6" Text="Sábado"></asp:ListItem>
+                            <asp:ListItem value="7" Text="Domingo"></asp:ListItem>
+                        </asp:DropDownList>
+                        <asp:RequiredFieldValidator ErrorMessage="* dia de atención requerido" ControlToValidate="ddlDiaAtencionMod" InitialValue="" runat="server" ForeColor="Red" ValidationGroup="input-horarioMod" Display="Dynamic" />
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="MainContent_tbxHsEntradaMod" class="form-label">Hora ingreso:</label>
+                            <div class="input-group">
+                                <asp:TextBox ID="tbxHsEntradaMod" runat="server" CssClass="form-control horario" Style="background: #fff;" TextMode="Number" ValidationGroup="input-horariosMod"></asp:TextBox>
+                                <span class="input-group-text">:00 hs</span>
+                            </div>
+                            <asp:CustomValidator ID="CustomValidator1" runat="server" ErrorMessage="* ingrese hora válida (0 a 23hs)" Display="Dynamic" MinimumValue="0" MaximumValue="23" ControlToValidate="tbxHsEntradaMod" ForeColor="Red" ValidationGroup="input-horario"></asp:CustomValidator>
+                            <asp:RequiredFieldValidator ErrorMessage="* horario de ingreso requerido" ControlToValidate="tbxHsEntradaMod" InitialValue="" runat="server" ForeColor="Red" ValidationGroup="input-horarioMod" />
+                        </div>
+                        <div class="col">
+                            <label for="MainContent_tbxHsSalidaMod" class="form-label">Hora salida:</label>
+                            <div class="input-group">
+                                <asp:TextBox ID="tbxHsSalidaMod" runat="server" CssClass="form-control horario" Style="background: #fff;" TextMode="Number" ValidationGroup="input-horarios"></asp:TextBox>
+                                <span class="input-group-text">00 hs</span>
+                            </div>
+                            <asp:CustomValidator ID="CustomValidator2" runat="server" ErrorMessage="* ingrese hora válida (0 a 23hs)" Display="Dynamic" MinimumValue="0" MaximumValue="23" ControlToValidate="tbxHsSalidaMod" ForeColor="Red" ValidationGroup="input-horario" ></asp:CustomValidator>
+                            <asp:RequiredFieldValidator ErrorMessage="* horario de salida requerido" ControlToValidate="tbxHsSalidaMod" InitialValue="" runat="server" ForeColor="Red" ValidationGroup="input-horarioMod" />
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <asp:LinkButton ID="btn_Volver_ClickMod" OnClick="btn_Volver_ClickMod_Click" runat="server" type="button" class="btn btn-outline-primary">Volver</asp:LinkButton>
+                    <asp:LinkButton ID="btn_ModificarHorarioSubmit" OnClick="btn_ModificarHorarioSubmit_Click" runat="server" type="button" class="btn btn-primary" ValidationGroup="input-horarioMod" >Modificar horario</asp:LinkButton>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- fin modal Modificar -->
+    <!-- eliminar -->
+        <div class="modal fade" id="modalEliminarHorario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalEliminarHorario" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5><asp:Label ID="labelBtnmodalEliminarHorario" runat="server" Text="Eliminar un horario"></asp:Label></h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <asp:Label ID="lbl_BorrarHorario" runat="server" CssClass="">¿Estás seguro de borrar este horario?</asp:Label>
+                    <h6>Se eliminarán todos los datos relacionados a este usuario.</h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
+                    <asp:LinkButton runat="server" OnClick="btn_eliminarHorario_Click" type="button" class="btn btn-primary" Text="Eliminar horario"></asp:LinkButton>
+                </div>
+            </div>
+        </div>
+    </div>
+</asp:Content> 
