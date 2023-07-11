@@ -52,10 +52,10 @@
                                        
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalVerHorarios">
+                                        <asp:LinkButton runat="server" type="button" class="btn btn-info" OnCommand="Modal_btn" CommandArgument='<%#Eval("Id")%>' CommandName="modalVerHorarios">
                                             <i class="bi bi-clock"></i>
                                             Ver
-                                        </button>
+                                        </asp:LinkButton>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVerTurnos">
@@ -107,28 +107,35 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnmodalVerHorarios">Ver horarios de <%:medicoActivo.Apellido+" "+medicoActivo.Nombre %></h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="card border-primary mb-3">
-                        <div class="card-header text-primary">
-                            <h5>EN CONSTRUCCION</h5>
-                        </div>
-                        <div class="card-body text-primary">
-                            <h6 class="card-title">Horarios:</h6>
-                            <p class="card-text">
-                                <ul>
-                                    <li>HORARIO 1 - FIN HORARIO 1</li>
-                                    <li>HORARIO 2 - FIN HORARIO 2</li>
-                                    <li>HORARIO 3 - FIN HORARIO 3</li>
-                                </ul>
-                            </p>
-                        </div>
-                    </div>
+                    <asp:Repeater runat="server" ID="especialidadesRepeater" OnItemDataBound="especialidadesRepeater_ItemDataBound">
+                        <ItemTemplate>
+                            <div class="card border-primary mb-3">
+                                <div class="card-header text-primary">
+                                    <h5><%#Eval("Nombre") %></h5>
+                                </div>
+                                <div class="card-body text-primary">
+                                    <h6 class="card-title">Horarios:</h6>
+                                    <p class="card-text">
+                                        <ul>
+                                            <asp:Repeater runat="server" ID="horarios">
+                                                <ItemTemplate>
+                                                    <li><%# Eval("DiaSem")+": "+Eval("HsEntrada")+" - "+Eval("HsSalida")%></li>
 
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+                                    
+                                        </ul>
+                                    </p>
+                                </div>
+                            </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
                 </div>
             </div>
         </div>
@@ -225,15 +232,15 @@
 
                     <div class="mb-3">
                         <label for="medico-nombre" class="form-label">Nombre del médico:</label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoNombreMdf" name="nombre">
+                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoNombreMdf" name="nombre" required>
                     </div>
                     <div class="mb-3">
                         <label for="medico-apellido" class="form-label">Apellido del médico:</label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoApellidoMdf" name="apellido">
+                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoApellidoMdf" name="apellido" required>
                     </div>
                     <div class="mb-3">
                         <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
-                        <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" id="especialidadesMedicoMdf" class="form-select" aria-label="Especialidades del médico:">
+                        <asp:CheckBoxList runat="server" DataTextField="Nombre" style="background-image:none" DataValueField="Id" id="especialidadesMedicoMdf" class="form-select" aria-label="Especialidades del médico:">
                         </asp:CheckBoxList>
                     </div>
 

@@ -24,6 +24,15 @@ namespace VistaWeb
         protected global::System.Web.UI.WebControls.Repeater rowRepeater;
 
         /// <summary>
+        /// especialidadesRepeater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater especialidadesRepeater;
+
+        /// <summary>
         /// medicoNombreAdd control.
         /// </summary>
         /// <remarks>

@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="MedicDetail" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DetalleMedico.aspx.cs" Inherits="VistaWeb.DetalleMedico" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-<h2>Modificar Medico</h2>
+<h2>Detalle de Medico</h2>
     
         <div class="row align-text-center" style="margin-top:30px">
         <div class="col mb-3">

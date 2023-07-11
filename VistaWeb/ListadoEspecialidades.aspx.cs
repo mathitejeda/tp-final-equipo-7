@@ -54,6 +54,22 @@ namespace VistaWeb
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "openModal('" + modal + "')", true);
 
         }
+        protected void medicRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            EspecialidadActiva = (Especialidad)Session["EspecialidadActiva"];
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                Medico medico = (Medico)e.Item.DataItem;
+                Repeater horario = (Repeater)e.Item.FindControl("horarios");
+
+                HorarioNegocio aux = new HorarioNegocio();
+                List<Horario> horarios = aux.listarPorMedicoYEspecialidad(medico.Id, EspecialidadActiva.Id);
+
+                // Vincular los horarios al repeater anidado
+                horario.DataSource = horarios;
+                horario.DataBind();
+            }
+        }
 
         protected void btn_Modificar(object sender, EventArgs e)
         {
