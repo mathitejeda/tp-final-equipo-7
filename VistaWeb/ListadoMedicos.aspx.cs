@@ -66,7 +66,27 @@ namespace VistaWeb
                     }
                 }
             }
+            if(modal == "modalVerHorarios")
+            {
+                EspecialidadNegocio auxEsp = new EspecialidadNegocio();
+                especialidadesRepeater.DataSource = auxEsp.getEspecialidadesFromIdMedico(medicoActivo.Id);
+                especialidadesRepeater.DataBind();
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "openModal('" + modal + "')", true);
+        }
+        protected void especialidadesRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            RepeaterItem item = e.Item;
+            Medico medico = (Medico)Session["MedicoActivo"];
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
+            {
+                Especialidad especialidad = (Especialidad)item.DataItem;
+                Repeater horarios = (Repeater)item.FindControl("horarios");
+                HorarioNegocio auxHorario = new HorarioNegocio();
+                List<Horario> listaHorarios = auxHorario.listarPorMedicoYEspecialidad(medico.Id, especialidad.Id);
+                horarios.DataSource = listaHorarios;
+                horarios.DataBind();
+            }
         }
         protected void btn_Agregar(object sender, EventArgs e)
         {

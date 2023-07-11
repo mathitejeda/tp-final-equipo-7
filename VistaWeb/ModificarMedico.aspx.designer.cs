@@ -39,7 +39,7 @@ namespace VistaWeb
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText mail;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl mail;
 
         /// <summary>
         /// dni control.
@@ -48,7 +48,7 @@ namespace VistaWeb
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText dni;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl dni;
 
         /// <summary>
         /// telefono control.
