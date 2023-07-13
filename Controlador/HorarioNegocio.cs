@@ -60,7 +60,7 @@ namespace Controlador
 
             try
             {
-                string query = "select h.id_horario, h.medico_id, cast(h.dia as int) as dia, h.hora_entrada, h.hora_salida, h.especialidad_id from horarios h inner join especialidad e on h.especialidad_id = e.id inner join usuario u on h.medico_id = u.id WHERE h.estado = 1 and u.estado = 1";
+                string query = "select h.id_horario, h.medico_id, cast(h.dia as int) as dia, h.hora_entrada, h.hora_salida, h.especialidad_id from horarios h inner join especialidad e on h.especialidad_id = e.id inner join usuario u on h.medico_id = u.id WHERE u.tipo=2 and h.estado = 1 and u.estado = 1";
                 datos.SetConsulta(query);
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())

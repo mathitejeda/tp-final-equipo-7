@@ -118,7 +118,7 @@
     </div>
 
     <!-- modal agregar usuario -->
-    <div class="modal fade" id="modalAgregarUsuario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalAgregarUsuario" aria-hidden="true">
+    <div class="modal fade" id="modalAgregarUsuario"data-bs-backdrop="static" data-bs-keyboard="false"  tabindex="-1"  aria-labelledby="labelBtnmodalAgregarUsuario" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -171,7 +171,7 @@
     <!-- fin modal Agregar -->
 
     <!-- modal Modificar usuario-->
-    <div class="modal fade" id="modalModificarUsuario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalModificarUsuario" aria-hidden="true">
+    <div class="modal fade" id="modalModificarUsuario" data-backdrop="static" data-keyboard="false"  tabindex="-1" aria-labelledby="labelBtnmodalModificarUsuario" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

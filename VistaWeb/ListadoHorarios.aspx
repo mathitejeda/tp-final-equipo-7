@@ -56,7 +56,6 @@
                                    <td><%#Eval("HsEntrada")%>:00 hs</td>     
                                    <td><%#Eval("HsSalida")%>:00 hs</td>     
                                    <td>
-                                       <p>acciones</p>
                                         <asp:LinkButton runat="server" ID="btn_modificarHorario" OnClick="btn_modificarHorario_Click1" type="button" CssClass="btn btn-warning" CommandArgument='<%#Eval("Id")%>' CommandName="ModificarHorario">Modificar</asp:LinkButton>
                                         <asp:LinkButton runat="server" ID="btn_eliminarHorario" type="button" CssClass="btn btn-danger" CommandArgument='<%#Eval("Id")%>' CommandName="EliminarHorario">Eliminar</asp:LinkButton>
                                    </td>
@@ -94,7 +93,7 @@
     </div>
 
     <!-- modal agregar usuario -->
-    <div class="modal fade" id="modalAgregarHorario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalAgregarHorario" aria-hidden="true">
+    <div class="modal fade" id="modalAgregarHorario" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="labelBtnmodalAgregarHorario" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -168,7 +167,7 @@
     <!-- fin modal Agregar -->
 
      <!-- modal modificarHorario-->
-    <div class="modal fade" id="modalModificarHorario" tabindex="-1" data-bs-backdrop="static" data-keyboard="false" aria-labelledby="labelBtnmodalmodalModificarHorario" aria-hidden="true">
+    <div class="modal fade" id="modalModificarHorario" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="labelBtnmodalmodalModificarHorario" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -241,7 +240,7 @@
     </div>
     <!-- fin modal Modificar -->
     <!-- eliminar -->
-        <div class="modal fade" id="modalEliminarHorario" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnmodalEliminarHorario" aria-hidden="true">
+        <div class="modal fade" id="modalEliminarHorario" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="labelBtnmodalEliminarHorario" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

@@ -299,6 +299,33 @@ namespace Controlador
                 datos.CerrarConexion();
             }
         }
+        public bool VerificarLogin(Usuario user)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                string consulta = "select id, tipo from usuario where id=@id and usuario = '@user' and contrasenia = '@pass'";
+                datos.SetConsulta(consulta);
+                datos.setearParametro("@id", user.Id);
+                datos.setearParametro("@user", user.User);
+                datos.setearParametro("@pass", user.Pass);
+                datos.EjecutarLectura();
+                if (datos.Lector.Read())
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+            return false;
+        }
 
     }
 }
