@@ -19,7 +19,7 @@ namespace Controlador
             PacienteNegocio pacienteNegocio = new PacienteNegocio();
             try
             {
-                datos.SetConsulta("select t.id, t.medico_id, t.paciente_id, t.observaciones, t.estado, t.fecha, t.especialidad_id from turno t");
+                datos.SetConsulta("select t.id, t.medico_id, t.paciente_id, t.observaciones, t.estado, t.fecha, t.especialidad_id from turno t where t.estado=1");
                 datos.EjecutarLectura();
                 while (datos.Lector.Read())
                 {
@@ -141,15 +141,20 @@ namespace Controlador
         }
         public void alta(Turno turno)
         {
+            if (turno.Observaciones == null)
+            {
+                turno.Observaciones = "";
+            }
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.SetConsulta("insert into turnos (medico_id, paciente_id, observaciones, estado, fecha) values(@medico_id, @paciente_id, @observaciones, @estado, @fecha)");
+                datos.SetConsulta("insert into turno(medico_id, paciente_id, observaciones, fecha, estado, especialidad_id) values(@medico_id, @paciente_id, @observaciones, @fecha, @estado, @especialidad_id)");
                 datos.setearParametro("@medico_id", turno.Medico.Id);
                 datos.setearParametro("@paciente_id", turno.Paciente.Id);
                 datos.setearParametro("@observaciones", turno.Observaciones);
+                datos.setearParametro("@fecha", turno.Fecha);
                 datos.setearParametro("@estado", EstadoTurno.Nuevo);
-                datos.setearParametro("@fecha", turno.Fecha.Date);
+                datos.setearParametro("@especialidad_id", turno.Especialidad.Id);
                 datos.EjecutarAccion();
             }
             catch (Exception ex)

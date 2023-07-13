@@ -65,17 +65,17 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <%if (turnos != null && turnos.Count() > 0)
+                        <%if (repeaterTurnos.DataSource != null)
                             {%>
                         <asp:Repeater runat="server" ID="repeaterTurnos" OnItemCommand="repeaterTurnos_ItemCommand">
                             <ItemTemplate>
                                 <tbody>
                                     <tr>
-                                        <td>Martes 13 de Junio 2023</td>
-                                        <td>10:00</td>
-                                        <td>Dentista</td>
-                                        <td>Dr. Pérez</td>
-                                        <td>Juan González</td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"Fecha", "{0:d}") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"Fecha", "{0:t}") %></td>
+                                        <td><%# Eval("Especialidad.Nombre") %></td>
+                                        <td><%# Eval("Medico.Nombre") %></td>
+                                        <td><%# Eval("Paciente.nombre") + " " + Eval("Paciente.apellido") %></td>
                                         <td>
                                             <asp:LinkButton runat="server" type="button" ID="btn_detalleTurno" class="btn btn-info" CommandName="Detalle" CommandArgument='<%#Eval("Id")%>'>
                                                 <i class="bi bi-eye"></i>
@@ -98,7 +98,7 @@
                     </table>
                     <div class="d-flex justify-content-between">
                         <div>
-                            <asp:LinkButton runat="server" ID="btn_agregarTurno" CssClass="btn btn-primary" Text="Agregar un turno" OnClick="btn_agregarTurno_Click" ></asp:LinkButton>
+                            <asp:LinkButton runat="server" ID="btn_agregarTurno" CssClass="btn btn-primary" Text="Agregar un turno" OnClick="btn_agregarTurno_Click"></asp:LinkButton>
                         </div>
                         <div>
                             <nav aria-label="Menu de navegación del listado">
@@ -171,10 +171,10 @@
                         <asp:DropDownList runat="server" ID="ddl_especialidad" CssClass="form-select" OnSelectedIndexChanged="ddl_especialidad_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                     </div>
                     <asp:UpdatePanel runat="server" UpdateMode="Conditional">
-<ContentTemplate>
+                        <ContentTemplate>
                             <div class="mb-3">
                                 <label for="turno-medico" class="form-label">Medico:</label>
-                                <asp:DropDownList runat="server" ID="ddl_medicos" CssClass="form-select"></asp:DropDownList>
+                                <asp:DropDownList runat="server" ID="ddl_medicos" CssClass="form-select" OnSelectedIndexChanged="ddl_medicos_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                             </div>
                         </ContentTemplate>
                         <Triggers>
@@ -182,34 +182,40 @@
                         </Triggers>
                     </asp:UpdatePanel>
 
-                    <div class="mb-3">
-                        <label for="turno-fecha" class="form-label">Fecha:</label>
-                        <input type="date" class="form-control" id="turno-fecha" name="fecha" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="turno-horario" class="form-label">Horario:</label>
-                        <select class="form-select" id="turno-horario" name="horario" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="10:30">10:30</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                        </select>
-                    </div>
+                    <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <div class="mb-3">
+                                <label for="turno-fecha" class="form-label">Fecha:</label>
+                                <asp:Calendar ID="calendarAgenda" runat="server" OnDayRender="calendarAgenda_DayRender" OnSelectionChanged="calendarAgenda_SelectionChanged" Visible="false"></asp:Calendar>
+                            </div>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="ddl_medicos" EventName="SelectedIndexChanged" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+
+                    <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <div class="mb-3">
+                                <label for="turno-hora" class="form-label">Hora:</label>
+                                <asp:DropDownList runat="server" ID="ddl_hora" CssClass="form-select" AutoPostBack="true"></asp:DropDownList>
+                            </div>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="calendarAgenda" EventName="SelectionChanged" />
+                        </Triggers>
+                    </asp:UpdatePanel>
 
                     <div class="mb-3">
                         <label for="turno-paciente" class="form-label">Paciente:</label>
-                        <select class="form-select" id="turno-paciente" name="paciente" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="Juan Topo">Juan Topo</option>
-                            <option value="Elvis Cocho">Elvis Cocho</option>
-                        </select>
+                        <asp:DropDownList runat="server" ID="ddl_paciente" CssClass="form-select" ></asp:DropDownList> 
                     </div>
                     <!-- -->
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
-                    <button type="button" class="btn btn-primary">Agregar turno</button>
+                    <asp:LinkButton runat="server" ID="btn_aceptaragregarTurno" CssClass="btn btn-primary" OnClick="btn_aceptaragregarTurno_Click">Agregar turno</asp:LinkButton>
                 </div>
             </div>
         </div>

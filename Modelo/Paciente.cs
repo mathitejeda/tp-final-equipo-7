@@ -31,5 +31,10 @@ namespace Modelo
         public string ObraSocial { get; set; }
         public string NumeroAfiliado { get; set; }
         public List<Turno> Turnos { get; set; }
+
+        public string NombreCompletoYDni
+        {
+            get { return $"{Nombre} {Apellido} - {Dni}"; }
+        }
     }
 }

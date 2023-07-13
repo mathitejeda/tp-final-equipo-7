@@ -16,7 +16,7 @@ namespace Modelo
             Jueves = 4,
             Viernes = 5,
             Sábado = 6,
-            Domingo = 7
+            Domingo = 0
         }
         public int Id { get; set; }
         public Medico Medico { get; set; }

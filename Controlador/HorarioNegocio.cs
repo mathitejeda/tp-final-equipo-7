@@ -86,43 +86,43 @@ namespace Controlador
             }
         }
 
-        public List<Horario> listarPorMedicoYEspecialidad(int idMedico,int idEspecialidad)
-        {
-            List<Horario> listaHorarios = new List<Horario>();
-            AccesoDatos datos = new AccesoDatos();
+        //public List<Horario> listarPorMedicoYEspecialidad(int idMedico,int idEspecialidad)
+        //{
+        //    List<Horario> listaHorarios = new List<Horario>();
+        //    AccesoDatos datos = new AccesoDatos();
 
-            MedicoNegocio negocioMedico = new MedicoNegocio();
-            EspecialidadNegocio especialidadNegocio = new EspecialidadNegocio();
-            try
-            {
-                string query = "select medico_id, cast(dia as int) as dia, hora_entrada, hora_salida, especialidad_id from horarios " +
-                                "WHERE medico_id=@id and especialidad_id=@id2 " +
-                                "ORDER BY dia ASC";
-                datos.SetConsulta(query);
-                datos.setearParametro("@id", idMedico);
-                datos.setearParametro("@id2", idEspecialidad);
-                datos.EjecutarLectura();
-                while (datos.Lector.Read())
-                {
-                    Horario aux = new Horario();
-                    aux.Medico = negocioMedico.getMedico((int)datos.Lector["medico_id"]);
-                    aux.DiaSem = (Horario.DiaSemana)datos.Lector["dia"];
-                    aux.HsEntrada = (Byte)datos.Lector["hora_entrada"];
-                    aux.HsSalida = (Byte)datos.Lector["hora_salida"];
-                    aux.Especialidad = especialidadNegocio.GetEspecialidad((int)datos.Lector["especialidad_id"]);
-                    listaHorarios.Add(aux);
-                }
-                return listaHorarios;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.CerrarConexion();
-            }
-        }
+        //    MedicoNegocio negocioMedico = new MedicoNegocio();
+        //    EspecialidadNegocio especialidadNegocio = new EspecialidadNegocio();
+        //    try
+        //    {
+        //        string query = "select medico_id, cast(dia as int) as dia, hora_entrada, hora_salida, especialidad_id from horarios " +
+        //                        "WHERE medico_id=@id and especialidad_id=@id2 " +
+        //                        "ORDER BY dia ASC";
+        //        datos.SetConsulta(query);
+        //        datos.setearParametro("@id", idMedico);
+        //        datos.setearParametro("@id2", idEspecialidad);
+        //        datos.EjecutarLectura();
+        //        while (datos.Lector.Read())
+        //        {
+        //            Horario aux = new Horario();
+        //            aux.Medico = negocioMedico.getMedico((int)datos.Lector["medico_id"]);
+        //            aux.DiaSem = (Horario.DiaSemana)datos.Lector["dia"];
+        //            aux.HsEntrada = (Byte)datos.Lector["hora_entrada"];
+        //            aux.HsSalida = (Byte)datos.Lector["hora_salida"];
+        //            aux.Especialidad = especialidadNegocio.GetEspecialidad((int)datos.Lector["especialidad_id"]);
+        //            listaHorarios.Add(aux);
+        //        }
+        //        return listaHorarios;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    finally
+        //    {
+        //        datos.CerrarConexion();
+        //    }
+        //}
 
         public void agregar(Horario aux)
         {
