@@ -26,6 +26,11 @@ namespace Modelo
         public TipoUsuario TipoUsuario { get; set; }
 
         public Usuario() { }
+        public Usuario(string user, string pass)
+        {
+            this.User = user;
+            this.Pass = pass;
+        }
         public Usuario(string user, string pass, TipoUsuario tipo)
         {
             this.User = user;

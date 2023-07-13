@@ -1,6 +1,10 @@
 ﻿<%@ Page Title="Mi Cuenta" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Cuenta.aspx.cs" Inherits="VistaWeb.Cuenta" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-   <div class="container my-5">
+    
+    <% if (((Modelo.Usuario)Session["UsuarioLogueado"]) == null)
+        { %>
+
+<div class="container my-5">
   <div class="p-5 bg-body-tertiary rounded-3">
     <h1 class="text-body-emphasis">Iniciar Sesión</h1>
     <p class="fs-5">
@@ -15,7 +19,7 @@
     </div>
       <div class="form-group mx-sm-3 mb-2">
         <label for="MainContent_tbxPasswordLogin" class="sr-only">Contraseña:</label>
-        <asp:TextBox runat="server" type="text" ID="tbxPasswordLogin" class="form-control" name="login-password" placeholder="Ingresa tu contraseña..."></asp:TextBox>
+        <asp:TextBox runat="server" type="password" ID="tbxPasswordLogin" class="form-control" name="login-password" placeholder="Ingresa tu contraseña..."></asp:TextBox>
         <asp:RequiredFieldValidator ControlToValidate="tbxPasswordLogin" ID="RequiredPassword" runat="server" ErrorMessage="* contraseña requerida." ForeColor="red" ValidationGroup="input-login" Display="Dynamic"></asp:RequiredFieldValidator>
    
       </div>
@@ -27,17 +31,22 @@
         </div>
       </div>
       <div class="mt-3">
-        <asp:Button Text="Iniciar sesión" class="btn btn-primary" ID="btnIniciarSesionSubmit" runat="server" ValidationGroup="input-login"/>
+        <asp:Button Text="Iniciar sesión" class="btn btn-primary" ID="btnIniciarSesionSubmit" runat="server" ValidationGroup="input-login" OnClick="btnIniciarSesionSubmit_Click"/>
         <a href="#" class="ml-3">¿Olvidaste tu contraseña?</a>
       </div>
   </div>
 </div>
+        <% } %>
 
 
-    <br />
-    <br />
-    <div class="container">
-        <h3 class="mb-3 text-center">¡Hola Pepín!</h3>
+
+ <% if (((Modelo.Usuario)Session["UsuarioLogueado"]) != null)
+    { %>
+
+    <div class="container mt-3">
+
+        <h3 class="mb-3 text-center">  <asp:Label ID="lbl_BienvenidaUser" runat="server">¡Hola <% Response.Write(((Modelo.Usuario)Session["UsuarioLogueado"]).User); %> !</asp:Label> </h3>
+       
         <div class="row">
             <h4 class="mb-3">Mi Cuenta</h4>
             <div class="col-4">
@@ -76,4 +85,5 @@
             </div>
         </div>
     </div>
+ <% } %>
 </asp:Content>

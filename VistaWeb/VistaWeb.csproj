@@ -110,6 +110,7 @@
     <Content Include="ListadoMedicos.aspx" />
     <Content Include="ListadoPacientes.aspx" />
     <Content Include="ListadoTurnos.aspx" />
+    <Content Include="Error.aspx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="ModificarMedico.aspx" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -247,6 +248,13 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

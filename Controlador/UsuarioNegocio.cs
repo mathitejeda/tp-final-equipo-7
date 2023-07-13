@@ -273,7 +273,7 @@ namespace Controlador
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                string consulta = "select id, usuario, contrasenia from usuario u where id=@id";
+                string consulta = "select id, usuario, contrasenia, tipo from usuario u where id=@id";
                 datos.SetConsulta(consulta);
                 datos.setearParametro("@id", id);
                 datos.EjecutarLectura();
@@ -283,6 +283,7 @@ namespace Controlador
                     aux.Id = (int)datos.Lector["Id"];
                     aux.User = (string)datos.Lector["Usuario"];
                     aux.Pass = (string)datos.Lector["Contrasenia"];
+                    aux.TipoUsuario = (TipoUsuario)datos.Lector["Tipo"];
                     return aux;
                 }
                 else
@@ -305,16 +306,18 @@ namespace Controlador
 
             try
             {
-                string consulta = "select id, tipo from usuario where id=@id and usuario = '@user' and contrasenia = '@pass'";
+                string consulta = "select id, tipo from usuario where usuario = @user and contrasenia = @pass";
                 datos.SetConsulta(consulta);
-                datos.setearParametro("@id", user.Id);
                 datos.setearParametro("@user", user.User);
                 datos.setearParametro("@pass", user.Pass);
                 datos.EjecutarLectura();
-                if (datos.Lector.Read())
+                while (datos.Lector.Read())
                 {
+                    user.Id = (int)datos.Lector["Id"];
+                    user.TipoUsuario = (TipoUsuario)datos.Lector["Tipo"];
                     return true;
                 }
+                return false;
             }
             catch (Exception ex)
             {
@@ -324,7 +327,7 @@ namespace Controlador
             {
                 datos.CerrarConexion();
             }
-            return false;
+           
         }
 
     }
