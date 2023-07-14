@@ -1,44 +1,52 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="VistaWeb._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+       <% if (EstaLogueado())
+          { %> 
 
-    <main>
-        <section class="row" aria-labelledby="aspnetTitle">
-            <h1 id="aspnetTitle">ASP.NET</h1>
-            <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-            <p><a href="http://www.asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-        </section>
-
+    <div class="container my-5">
         <div class="row">
-            <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-                <h2 id="gettingStartedTitle">Getting started</h2>
-                <p>
-                    ASP.NET Web Forms lets you build dynamic websites using a familiar drag-and-drop, event-driven model.
-                A design surface and hundreds of controls and components let you rapidly build sophisticated, powerful UI-driven sites with data access.
-                </p>
-                <p>
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301948">Learn more &raquo;</a>
-                </p>
-            </section>
-            <section class="col-md-4" aria-labelledby="librariesTitle">
-                <h2 id="librariesTitle">Get more libraries</h2>
-                <p>
-                    NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.
-                </p>
-                <p>
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301949">Learn more &raquo;</a>
-                </p>
-            </section>
-            <section class="col-md-4" aria-labelledby="hostingTitle">
-                <h2 id="hostingTitle">Web Hosting</h2>
-                <p>
-                    You can easily find a web hosting company that offers the right mix of features and price for your applications.
-                </p>
-                <p>
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
-                </p>
-            </section>
+          <div class="p-5 bg-body-tertiary rounded-3">
+            <h1 class="text-body-emphasis my-5">Bienvenido al sistema de gestión de clínica.</h1>
+
+              <div class="d-flex flex-wrap ">
+                <% if (EsTipoUsuario("admin"))
+                    { %> 
+                <div class="flex-fill"> 
+                    <a href="ListadoUsuarios.aspx" type="button" class="btn btn-warning btn-lg fs-3 p-5 m-2 fw-bold">USUARIOS</a>
+                </div>
+                  <%} %>
+                <% if (EsTipoUsuario("admin") || EsTipoUsuario("recepcionista"))
+                    { %> 
+               <div class="flex-fill">
+                  <a href="ListadoTurnos.aspx" type="button" class="btn btn-primary btn-lg fs-3 p-5 m-2 fw-bold">TURNOS</a>
+               </div>
+               <div class="flex-fill">
+                 <a href="ListadoMedicos.aspx" type="button" class="btn btn-secondary btn-lg fs-3 p-5 m-2 fw-bold">MÉDICOS</a>
+               </div>
+               <div class="flex-fill"> 
+                   <a href="ListadoHorarios.aspx" type="button" class="btn btn-dark btn-lg fs-3 p-5 m-2 fw-bold">HORARIOS</a>
+               </div>
+                <div class="flex-grow-1">  
+                   <a href="ListadoEspecialidades.aspx" type="button" class="btn btn-info btn-lg fs-3 p-5 m-2 fw-bold">ESPECIALIDADES</a>
+                </div>
+                  <%} %>
+                  <% if (EsTipoUsuario("admin") || EsTipoUsuario("recepcionista") || EsTipoUsuario("medico") )
+                    { %> 
+               <div class="flex-grow-1"> 
+                <a href="ListadoPacientes.aspx" type="button" class="btn btn-success btn-lg fs-3 p-5 m-2 fw-bold">PACIENTES</a>
+               </div>
+
+                   <%} %>
+
+              </div>
+          </div>
         </div>
-    </main>
+    </div>
+<% } else
+        { 
+        Response.Redirect("Cuenta.aspx", false);
+
+    }%>
 
 </asp:Content>
