@@ -84,8 +84,3 @@ INSERT INTO obra_social (usuario_id, nombre, numero_afiliado) VALUES
 (12, 'Swiss Medical', '444555666')
 -- Agrega más registros de obra_social aquí...
 GO
-
-INSERT INTO usuario_desc (usuario_id, nombre, apellido, EMail, DNI, Telefono, Celular, direccion, fecha_nacimiento) VALUES
-(11, 'Dr. Daniel', 'Clark', 'dr.clark@example.com', '89012345', '888-999-0000', '777-888-9999', '321 Pine St', '1974-11-11'),
-(12, 'Sophia', 'Martin', 'sophia.martin@example.com', '43210987', '999-000-1111', '888-999-0000', '654 Maple St', '1989-12-12'),
-
