@@ -38,8 +38,10 @@
                         </div>
                 <div class="col-4">
                         <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
-                        <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" style="background-image:none; max-height:230px; min-height:230px; max-width:350px" id="especialidadesMedicoMdf" class="form-select" aria-label="Especialidades del médico:">
-                        </asp:CheckBoxList>
+                        <div style="max-height: 230px; overflow-y: auto;">
+        <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" style="background-image:none; max-width:350px" id="especialidadesMedicoMdf" class="form-select" aria-label="Especialidades del médico:">
+        </asp:CheckBoxList>
+    </div>
                     </div>
                 </div>
         <div class="row justify-content-end" style="margin-top:20px">

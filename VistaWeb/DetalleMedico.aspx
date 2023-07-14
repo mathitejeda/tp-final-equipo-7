@@ -1,6 +1,11 @@
 ﻿<%@ Page Title="MedicDetail" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DetalleMedico.aspx.cs" Inherits="VistaWeb.DetalleMedico" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+
+           <% if (EstaLogueado())
+          { %> 
+            <% if (EsTipoUsuario("admin") || EsTipoUsuario("recepcionista") )
+                { %> 
 <h2>Detalle de Medico</h2>
     
         <div class="row align-text-center" style="margin-top:30px">
@@ -38,15 +43,31 @@
                             
                         </div>
                 <div class="col-4">
-                        <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
-                        <asp:ListBox runat="server" style="background-image:none; max-height:230px; min-height:230px; max-width:350px" id="especialidadesMedicoLista" class="form-select" aria-label="Especialidades del médico:">
-                        </asp:ListBox>
-                    </div>
+    <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
+    <div style="max-height: 230px; overflow-y: auto;">
+        <asp:ListBox runat="server" style="background-image:none; min-height:230px; max-width:350px" id="especialidadesMedicoLista" class="form-select" aria-label="Especialidades del médico:">
+        </asp:ListBox>
+    </div>
+</div>
+
                 </div>
         <div class="row justify-content-end" style="margin-top:20px">
             <div class="col-4">
                 <a href="ListadoMedicos.aspx" class="btn btn-outline-primary">Volver</a>
             </div>
          </div>
+
+        <% } else
+        {
+            Session.Add("Error", "Debés tener permisos de administrador o recepcionista para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        } %>
+<% } else
+        {
+            Session.Add("Error", "Debés estar logueado para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        }%>
     
 </asp:Content>

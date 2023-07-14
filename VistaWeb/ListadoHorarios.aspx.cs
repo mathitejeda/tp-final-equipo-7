@@ -17,6 +17,35 @@ namespace VistaWeb
 
     public partial class ListadoHorarios : System.Web.UI.Page
     {
+        public bool EstaLogueado()
+        {
+            if (((Modelo.Usuario)Session["UsuarioLogueado"]) != null)
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool EsTipoUsuario(string tipo)
+        {
+
+            if (tipo == "admin" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Administrador)
+            {
+                return true;
+            }
+            if (tipo == "recepcionista" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Recepcionista)
+            {
+                return true;
+            }
+            if (tipo == "medico" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Medico)
+            {
+                return true;
+            }
+            if (tipo == "paciente" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Paciente)
+            {
+                return true;
+            }
+            return false;
+        }
         public List<Horario> listaHorarios { get; set; }
         public Horario horarioActual { get; set; }
         public void cargarDdlMedicoAsignado()
@@ -99,79 +128,105 @@ namespace VistaWeb
             ScriptManager.RegisterStartupScript(this, GetType(), "limitarHs", script, false);
             if (!IsPostBack)
             {
-                loadHorarios();
+                try
+                {
+                    loadHorarios();
+                }
+                catch (Exception ex)
+                {
+                    Session.Add("Error", ex.ToString());
+                    Response.Redirect("Error.aspx", false);
+                }
             }
 
         }
         protected void loadHorarios()
         {
-            listaHorarios = (List<Horario>)Session["Horarios"];
-            if (listaHorarios == null)
+
+            try
             {
-                HorarioNegocio hsNegocio = new HorarioNegocio();
-                listaHorarios = hsNegocio.listar();
-                Session.Add("Horarios", listaHorarios);
+                listaHorarios = (List<Horario>)Session["Horarios"];
+                if (listaHorarios == null)
+                {
+                    HorarioNegocio hsNegocio = new HorarioNegocio();
+                    listaHorarios = hsNegocio.listar();
+                    Session.Add("Horarios", listaHorarios);
+                }
+                horariosRepeater.DataSource = listaHorarios;
+                horariosRepeater.DataBind();
             }
-            horariosRepeater.DataSource = listaHorarios;
-            horariosRepeater.DataBind();
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         protected void horariosRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            listaHorarios = (List<Horario>)Session["Horarios"];
-
-            
-            if (e.CommandName.ToString() == "ModificarHorario")
+            try
             {
-                int idHorario = Convert.ToInt32(e.CommandArgument);
-                horarioActual = listaHorarios.Find(x => x.Id == idHorario);
-                if (Session["HorarioActual"] == null)
+                listaHorarios = (List<Horario>)Session["Horarios"];
+
+
+                if (e.CommandName.ToString() == "ModificarHorario")
                 {
-                    Session.Add("HorarioActual", horarioActual);
+                    int idHorario = Convert.ToInt32(e.CommandArgument);
+                    horarioActual = listaHorarios.Find(x => x.Id == idHorario);
+                    if (Session["HorarioActual"] == null)
+                    {
+                        Session.Add("HorarioActual", horarioActual);
+                    }
+                    else
+                    {
+                        Session["HorarioActual"] = horarioActual;
+                    }
+
+                    labelBtnmodalmodalModificarHorario.Text = $"Modificar horario de {horarioActual.Especialidad.Nombre}";
+
+                    cargarDdlMedicoAsignadoMod();
+                    int idMedicoHorario = horarioActual.Medico.Id;
+                    ListItem item = ddlMedicoAsignadoMod.Items.FindByValue(idMedicoHorario.ToString());
+                    ddlMedicoAsignadoMod.SelectedIndex = ddlMedicoAsignadoMod.Items.IndexOf(item);
+
+                    cargarDdlEspecialidadMod(idMedicoHorario);
+                    int idEspecialidad = horarioActual.Especialidad.Id;
+                    ListItem itemEsp = ddlEspecialidadMod.Items.FindByValue(idEspecialidad.ToString());
+                    ddlEspecialidadMod.SelectedIndex = ddlEspecialidadMod.Items.IndexOf(itemEsp);
+                    //-----
+
+                    ddlDiaAtencionMod.SelectedIndex = ((int)horarioActual.DiaSem);
+                    tbxHsEntradaMod.Text = horarioActual.HsEntrada.ToString();
+                    tbxHsSalidaMod.Text = horarioActual.HsSalida.ToString();
+
+
                 }
-                else
+
+                if (e.CommandName.ToString() == "EliminarHorario")
                 {
-                    Session["HorarioActual"] = horarioActual;
+                    int idHorario = Convert.ToInt32(e.CommandArgument);
+                    horarioActual = listaHorarios.Find(x => x.Id == idHorario);
+                    if (Session["HorarioActual"] == null)
+                    {
+                        Session.Add("HorarioActual", horarioActual);
+                    }
+                    else
+                    {
+                        Session["HorarioActual"] = horarioActual;
+                    }
+                    labelBtnmodalEliminarHorario.Text = $"¿Estás seguro de borrar el horario para {horarioActual.Especialidad.Nombre}?";
+                    lbl_BorrarHorario.Text = $"Este horario es atendido por {horarioActual.Medico.Nombre} {horarioActual.Medico.Apellido} ";
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalEliminarHorario').modal('show');", true);
                 }
-                
-                labelBtnmodalmodalModificarHorario.Text = $"Modificar horario de {horarioActual.Especialidad.Nombre}";
-                
-                cargarDdlMedicoAsignadoMod();
-                int idMedicoHorario = horarioActual.Medico.Id;
-                ListItem item = ddlMedicoAsignadoMod.Items.FindByValue(idMedicoHorario.ToString());
-                ddlMedicoAsignadoMod.SelectedIndex = ddlMedicoAsignadoMod.Items.IndexOf(item);
-
-                cargarDdlEspecialidadMod(idMedicoHorario);
-                int idEspecialidad = horarioActual.Especialidad.Id;
-                ListItem itemEsp = ddlEspecialidadMod.Items.FindByValue(idEspecialidad.ToString());
-                ddlEspecialidadMod.SelectedIndex = ddlEspecialidadMod.Items.IndexOf(itemEsp);
-                //-----
-
-                ddlDiaAtencionMod.SelectedIndex = ((int)horarioActual.DiaSem);
-                tbxHsEntradaMod.Text = horarioActual.HsEntrada.ToString();
-                tbxHsSalidaMod.Text = horarioActual.HsSalida.ToString();
-
 
             }
-
-            if (e.CommandName.ToString() == "EliminarHorario")
+            catch (Exception ex)
             {
-                int idHorario = Convert.ToInt32(e.CommandArgument);
-                horarioActual = listaHorarios.Find(x => x.Id == idHorario);
-                if (Session["HorarioActual"] == null)
-                {
-                    Session.Add("HorarioActual", horarioActual);
-                }
-                else
-                {
-                    Session["HorarioActual"] = horarioActual;
-                }
-                labelBtnmodalEliminarHorario.Text = $"¿Estás seguro de borrar el horario para {horarioActual.Especialidad.Nombre}?";
-                lbl_BorrarHorario.Text = $"Este horario es atendido por { horarioActual.Medico.Nombre } {horarioActual.Medico.Apellido} ";
 
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalEliminarHorario').modal('show');", true);
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
             }
-
 
         }
 
@@ -186,32 +241,51 @@ namespace VistaWeb
 
         protected void ddlMedicoAsignado_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ClientScript.RegisterStartupScript(this.GetType(), "Popup", "$('#modalAgregarHorario').modal('show')", true);
+            try
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "Popup", "$('#modalAgregarHorario').modal('show')", true);
 
 
-            EspecialidadNegocio negocioEspecialidad = new EspecialidadNegocio();
-            List<Especialidad> especialidades = new List<Especialidad>();
-            if(ddlMedicoAsignado.SelectedValue != "")
+                EspecialidadNegocio negocioEspecialidad = new EspecialidadNegocio();
+                List<Especialidad> especialidades = new List<Especialidad>();
+                if (ddlMedicoAsignado.SelectedValue != "")
+                {
+                    especialidades = negocioEspecialidad.getEspecialidadesFromIdMedico(int.Parse(ddlMedicoAsignado.SelectedValue));
+                    ddlEspecialidad.DataSource = especialidades;
+                    ddlEspecialidad.DataTextField = "Nombre";
+                    ddlEspecialidad.DataValueField = "Id";
+                    ddlEspecialidad.DataBind();
+                }
+                else
+                {
+                    ddlEspecialidad.Items.Clear();
+                    ddlEspecialidad.Items.Add(new ListItem("Elegí una especialidad..", ""));
+                }
+            }
+            catch (Exception ex)
             {
-                especialidades = negocioEspecialidad.getEspecialidadesFromIdMedico(int.Parse(ddlMedicoAsignado.SelectedValue));
-                ddlEspecialidad.DataSource = especialidades;
-                ddlEspecialidad.DataTextField = "Nombre";
-                ddlEspecialidad.DataValueField = "Id";
-                ddlEspecialidad.DataBind();
-            } else
-            {
-                ddlEspecialidad.Items.Clear();
-                ddlEspecialidad.Items.Add(new ListItem("Elegí una especialidad..",""));
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
             }
 
 
         }
         protected void ddlMedicoAsignadoMod_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ClientScript.RegisterStartupScript(this.GetType(), "Popup", "$('#modalModificarHorario').modal('show')", true);
+            try
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "Popup", "$('#modalModificarHorario').modal('show')", true);
 
-            int idMedicoHorario = int.Parse(ddlMedicoAsignadoMod.SelectedItem.Value);
-            cargarDdlEspecialidadMod(idMedicoHorario);
+                int idMedicoHorario = int.Parse(ddlMedicoAsignadoMod.SelectedItem.Value);
+                cargarDdlEspecialidadMod(idMedicoHorario);
+            }
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
             //-!!
         }
 
@@ -273,7 +347,8 @@ namespace VistaWeb
             catch (Exception ex)
             {
 
-                throw ex;
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
             }
                
         }
@@ -311,35 +386,44 @@ namespace VistaWeb
 
             /**/
 
-            MedicoNegocio auxMed = new MedicoNegocio();
-            horarioActual.Medico = auxMed.getMedico(int.Parse(ddlMedicoAsignadoMod.SelectedValue));
-            EspecialidadNegocio auxEsp = new EspecialidadNegocio();
-            horarioActual.Especialidad = auxEsp.GetEspecialidad(int.Parse(ddlEspecialidadMod.SelectedValue));
+            try
+            {
+                MedicoNegocio auxMed = new MedicoNegocio();
+                horarioActual.Medico = auxMed.getMedico(int.Parse(ddlMedicoAsignadoMod.SelectedValue));
+                EspecialidadNegocio auxEsp = new EspecialidadNegocio();
+                horarioActual.Especialidad = auxEsp.GetEspecialidad(int.Parse(ddlEspecialidadMod.SelectedValue));
 
-            horarioActual.DiaSem = (Horario.DiaSemana)int.Parse(ddlDiaAtencionMod.SelectedValue);
+                horarioActual.DiaSem = (Horario.DiaSemana)int.Parse(ddlDiaAtencionMod.SelectedValue);
 
-            horarioActual.HsEntrada = int.Parse(tbxHsEntradaMod.Text);
-            horarioActual.HsSalida = int.Parse(tbxHsSalidaMod.Text);
+                horarioActual.HsEntrada = int.Parse(tbxHsEntradaMod.Text);
+                horarioActual.HsSalida = int.Parse(tbxHsSalidaMod.Text);
 
-        
-            aux.modificar(horarioActual);
 
-            listaHorarios = (List<Horario>)Session["Horarios"];
+                aux.modificar(horarioActual);
 
-            horariosRepeater.DataSource = listaHorarios;
-            horariosRepeater.DataBind();
+                listaHorarios = (List<Horario>)Session["Horarios"];
 
-            string script = @"<script>
+                horariosRepeater.DataSource = listaHorarios;
+                horariosRepeater.DataBind();
+
+                string script = @"<script>
                      var divModificarUser = document.getElementById('modificarHorario');
                      if (divModificarUser) {
                          divModificarUser.style.display = 'block';
                      }
                  </script>";
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowModificarDiv", script);
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowModificarDiv", script);
 
-            // FALTA ENVIAR
-            limpiar_formMod();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalModificarHorario').modal('hide');", true);
+                // FALTA ENVIAR
+                limpiar_formMod();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalModificarHorario').modal('hide');", true);
+            }
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
 
         }
 
@@ -353,23 +437,32 @@ namespace VistaWeb
 
         protected void btn_eliminarHorario_Click(object sender, EventArgs e)
         {
-            horarioActual = (Horario)Session["HorarioActual"];
-            listaHorarios = (List<Horario>)Session["Horarios"];
-            HorarioNegocio negocioHorario = new HorarioNegocio();
-            listaHorarios.Remove(horarioActual);
-            negocioHorario.eliminar(horarioActual.Id);
-            Session.Add("Horarios", listaHorarios);
-            horariosRepeater.DataSource = listaHorarios;
-            horariosRepeater.DataBind();
+            try
+            {
+                horarioActual = (Horario)Session["HorarioActual"];
+                listaHorarios = (List<Horario>)Session["Horarios"];
+                HorarioNegocio negocioHorario = new HorarioNegocio();
+                listaHorarios.Remove(horarioActual);
+                negocioHorario.eliminar(horarioActual.Id);
+                Session.Add("Horarios", listaHorarios);
+                horariosRepeater.DataSource = listaHorarios;
+                horariosRepeater.DataBind();
 
 
-            string script = @"<script>
+                string script = @"<script>
                      var divEliminar = document.getElementById('eliminarHorario');
                      if (divEliminar) {
                          divEliminar.style.display = 'block';
                      }
                  </script>";
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowEliminarDiv", script);
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowEliminarDiv", script);
+            }
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
         }
     }
    

@@ -12,6 +12,11 @@
             $('#'+modalName).modal('hide');
         }
     </script>
+
+        <% if (EstaLogueado())
+          { %> 
+            <% if (EsTipoUsuario("admin") || EsTipoUsuario("recepcionista") )
+                { %> 
     <div class="container">
         <div class="row">
             <h1 class="mb-4">Listado de Especialidades</h1>
@@ -129,7 +134,8 @@
 
                     <div class="mb-3">
                         <label for="especialidad-nombre" class="form-label">Nombre de la especialidad:</label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="especialidadNombreAdd" name="nombre" required>
+                        <input runat="server" type="text" style="background: #fff" class="form-control" id="especialidadNombreAdd" name="nombre">
+                        <asp:RequiredFieldValidator ID="rfvEspecialidadNombreAdd" runat="server" ControlToValidate="especialidadNombreAdd" ErrorMessage="Ingrese un nombre de especialidad" CssClass="text-danger" Text="* campo obligatorio" ValidationGroup="validationGroupAdd"></asp:RequiredFieldValidator>
                     </div>
                     <!--
                     <div class="mb-3">
@@ -143,7 +149,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
-                    <asp:button runat="server" type="button" class="btn btn-primary" Text="Agregar especialidad" OnClick="btn_Agregar"></asp:button>
+                    <asp:button runat="server" type="submit" class="btn btn-primary" Text="Agregar especialidad" OnClick="btn_Agregar" ValidationGroup="validationGroupAdd"></asp:button>
                 </div>
             </div>
         </div>
@@ -164,7 +170,8 @@
                         <label for="especialidad-nombre" class="form-label">Nombre de la especialidad:</label>
                         <asp:UpdatePanel ID="modValue" runat="server">
                             <ContentTemplate>
-                                <input runat="server" type="text" style="background: #fff" class="form-control" id="especialidadNombreMdf" name="nombre" required>
+                                <input runat="server" type="text" style="background: #fff" class="form-control" id="especialidadNombreMdf" name="nombre">
+                                <asp:RequiredFieldValidator ID="rfvEspecialidadNombreMdf" runat="server" ControlToValidate="especialidadNombreMdf" ErrorMessage="Ingrese un nombre de especialidad" CssClass="text-danger" Text="* campo obligatorio" ValidationGroup="validationGroupMdf"></asp:RequiredFieldValidator>
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </div>
@@ -180,7 +187,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
-                    <asp:button runat="server" type="button" class="btn btn-primary" OnClick="btn_Modificar" Text="Modificar especialidad"></asp:button>
+                    <asp:button runat="server" type="submit" ValidationGroup="validationGroupMdf" class="btn btn-primary" OnClick="btn_Modificar" Text="Modificar especialidad"></asp:button>
                 </div>
             </div>
         </div>
@@ -205,4 +212,16 @@
             </div>
         </div>
     </div>
+            <% } else
+        {
+            Session.Add("Error", "Debés tener permisos de administrador o recepcionista para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        } %>
+<% } else
+        {
+            Session.Add("Error", "Debés estar logueado para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        }%>
 </asp:Content>

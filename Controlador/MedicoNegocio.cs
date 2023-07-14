@@ -185,12 +185,15 @@ namespace Controlador
             AccesoDatos accesoDatos = new AccesoDatos();
             try
             {
-                string consulta =   "UPDATE usuario SET estado=0 WHERE id=@id\n" +
+                string consulta = "UPDATE usuario SET estado=0 WHERE id=@id\n" +
                                     "DELETE FROM medico_especialidad WHERE medico_id=@id2\n" +
-                                    "UPDATE horarios SET medico_id";
+                                    "DELETE FROM horarios WHERE medico_id=@id3\n" +
+                                    "UPDATE turno SET estado=6 where medico_id=@id4";
                 accesoDatos.SetConsulta(consulta);
                 accesoDatos.setearParametro("@id", id);
                 accesoDatos.setearParametro("@id2", id);
+                accesoDatos.setearParametro("@id3", id);
+                accesoDatos.setearParametro("@id4", id);
                 accesoDatos.SetConsulta(consulta);
                 accesoDatos.EjecutarAccion();
             }

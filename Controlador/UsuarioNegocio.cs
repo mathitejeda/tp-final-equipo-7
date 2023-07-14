@@ -177,24 +177,20 @@ namespace Controlador
             }
         }
 
-        public string getDatosPersonales(int user_id, string tipo)
+        public List<string> getDatosContacto(int user_id)
         {
             AccesoDatos datos = new AccesoDatos();
-            
             try
             {
-                string aux = "";
-                datos.SetConsulta($"select nombre,apellido from usuario_desc where usuario_id={user_id}");
+                List<string> aux = new List<string>();
+                datos.SetConsulta($"select isnull(EMail, 'No registrado') as email,  isnull(Telefono, 'No registrado') as telefono,  isnull(Celular, 'No registrado')as celular,  isnull(direccion, 'No registrada') as direccion from usuario_desc where usuario_id ={user_id}");
                 datos.EjecutarLectura();
-                if (datos.Lector.Read())
+                while (datos.Lector.Read())
                 {
-                    if(tipo == "nombre")
-                    {
-                        aux = datos.Lector["nombre"].ToString();
-                    }
-                    else if (tipo == "apellido") {
-                        aux = datos.Lector["apellido"].ToString();
-                    }
+                    aux.Add(datos.Lector["email"].ToString());
+                    aux.Add(datos.Lector["telefono"].ToString());
+                    aux.Add(datos.Lector["celular"].ToString());
+                    aux.Add(datos.Lector["direccion"].ToString());
                 }
                 return aux;
             }
@@ -202,6 +198,75 @@ namespace Controlador
             {
                 throw ex;
             }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
+        public string getDatosPersonales(int user_id, string tipo)
+        {
+            if (tipo == "dni" || tipo == "fechaNac")
+            {
+                AccesoDatos datos = new AccesoDatos();
+                try
+                {
+                    string aux = "";
+                    datos.SetConsulta($"select dni, cast(format(fecha_nacimiento, 'dd/MM/yyyy') as varchar) as fecha_nacimiento from usuario_desc where usuario_id={user_id}");
+                    datos.EjecutarLectura();
+                    if (datos.Lector.Read())
+                    {
+                        if (tipo == "dni")
+                        {
+                            aux = datos.Lector["dni"].ToString();
+                        }
+                        if (tipo == "fechaNac")
+                        {
+                            aux = datos.Lector["fecha_nacimiento"].ToString();
+                        }
+                    }
+                    return aux;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    datos.CerrarConexion();
+                }
+            }
+            else if (tipo == "nombre" || tipo == "apellido")
+            {
+                AccesoDatos datos = new AccesoDatos();
+                try
+                {
+                    string aux = "";
+                    datos.SetConsulta($"select nombre,apellido from usuario_desc where usuario_id={user_id}");
+                    datos.EjecutarLectura();
+                    if (datos.Lector.Read())
+                    {
+                        if (tipo == "nombre")
+                        {
+                            aux = datos.Lector["nombre"].ToString();
+                        }
+                        else if (tipo == "apellido")
+                        {
+                            aux = datos.Lector["apellido"].ToString();
+                        }
+                    }
+                    return aux;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    datos.CerrarConexion();
+                }
+            }
+            return "";
         }
         public int findByUserID(int user_id)
         {
@@ -220,6 +285,10 @@ namespace Controlador
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
             }
         }
 
@@ -240,6 +309,10 @@ namespace Controlador
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
             }
         }
 
@@ -327,7 +400,7 @@ namespace Controlador
             {
                 datos.CerrarConexion();
             }
-           
+
         }
 
     }

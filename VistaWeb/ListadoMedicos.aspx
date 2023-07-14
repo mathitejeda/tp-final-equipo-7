@@ -12,6 +12,12 @@
             $('#'+modalName).modal('hide');
         }
     </script>
+
+    
+        <% if (EstaLogueado())
+          { %> 
+            <% if (EsTipoUsuario("admin") || EsTipoUsuario("recepcionista") )
+                { %> 
     <div class="container">
         <div class="row">
             <h1 class="mb-4">Listado de Médicos</h1>
@@ -232,23 +238,29 @@
 
                     <div class="mb-3">
                         <label for="medico-nombre" class="form-label">Nombre del médico:</label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoNombreMdf" name="nombre" required>
+                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoNombreMdf" name="nombre" >
+                        <asp:RequiredFieldValidator ID="rfvEspecialidadNombreAdd" runat="server" ControlToValidate="medicoNombreMdf" ErrorMessage="Ingrese un nombre" CssClass="text-danger" Text="* campo obligatorio" ValidationGroup="validationGroupMdf"></asp:RequiredFieldValidator>
                     </div>
                     <div class="mb-3">
                         <label for="medico-apellido" class="form-label">Apellido del médico:</label>
-                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoApellidoMdf" name="apellido" required>
+                        <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoApellidoMdf" name="apellido">
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="medicoApellidoMdf" ErrorMessage="Ingrese un apellido" CssClass="text-danger" Text="* campo obligatorio" ValidationGroup="validationGroupMdf"></asp:RequiredFieldValidator>
                     </div>
-                    <div class="mb-3">
-                        <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
-                        <asp:CheckBoxList runat="server" DataTextField="Nombre" style="background-image:none" DataValueField="Id" id="especialidadesMedicoMdf" class="form-select" aria-label="Especialidades del médico:">
-                        </asp:CheckBoxList>
-                    </div>
+                    <div class="mb-3" >
+    <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
+                        <div style="max-height: 230px; overflow-y: auto;">
+
+    <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" style="background-image:none" id="especialidadesMedicoMdf" class="form-select" aria-label="Especialidades del médico:">
+    </asp:CheckBoxList>
+                        </div>
+</div>
+
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
                     <a href="ModificarMedico.aspx?id=<%:medicoActivo.Id%>" class="btn btn-primary">Más opciones</a>
-                    <asp:button runat="server" OnClick="btn_Modificar" type="button" class="btn btn-primary" Text="Modificar médico"></asp:button>
+                    <asp:button runat="server" OnClick="btn_Modificar" type="button" ValidationGroup="validationGroupMdf" class="btn btn-primary" Text="Modificar médico"></asp:button>
                 </div>
             </div>
         </div>
@@ -273,4 +285,16 @@
             </div>
         </div>
     </div>
+        <% } else
+        {
+            Session.Add("Error", "Debés tener permisos de administrador o recepcionista para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        } %>
+<% } else
+        {
+            Session.Add("Error", "Debés estar logueado para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        }%>
 </asp:Content>

@@ -48,11 +48,13 @@ create table medico_especialidad (
 GO
 
 create table horarios (
+	id_horario int primary key identity(1,1) not null,
 	medico_id int not null foreign key references usuario(id),
 	especialidad_id int FOREIGN key references especialidad(id),
 	hora_entrada tinyint,
 	hora_salida tinyint,
 	dia tinyint,
+	estado bit default(1) not null
 )
 GO
 

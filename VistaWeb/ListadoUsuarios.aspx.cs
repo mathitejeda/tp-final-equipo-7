@@ -19,7 +19,35 @@ namespace VistaWeb
         public List<Usuario> listaUsuario { get; set; }
 
         public Usuario usuarioActivo { get; set; }
+        public bool EstaLogueado()
+        {
+            if (((Modelo.Usuario)Session["UsuarioLogueado"]) != null)
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool EsTipoUsuario(string tipo)
+        {
 
+            if (tipo == "admin" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Administrador)
+            {
+                return true;
+            }
+            if (tipo == "recepcionista" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Recepcionista)
+            {
+                return true;
+            }
+            if (tipo == "medico" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Medico)
+            {
+                return true;
+            }
+            if (tipo == "paciente" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Paciente)
+            {
+                return true;
+            }
+            return false;
+        }
         public void limpiar_Form()
         {
             tbx_NombreUsuario.Text = "";
@@ -35,7 +63,16 @@ namespace VistaWeb
             if (!IsPostBack)
             {
 
-                loadUsuarios();
+                try
+                {
+                    loadUsuarios();
+                }
+                catch (Exception ex)
+                {
+
+                    Session.Add("Error", ex.ToString());
+                    Response.Redirect("Error.aspx", false);
+                }
             }
         }
 
@@ -54,49 +91,58 @@ namespace VistaWeb
 
         protected void rowRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            listaUsuario = (List<Usuario>)Session["Usuarios"];
-
-            if (e.CommandName.ToString() == "ModificarUsuario")
+            try
             {
-                int idUsuario = Convert.ToInt32(e.CommandArgument);
-                usuarioActivo = listaUsuario.Find(x => x.Id == idUsuario);
-                if (Session["UsuarioActivo"] == null)
+                listaUsuario = (List<Usuario>)Session["Usuarios"];
+
+                if (e.CommandName.ToString() == "ModificarUsuario")
                 {
-                    Session.Add("UsuarioActivo", usuarioActivo);
+                    int idUsuario = Convert.ToInt32(e.CommandArgument);
+                    usuarioActivo = listaUsuario.Find(x => x.Id == idUsuario);
+                    if (Session["UsuarioActivo"] == null)
+                    {
+                        Session.Add("UsuarioActivo", usuarioActivo);
+                    }
+                    else
+                    {
+                        Session["UsuarioActivo"] = usuarioActivo;
+                    }
+
+                    labelBtnmodalModificarUsuario.Text = $"Modificar usuario {usuarioActivo.User}";
+                    tbx_NombreUsuarioMod.Text = usuarioActivo.User;
+                    tbx_PasswordUsuarioMod.Text = usuarioActivo.Pass;
+                    tipoUsuarioDropdownEditMod.SelectedIndex = ((int)usuarioActivo.TipoUsuario) + 1;
+
+                    UsuarioNegocio aux = new UsuarioNegocio();
+
+                    tbx_NombrePropioUserMod.Text = aux.getDatosPersonales(usuarioActivo.Id, "nombre");
+                    tbx_ApellidoUserMod.Text = aux.getDatosPersonales(usuarioActivo.Id, "apellido");
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalModificarUsuario').modal('show');", true);
+
                 }
-                else
+
+                if (e.CommandName.ToString() == "EliminarUsuario")
                 {
-                    Session["UsuarioActivo"] = usuarioActivo;
+                    int idUsuario = Convert.ToInt32(e.CommandArgument);
+                    usuarioActivo = listaUsuario.Find(x => x.Id == idUsuario);
+                    if (Session["UsuarioActivo"] == null)
+                    {
+                        Session.Add("UsuarioActivo", usuarioActivo);
+                    }
+                    else
+                    {
+                        Session["UsuarioActivo"] = usuarioActivo;
+                    }
+                    labelBtnmodalEliminarUsuario.Text = $"¿Estás seguro de borrar al usuario {usuarioActivo.User}?";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalEliminarUsuario').modal('show');", true);
                 }
-                
-                labelBtnmodalModificarUsuario.Text = $"Modificar usuario {usuarioActivo.User}";
-                tbx_NombreUsuarioMod.Text = usuarioActivo.User;
-                tbx_PasswordUsuarioMod.Text = usuarioActivo.Pass;
-                tipoUsuarioDropdownEditMod.SelectedIndex = ((int)usuarioActivo.TipoUsuario)+1;
-
-                UsuarioNegocio aux = new UsuarioNegocio();
-
-                tbx_NombrePropioUserMod.Text = aux.getDatosPersonales(usuarioActivo.Id, "nombre");
-                tbx_ApellidoUserMod.Text = aux.getDatosPersonales(usuarioActivo.Id, "apellido");
-
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalModificarUsuario').modal('show');", true);
-
             }
-
-            if (e.CommandName.ToString() == "EliminarUsuario")
+            catch (Exception ex)
             {
-                int idUsuario = Convert.ToInt32(e.CommandArgument);
-                usuarioActivo = listaUsuario.Find(x => x.Id == idUsuario);
-                if (Session["UsuarioActivo"] == null)
-                {
-                    Session.Add("UsuarioActivo", usuarioActivo);
-                }
-                else
-                {
-                    Session["UsuarioActivo"] = usuarioActivo;
-                }
-                labelBtnmodalEliminarUsuario.Text = $"¿Estás seguro de borrar al usuario {usuarioActivo.User}?";
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalEliminarUsuario').modal('show');", true);
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
             }
 
         }
@@ -154,7 +200,8 @@ namespace VistaWeb
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    Session.Add("Error", ex.ToString());
+                    Response.Redirect("Error.aspx", false);
                 }
             } else
             {
@@ -173,76 +220,94 @@ namespace VistaWeb
         }
         protected void btn_Modificar(object sender, EventArgs e)
         {
-            
-            usuarioActivo = (Usuario)Session["UsuarioActivo"];
-            listaUsuario = (List<Usuario>)Session["Usuarios"];
-            UsuarioNegocio aux = new UsuarioNegocio();
 
-            if (tbx_NombreUsuarioMod.Text != usuarioActivo.User)
+            try
             {
-                if (aux.findIdByUserName(tbx_NombreUsuarioMod.Text) != -1)
+                usuarioActivo = (Usuario)Session["UsuarioActivo"];
+                listaUsuario = (List<Usuario>)Session["Usuarios"];
+                UsuarioNegocio aux = new UsuarioNegocio();
+
+                if (tbx_NombreUsuarioMod.Text != usuarioActivo.User)
                 {
-                    string script2 = @"<script>
+                    if (aux.findIdByUserName(tbx_NombreUsuarioMod.Text) != -1)
+                    {
+                        string script2 = @"<script>
                      var divErrorUser = document.getElementById('errorUser');
                      if (divErrorUser) {
                          divErrorUser.style.display = 'block';
                      }
                      </script>";
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowErrorDiv", script2);
-                    limpiar_Form();
-                    return;
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowErrorDiv", script2);
+                        limpiar_Form();
+                        return;
+                    }
                 }
-            }
 
-            usuarioActivo.User = tbx_NombreUsuarioMod.Text;
-            usuarioActivo.Pass = tbx_PasswordUsuarioMod.Text;
-            usuarioActivo.TipoUsuario = (TipoUsuario)tipoUsuarioDropdownEditMod.SelectedIndex-1;
-            string nombreUser = tbx_NombrePropioUserMod.Text;
-            string apellidoUser = tbx_ApellidoUserMod.Text;
-            
-                    aux.modificar(usuarioActivo, nombreUser, apellidoUser);
+                usuarioActivo.User = tbx_NombreUsuarioMod.Text;
+                usuarioActivo.Pass = tbx_PasswordUsuarioMod.Text;
+                usuarioActivo.TipoUsuario = (TipoUsuario)tipoUsuarioDropdownEditMod.SelectedIndex - 1;
+                string nombreUser = tbx_NombrePropioUserMod.Text;
+                string apellidoUser = tbx_ApellidoUserMod.Text;
 
-                    listaUsuario = (List<Usuario>)Session["Usuarios"];
+                aux.modificar(usuarioActivo, nombreUser, apellidoUser);
+
+                listaUsuario = (List<Usuario>)Session["Usuarios"];
 
 
-                    //listaUsuario.Add(usuarioActivo);
-                    //Session.Add("Usuarios", listaUsuario);
-                    rowRepeater.DataSource = listaUsuario;
-                    rowRepeater.DataBind();
-                    //Response.Redirect("ListadoUsuarios.aspx");
+                //listaUsuario.Add(usuarioActivo);
+                //Session.Add("Usuarios", listaUsuario);
+                rowRepeater.DataSource = listaUsuario;
+                rowRepeater.DataBind();
+                //Response.Redirect("ListadoUsuarios.aspx");
 
-                    string script = @"<script>
+                string script = @"<script>
                      var divModificarUser = document.getElementById('modificarUser');
                      if (divModificarUser) {
                          divModificarUser.style.display = 'block';
                      }
                  </script>";
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowModificarDiv", script);
-                     
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowModificarDiv", script);
+
+            }
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
 
         }
 
     protected void btn_Eliminar(object sender, EventArgs e)
         {
 
-            usuarioActivo = (Usuario)Session["UsuarioActivo"];
-            listaUsuario = (List<Usuario>)Session["Usuarios"];
-            UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-            listaUsuario.Remove(usuarioActivo);
-            usuarioNegocio.eliminar(usuarioActivo.Id);
-            Session.Add("Usuario", listaUsuario);
-            rowRepeater.DataSource = listaUsuario;
-            rowRepeater.DataBind();
+            try
+            {
+                usuarioActivo = (Usuario)Session["UsuarioActivo"];
+                listaUsuario = (List<Usuario>)Session["Usuarios"];
+                UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+                listaUsuario.Remove(usuarioActivo);
+                usuarioNegocio.eliminar(usuarioActivo.Id);
+                Session.Add("Usuario", listaUsuario);
+                rowRepeater.DataSource = listaUsuario;
+                rowRepeater.DataBind();
 
 
-            string script = @"<script>
+                string script = @"<script>
                      var divEliminar = document.getElementById('eliminarUser');
                      if (divEliminar) {
                          divEliminar.style.display = 'block';
                      }
                  </script>";
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowEliminarDiv", script);
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowEliminarDiv", script);
 
+            }
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
         }
 
         protected void volver_Click(object sender, EventArgs e)
