@@ -117,7 +117,6 @@ namespace VistaWeb
                     }
                 }
                 aux.agregar(medico);
-                Response.Redirect("ListadoMedicos.aspx");
             }
             catch (Exception ex)
             {
@@ -125,6 +124,7 @@ namespace VistaWeb
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
+                Response.Redirect("ListadoMedicos.aspx");
 
         }
         protected void btn_Modificar(object sender, EventArgs e)
@@ -147,7 +147,6 @@ namespace VistaWeb
                     }
                 }
                 aux.modificar(medico);
-                Response.Redirect("ListadoMedicos.aspx");
             }
             catch (Exception ex)
             {
@@ -155,6 +154,7 @@ namespace VistaWeb
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
+                Response.Redirect("ListadoMedicos.aspx");
             
         }
         protected void btn_Eliminar(object sender, EventArgs e)
@@ -166,7 +166,6 @@ namespace VistaWeb
                 MedicoNegocio aux = new MedicoNegocio();
                 int id = int.Parse(medicoActivo.Id.ToString());
                 aux.bajaLogica(id);
-                Response.Redirect("ListadoMedicos.aspx");
             }
             catch (Exception ex)
             {
@@ -174,6 +173,7 @@ namespace VistaWeb
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
+                Response.Redirect("ListadoMedicos.aspx");
         }
 
     }

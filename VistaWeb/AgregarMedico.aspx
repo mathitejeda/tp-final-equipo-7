@@ -37,12 +37,13 @@
                             <input runat="server" id="fechaNac" type="date" style="background: #fff" class="form-control" required>
                         </div>
                 <div class="col-4">
-                        <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
-                        <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" style="background-image:none; max-height:230px; min-height:230px; max-width:350px" id="especialidadesMedicoAdd" class="form-select" aria-label="Especialidades del médico:">
-                        </asp:CheckBoxList>
-                            
-                            
-                    </div>
+    <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
+    <div style="max-height: 230px; overflow-y: auto;">
+        <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" style="background-image:none; max-width:350px" id="especialidadesMedicoAdd" class="form-select" aria-label="Especialidades del médico:">
+        </asp:CheckBoxList>
+    </div>
+</div>
+
                 </div>
         <div class="row justify-content-end" style="margin-top:20px">
             <div class="col-4">

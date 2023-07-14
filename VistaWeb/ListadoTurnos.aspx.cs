@@ -268,7 +268,6 @@ namespace VistaWeb
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "alert('Turno agregado correctamente');", true);
                 turnos.Add(turno);
                 Session["Turnos"] = turnos;
-                Response.Redirect("ListadoTurnos.aspx");
             }
             catch (Exception ex)
             {
@@ -276,6 +275,7 @@ namespace VistaWeb
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
+                Response.Redirect("ListadoTurnos.aspx");
         }
     }
 }

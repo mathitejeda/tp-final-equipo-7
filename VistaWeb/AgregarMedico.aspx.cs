@@ -43,7 +43,6 @@ namespace VistaWeb
                     }
                 }
                 auxMedico.agregar(aux);
-                Response.Redirect("ListadoMedicos.aspx");
             }
             catch (Exception ex)
             {
@@ -51,6 +50,7 @@ namespace VistaWeb
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
+                Response.Redirect("ListadoMedicos.aspx");
         }
     }
 }

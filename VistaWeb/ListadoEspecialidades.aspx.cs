@@ -58,7 +58,13 @@ namespace VistaWeb
                 especialidadNombreMdf.Value = EspecialidadActiva.Nombre;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "openModal('" + modal + "')", true);
             }
-            catch (Exception ex) { Session.Add("Error", ex.ToString()); Response.Redirect("Error.aspx", false); }
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
+            
 
         }
         protected void medicRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -80,6 +86,7 @@ namespace VistaWeb
                 }
             }
             catch (Exception ex) { Session.Add("Error", ex.ToString()); Response.Redirect("Error.aspx", false); }
+            
         }
 
         protected void btn_Modificar(object sender, EventArgs e)
@@ -91,45 +98,49 @@ namespace VistaWeb
                 EspecialidadActiva.Nombre = aux.ToTitleCase(especialidadNombreMdf.Value.ToLower());
                 EspecialidadNegocio negocio = new EspecialidadNegocio();
                 negocio.modificar(EspecialidadActiva);
-                Response.Redirect("ListadoEspecialidades.aspx");
             }
             catch(Exception ex)
             {
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
+                Response.Redirect("ListadoEspecialidades.aspx");
         }
 
         protected void btn_Agregar(object sender, EventArgs e)
         {
+
             try
             {
-                TextInfo aux = new CultureInfo("es-ES",false).TextInfo;
+                TextInfo aux = new CultureInfo("es-ES", false).TextInfo;
                 EspecialidadActiva.Nombre = aux.ToTitleCase(especialidadNombreAdd.Value.ToLower());
                 EspecialidadNegocio negocio = new EspecialidadNegocio();
                 negocio.agregar(EspecialidadActiva.Nombre);
-                Response.Redirect("ListadoEspecialidades.aspx");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
+                Response.Redirect("ListadoEspecialidades.aspx");
+            
         }
         protected void btn_Eliminar(object sender, EventArgs e)
         {
+
             try
             {
                 EspecialidadActiva = (Especialidad)Session["EspecialidadActiva"];
                 EspecialidadNegocio negocio = new EspecialidadNegocio();
                 negocio.eliminar(EspecialidadActiva.Id);
-                Response.Redirect("ListadoEspecialidades.aspx");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
+                Response.Redirect("ListadoEspecialidades.aspx");
+            
         }
 
     }

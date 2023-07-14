@@ -15,11 +15,11 @@ namespace VistaWeb
         {
             if (!IsPostBack)
             {
-                try
-                {
                     int medicoActivo = 0;
                     if (Request.QueryString["id"] != null) { medicoActivo = int.Parse(Request.QueryString["id"]); }
                     else Response.Redirect("ListadoMedicos.aspx");
+                try
+                {
                     Medico aux = new Medico();
                     MedicoNegocio medicoNegocio = new MedicoNegocio();
                     aux = medicoNegocio.getMedico(medicoActivo);
@@ -70,9 +70,9 @@ namespace VistaWeb
                     }
                 }
                 auxMedico.modificar(aux);
-                Response.Redirect("ListadoMedicos.aspx");
             }
             catch (Exception ex) { Session.Add("Error", ex.ToString()); Response.Redirect("Error.aspx", false); }
+                Response.Redirect("ListadoMedicos.aspx");
         }
     }
 }

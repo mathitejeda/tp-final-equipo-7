@@ -240,11 +240,15 @@
                         <input runat="server" type="text" style="background: #fff" class="form-control" id="medicoApellidoMdf" name="apellido">
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="medicoApellidoMdf" ErrorMessage="Ingrese un apellido" CssClass="text-danger" Text="* campo obligatorio" ValidationGroup="validationGroupMdf"></asp:RequiredFieldValidator>
                     </div>
-                    <div class="mb-3">
-                        <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
-                        <asp:CheckBoxList runat="server" DataTextField="Nombre" style="background-image:none" DataValueField="Id" id="especialidadesMedicoMdf" class="form-select" aria-label="Especialidades del médico:">
-                        </asp:CheckBoxList>
-                    </div>
+                    <div class="mb-3" >
+    <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
+                        <div style="max-height: 230px; overflow-y: auto;">
+
+    <asp:CheckBoxList runat="server" DataTextField="Nombre" DataValueField="Id" style="background-image:none" id="especialidadesMedicoMdf" class="form-select" aria-label="Especialidades del médico:">
+    </asp:CheckBoxList>
+                        </div>
+</div>
+
 
                 </div>
                 <div class="modal-footer">

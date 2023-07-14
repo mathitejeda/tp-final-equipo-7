@@ -38,10 +38,13 @@
                             
                         </div>
                 <div class="col-4">
-                        <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
-                        <asp:ListBox runat="server" style="background-image:none; max-height:230px; min-height:230px; max-width:350px" id="especialidadesMedicoLista" class="form-select" aria-label="Especialidades del médico:">
-                        </asp:ListBox>
-                    </div>
+    <label for="especialidades-medico" class="form-label">Especialidades que atiende el médico:</label>
+    <div style="max-height: 230px; overflow-y: auto;">
+        <asp:ListBox runat="server" style="background-image:none; min-height:230px; max-width:350px" id="especialidadesMedicoLista" class="form-select" aria-label="Especialidades del médico:">
+        </asp:ListBox>
+    </div>
+</div>
+
                 </div>
         <div class="row justify-content-end" style="margin-top:20px">
             <div class="col-4">

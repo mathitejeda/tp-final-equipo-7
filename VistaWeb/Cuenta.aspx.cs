@@ -72,8 +72,6 @@ namespace VistaWeb
         {
             Usuario user;
             UsuarioNegocio negocioUsuario = new UsuarioNegocio();
-            try
-            {
                 user = new Usuario(tbxUsernameLogin.Text, tbxPasswordLogin.Text);
                 if (negocioUsuario.VerificarLogin(user))
                 {
@@ -88,12 +86,7 @@ namespace VistaWeb
                     Response.Redirect("Error.aspx", false);
                 }
 
-            }
-            catch (Exception ex)
-            {
-                Session.Add("Error", ex.ToString());
-                Response.Redirect("Error.aspx", false);
-            }
+            
         }
 
         protected void btnLogoutCuentaSubmit_Click(object sender, EventArgs e)
