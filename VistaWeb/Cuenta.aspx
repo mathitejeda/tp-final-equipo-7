@@ -72,28 +72,34 @@
                     <!-- acá hacer un if para mostrarlo solamente a pacientes. --> <!-- tambien hacer un else para dejar active el otro -->
                     <div class="tab-pane fade show active" id="list-turnos" role="tabpanel" aria-labelledby="list-turnos">
                         <div class="card border-primary mb-3">
-                      <div class="card-header text-primary d-flex justify-content-md-between">
-                          <h5>Turno # - (NOMBRE_ESPECIALIDAD)</h5>
-                          <span class="badge text-bg-primary my-auto">13/06/2023</span>
-                      </div>
-                      <div class="card-body text-primary">
-                          <div class="card-text">
-                            <p><strong>Paciente: </strong>(NOMBRE PACIENTE)</p>
-                            <p><strong>Fecha: </strong>Martes 13 de Junio 2023</p>
-                            <p><strong>Horario: </strong>10:00hs</p>
-                            <p><strong>Médico asignado: </strong>(NOMBRE_MÉDICO) ((ESPECIALIDAD))</p>
-                            <p><strong>Observaciones: </strong>(OBSERVACIONES_DEL_TURNO)</p>
+                          <div class="card-header text-primary d-flex justify-content-md-between">
+                              <h5>Turno # - (NOMBRE_ESPECIALIDAD)</h5>
+                              <span class="badge text-bg-primary my-auto">13/06/2023</span>
                           </div>
-                      </div>
-                    </div>
+                          <div class="card-body text-primary">
+                              <div class="card-text">
+                                <p><strong>Paciente: </strong>(NOMBRE PACIENTE)</p>
+                                <p><strong>Fecha: </strong>Martes 13 de Junio 2023</p>
+                                <p><strong>Horario: </strong>10:00hs</p>
+                                <p><strong>Médico asignado: </strong>(NOMBRE_MÉDICO) ((ESPECIALIDAD))</p>
+                                <p><strong>Observaciones: </strong>(OBSERVACIONES_DEL_TURNO)</p>
+                              </div>
+                          </div>
+                        </div>
                     </div>
                     <!-- /////////////////// -->
                     <div class="tab-pane fade" id="list-datos" role="tabpanel" aria-labelledby="list-datos-list">
-                        <h5 class="fs-5"><%  %></h5>
-
+                        <h5 class="fs-5">Datos personales</h5>
+                            <p><strong>Nombre y apellido: </strong> <span><% imprimirDatos("nombre"); %></span> <span><% imprimirDatos("apellido"); %></span> </p>
+                            <p><strong>DNI: </strong> <% imprimirDatos("dni"); %></p>
+                            <p><strong>Fecha de nacimiento: </strong> <% imprimirDatos("fechaNac"); %> </p>
                     </div>
                     <div class="tab-pane fade" id="list-contacto" role="tabpanel" aria-labelledby="list-contacto-list">
-                        datos contacto
+                         <h5 class="fs-5">Datos de contacto</h5>
+                            <p><strong>E-mail: </strong> <span><% imprimirDatos("email"); %></span> </p>
+                            <p><strong>Celular: </strong> <% imprimirDatos("telefono"); %></p>
+                            <p><strong>Celular: </strong> <% imprimirDatos("celular"); %></p>
+                            <p><strong>Domicilio: </strong> <% imprimirDatos("direccion"); %> </p>
                     </div>
                     <div class="tab-pane fade" id="list-password" role="tabpanel" aria-labelledby="list-cambiar-password-list">
                         <h5 class="fs-5">Vas a modificar tu contraseña. Escribí la nueva a continuación: </h5>

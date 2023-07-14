@@ -13,7 +13,7 @@ namespace VistaWeb
     {
         public bool EstaLogueado()
         {
-            if(((Modelo.Usuario)Session["UsuarioLogueado"]) != null)
+            if (((Modelo.Usuario)Session["UsuarioLogueado"]) != null)
             {
                 return true;
             }
@@ -30,25 +30,47 @@ namespace VistaWeb
                 Response.Write(aux.User);
             }
             if (type == "nombre")
-            { 
+            {
                 string nombre = negocioUsuario.getDatosPersonales(aux.Id, "nombre");
-                Response.Write(nombre);
+                Response.Write(nombre.ToUpperInvariant());
             }
             if (type == "apellido")
             {
                 string apellido = negocioUsuario.getDatosPersonales(aux.Id, "apellido");
-                Response.Write(apellido);
+                Response.Write(apellido.ToUpperInvariant());
             }
             if (type == "dni")
             {
-                string apellido = negocioUsuario.getDatosPersonales(aux.Id, "dni");
-                Response.Write(apellido);
+                string dni = negocioUsuario.getDatosPersonales(aux.Id, "dni");
+                Response.Write(dni);
+            }
+            if (type == "fechaNac")
+            {
+                string fechaNac = negocioUsuario.getDatosPersonales(aux.Id, "fechaNac");
+                Response.Write(fechaNac);
+            }
+            List<string> datosContacto = negocioUsuario.getDatosContacto(aux.Id);
+            if (type == "email")
+            {
+                Response.Write(datosContacto[0]);
+            }
+            if (type == "telefono")
+            {
+                Response.Write(datosContacto[1]);
+            }
+            if (type == "celular")
+            {
+                Response.Write(datosContacto[2]);
+            }
+            if (type == "direccion")
+            {
+                Response.Write(datosContacto[3]);
             }
         }
-        
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(Session["UsuarioLogueado"] != null)
+            if (Session["UsuarioLogueado"] != null)
             {
                 // cargo la pass en el textbox
                 //tbx_CambiarPass.Text = ((Usuario)Session["UsuarioLogueado"]).Pass;
@@ -82,7 +104,8 @@ namespace VistaWeb
                     Session.Add("UsuarioLogueado", user);
                     Response.Redirect("Cuenta.aspx", false);
                     Session.Add("MensajeLeido", false);
-                } else
+                }
+                else
                 {
                     Session.Add("Error", "Los datos ingresados no son correctos. Intente nuevamente");
                     Response.Redirect("Error.aspx", false);
