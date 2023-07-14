@@ -176,32 +176,69 @@ namespace Controlador
                 datos.CerrarConexion();
             }
         }
-
         public string getDatosPersonales(int user_id, string tipo)
         {
-            AccesoDatos datos = new AccesoDatos();
-            
-            try
+            if (tipo == "dni")
             {
-                string aux = "";
-                datos.SetConsulta($"select nombre,apellido from usuario_desc where usuario_id={user_id}");
-                datos.EjecutarLectura();
-                if (datos.Lector.Read())
+                AccesoDatos datos = new AccesoDatos();
+                try
                 {
-                    if(tipo == "nombre")
+                    string aux = "";
+                    datos.SetConsulta($"select dni, fecha_nacimiento from usuario_desc where usuario_id={user_id}");
+                    datos.EjecutarLectura();
+                    if (datos.Lector.Read())
                     {
-                        aux = datos.Lector["nombre"].ToString();
+                        if (tipo == "dni")
+                        {
+                            aux = datos.Lector["nombre"].ToString();
+                        }
+                        else if (tipo == "fechaNac")
+                        {
+                            aux = datos.Lector["fecha_nacimiento"].ToString();
+                        }
                     }
-                    else if (tipo == "apellido") {
-                        aux = datos.Lector["apellido"].ToString();
-                    }
+                    return aux;
                 }
-                return aux;
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    datos.CerrarConexion();
+                }
             }
-            catch (Exception ex)
+            else if (tipo == "nombre" || tipo == "apellido")
             {
-                throw ex;
+                AccesoDatos datos = new AccesoDatos();
+                try
+                {
+                    string aux = "";
+                    datos.SetConsulta($"select nombre,apellido from usuario_desc where usuario_id={user_id}");
+                    datos.EjecutarLectura();
+                    if (datos.Lector.Read())
+                    {
+                        if (tipo == "nombre")
+                        {
+                            aux = datos.Lector["nombre"].ToString();
+                        }
+                        else if (tipo == "apellido")
+                        {
+                            aux = datos.Lector["apellido"].ToString();
+                        }
+                    }
+                    return aux;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    datos.CerrarConexion();
+                }
             }
+            return "";
         }
         public int findByUserID(int user_id)
         {
@@ -220,6 +257,10 @@ namespace Controlador
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
             }
         }
 
@@ -240,6 +281,10 @@ namespace Controlador
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
             }
         }
 

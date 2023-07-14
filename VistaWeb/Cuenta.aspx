@@ -89,7 +89,8 @@
                     </div>
                     <!-- /////////////////// -->
                     <div class="tab-pane fade" id="list-datos" role="tabpanel" aria-labelledby="list-datos-list">
-                        datos personales
+                        <h5 class="fs-5"><%  %></h5>
+
                     </div>
                     <div class="tab-pane fade" id="list-contacto" role="tabpanel" aria-labelledby="list-contacto-list">
                         datos contacto
@@ -100,7 +101,7 @@
                             <label for="MainContent_tbx_CambiarPass" class="form-label">Tu contraseña:</label>
                             <asp:TextBox runat="server" type="password" ID="tbx_CambiarPass" Style="background: #fff" class="form-control" name="contraseña"></asp:TextBox>
                             <asp:RequiredFieldValidator ControlToValidate="tbx_CambiarPass" ID="RequiredFieldValidator1" runat="server" ErrorMessage="* contraseña requerida." ForeColor="red" ValidationGroup="input-cambiar-password" Display="Dynamic"></asp:RequiredFieldValidator>
-                            <asp:LinkButton runat="server" ID="btnCambiarPasswordSubmit" OnClick="btnCambiarPasswordSubmit_Click" type="button" class="btn btn-primary" Text="Cambiar password" ValidationGroup="input-cambiar-password"></asp:LinkButton>
+                            <asp:LinkButton runat="server" ID="btnCambiarPasswordSubmit" OnClick="btnCambiarPasswordSubmit_Click" type="button" class="btn btn-primary mt-3" Text="Cambiar password" ValidationGroup="input-cambiar-password"></asp:LinkButton>
                         </div>
 
                     </div>

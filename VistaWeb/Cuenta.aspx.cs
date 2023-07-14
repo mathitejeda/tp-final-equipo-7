@@ -22,9 +22,27 @@ namespace VistaWeb
 
         public void imprimirDatos(string type)
         {
+            Usuario aux = (Usuario)Session["UsuarioLogueado"];
+            UsuarioNegocio negocioUsuario = new UsuarioNegocio();
+
             if (type == "user")
             {
-                Response.Write(((Modelo.Usuario)Session["UsuarioLogueado"]).User);
+                Response.Write(aux.User);
+            }
+            if (type == "nombre")
+            { 
+                string nombre = negocioUsuario.getDatosPersonales(aux.Id, "nombre");
+                Response.Write(nombre);
+            }
+            if (type == "apellido")
+            {
+                string apellido = negocioUsuario.getDatosPersonales(aux.Id, "apellido");
+                Response.Write(apellido);
+            }
+            if (type == "dni")
+            {
+                string apellido = negocioUsuario.getDatosPersonales(aux.Id, "dni");
+                Response.Write(apellido);
             }
         }
         
