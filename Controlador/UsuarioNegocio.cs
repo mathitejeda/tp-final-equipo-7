@@ -176,23 +176,51 @@ namespace Controlador
                 datos.CerrarConexion();
             }
         }
+
+        public List<string> getDatosContacto(int user_id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                List<string> aux = new List<string>();
+                datos.SetConsulta($"select isnull(EMail, 'No registrado') as email,  isnull(Telefono, 'No registrado') as telefono,  isnull(Celular, 'No registrado')as celular,  isnull(direccion, 'No registrada') as direccion from usuario_desc where usuario_id ={user_id}");
+                datos.EjecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    aux.Add(datos.Lector["email"].ToString());
+                    aux.Add(datos.Lector["telefono"].ToString());
+                    aux.Add(datos.Lector["celular"].ToString());
+                    aux.Add(datos.Lector["direccion"].ToString());
+                }
+                return aux;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
         public string getDatosPersonales(int user_id, string tipo)
         {
-            if (tipo == "dni")
+            if (tipo == "dni" || tipo == "fechaNac")
             {
                 AccesoDatos datos = new AccesoDatos();
                 try
                 {
                     string aux = "";
-                    datos.SetConsulta($"select dni, fecha_nacimiento from usuario_desc where usuario_id={user_id}");
+                    datos.SetConsulta($"select dni, cast(format(fecha_nacimiento, 'dd/MM/yyyy') as varchar) as fecha_nacimiento from usuario_desc where usuario_id={user_id}");
                     datos.EjecutarLectura();
                     if (datos.Lector.Read())
                     {
                         if (tipo == "dni")
                         {
-                            aux = datos.Lector["nombre"].ToString();
+                            aux = datos.Lector["dni"].ToString();
                         }
-                        else if (tipo == "fechaNac")
+                        if (tipo == "fechaNac")
                         {
                             aux = datos.Lector["fecha_nacimiento"].ToString();
                         }
@@ -372,7 +400,7 @@ namespace Controlador
             {
                 datos.CerrarConexion();
             }
-           
+
         }
 
     }
