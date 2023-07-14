@@ -106,7 +106,15 @@ namespace VistaWeb
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowLogin", script);
                     Session.Add("MensajeLeido", true);
                 }
-
+                if (EsTipoUsuario("paciente"))
+                {
+                    List<Turno> turnos = new List<Turno>();
+                    TurnoNegocio aux = new TurnoNegocio();
+                    Usuario usuario = (Usuario)Session["UsuarioLogueado"];
+                    turnos = aux.listTurnosByPacienteID(usuario.Id);
+                    turnosRepeater.DataSource = turnos;
+                    turnosRepeater.DataBind();
+                }
             }
 
         }
