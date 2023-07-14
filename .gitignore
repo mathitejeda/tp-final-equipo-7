@@ -363,3 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 /ControladorTests
 /db/queryhs 10-7.sql
+/db/dummy_data_0.sql
+/db/cambios_db.sql
+/db/query_creacion_db.sql
+/db/cambios_db.sql

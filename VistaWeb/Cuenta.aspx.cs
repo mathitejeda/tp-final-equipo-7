@@ -19,6 +19,27 @@ namespace VistaWeb
             }
             return false;
         }
+        public bool EsTipoUsuario(string tipo)
+        {
+
+            if (tipo == "admin" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Administrador)
+            {
+                return true;
+            }
+            if (tipo == "recepcionista" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Recepcionista)
+            {
+                return true;
+            }
+            if (tipo == "medico" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Medico)
+            {
+                return true;
+            }
+            if (tipo == "paciente" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Paciente)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public void imprimirDatos(string type)
         {

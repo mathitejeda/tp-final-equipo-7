@@ -187,11 +187,15 @@ namespace Controlador
         public void modificacion(Turno turno) 
         {
             AccesoDatos datos = new AccesoDatos();
+            if (turno.Observaciones == null)
+            {
+                turno.Observaciones = "";
+            }
             try
             {
-                datos.SetConsulta($"UPDATE turno SET medico_id='@medico_id', paciente_id='@paciente_id' observaciones='@observaciones', estado='@estado', fecha='@fecha' WHERE id={turno.id}");
+                datos.SetConsulta($"UPDATE turno SET medico_id=@medico_id, especialidad_id=@especialidad_id, observaciones=@observaciones, estado=@estado, fecha=@fecha WHERE id={turno.id}");
                 datos.setearParametro("@medico_id", turno.Medico.Id);
-                datos.setearParametro("@paciente_id", turno.Paciente.Id);
+                datos.setearParametro("@especialidad_id", turno.Especialidad.Id);
                 datos.setearParametro("@observaciones", turno.Observaciones);
                 datos.setearParametro("@estado", turno.Estado);
                 datos.setearParametro("@fecha", turno.Fecha.Date);

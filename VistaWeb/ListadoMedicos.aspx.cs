@@ -12,6 +12,36 @@ namespace VistaWeb
 {
     public partial class ListadoMedicos : System.Web.UI.Page
     {
+
+        public bool EstaLogueado()
+        {
+            if (((Modelo.Usuario)Session["UsuarioLogueado"]) != null)
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool EsTipoUsuario(string tipo)
+        {
+
+            if (tipo == "admin" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Administrador)
+            {
+                return true;
+            }
+            if (tipo == "recepcionista" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Recepcionista)
+            {
+                return true;
+            }
+            if (tipo == "medico" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Medico)
+            {
+                return true;
+            }
+            if (tipo == "paciente" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Paciente)
+            {
+                return true;
+            }
+            return false;
+        }
         public List<Medico> listaMedicos { get; set; }
 
         public Medico medicoActivo = new Medico();

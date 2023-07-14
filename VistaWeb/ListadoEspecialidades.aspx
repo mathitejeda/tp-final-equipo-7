@@ -12,6 +12,11 @@
             $('#'+modalName).modal('hide');
         }
     </script>
+
+        <% if (EstaLogueado())
+          { %> 
+            <% if (EsTipoUsuario("admin") || EsTipoUsuario("recepcionista") )
+                { %> 
     <div class="container">
         <div class="row">
             <h1 class="mb-4">Listado de Especialidades</h1>
@@ -210,4 +215,16 @@
             </div>
         </div>
     </div>
+            <% } else
+        {
+            Session.Add("Error", "Debés tener permisos de administrador o recepcionista para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        } %>
+<% } else
+        {
+            Session.Add("Error", "Debés estar logueado para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        }%>
 </asp:Content>

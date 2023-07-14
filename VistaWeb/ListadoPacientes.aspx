@@ -4,6 +4,13 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+    <% if (EstaLogueado())
+        { %>
+    <% if (EsTipoUsuario("admin") || EsTipoUsuario("recepcionista") || EsTipoUsuario("medico"))
+        { %>
+
     <div class="container">
         <div class="row">
             <h1 class="mb-4">Listado de Pacientes</h1>
@@ -160,29 +167,29 @@
                 <div class="modal-body">
                     <%if (pacienteActivo != null && pacienteActivo.Turnos != null && pacienteActivo.Turnos.Count() > 0)
                         {%>
-                            <asp:Repeater runat="server" ID="repeaterTurnos">
-                                <ItemTemplate>
-                                    <div class="card border-dark mb-3">
-                                        <div class="card-header text-dark">
-                                            <h5><%# Eval("fecha") %></h5>
-                                        </div>
-                                        <div class="card-body text-dark">
-                                            <h6 class="card-title">Datos del turno:</h6>
-                                            <p class="card-text">
-                                                <ul>
-                                                    <li><strong>Médico: </strong><%#Eval("Medico.Nombre") + ", " + Eval("Medico.Apellido") %></li>
-                                                    <li><strong>Especialidad: </strong><%# Eval("Especialidad.nombre") %></li>
-                                                </ul>
-                                            </p>
-                                        </div>
-                                    </div>
+                    <asp:Repeater runat="server" ID="repeaterTurnos">
+                        <ItemTemplate>
+                            <div class="card border-dark mb-3">
+                                <div class="card-header text-dark">
+                                    <h5><%# Eval("fecha") %></h5>
+                                </div>
+                                <div class="card-body text-dark">
+                                    <h6 class="card-title">Datos del turno:</h6>
+                                    <p class="card-text">
+                                        <ul>
+                                            <li><strong>Médico: </strong><%#Eval("Medico.Nombre") + ", " + Eval("Medico.Apellido") %></li>
+                                            <li><strong>Especialidad: </strong><%# Eval("Especialidad.nombre") %></li>
+                                        </ul>
+                                    </p>
+                                </div>
+                            </div>
 
-                                </ItemTemplate>
-                            </asp:Repeater>
+                        </ItemTemplate>
+                    </asp:Repeater>
                     <%}
                         else
                         {%>
-                            <h4>El paciente no posee ningun turno aun.</h4>
+                    <h4>El paciente no posee ningun turno aun.</h4>
                     <%} %>
                 </div>
                 <div class="modal-footer">
@@ -311,4 +318,18 @@
         </div>
     </div>
 
+    <% }
+        else
+        {
+            Session.Add("Error", "Debés tener permisos de administrador, recepcionista o médico para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        } %>
+    <% }
+        else
+        {
+            Session.Add("Error", "Debés estar logueado para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        }%>
 </asp:Content>

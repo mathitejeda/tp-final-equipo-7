@@ -3,6 +3,7 @@ using Modelo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -11,6 +12,35 @@ namespace VistaWeb
 {
     public partial class ListadoTurnos : System.Web.UI.Page
     {
+        public bool EstaLogueado()
+        {
+            if (((Modelo.Usuario)Session["UsuarioLogueado"]) != null)
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool EsTipoUsuario(string tipo)
+        {
+
+            if (tipo == "admin" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Administrador)
+            {
+                return true;
+            }
+            if (tipo == "recepcionista" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Recepcionista)
+            {
+                return true;
+            }
+            if (tipo == "medico" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Medico)
+            {
+                return true;
+            }
+            if (tipo == "paciente" && ((Usuario)Session["UsuarioLogueado"]).TipoUsuario == TipoUsuario.Paciente)
+            {
+                return true;
+            }
+            return false;
+        }
         public List<Turno> turnos { get; set; }
         public Modelo.Turno turnoActivo { get; set; }
         protected void Page_Load(object sender, EventArgs e)
@@ -29,10 +59,72 @@ namespace VistaWeb
                 turnos = turnoNegocio.listTurnos();
                 Session.Add("Turnos", turnos);
             }
+            if (EstaLogueado() && EsTipoUsuario("medico"))
+            {
+                turnos = turnos.FindAll(x => x.Medico.Id == ((Usuario)Session["UsuarioLogueado"]).Id);
+            }
+            if (EstaLogueado() && EsTipoUsuario("paciente"))
+            {
+                turnos = turnos.FindAll(x => x.Paciente.Id == ((Usuario)Session["UsuarioLogueado"]).Id);
+            }
+            if (EstaLogueado() && (EsTipoUsuario("recepcionista") || EsTipoUsuario("paciente")))
+            {
+                ddl_filtro_especialidad.Visible = true;
+                ddl_filtro_especialidad.DataSource = turnos.Select(x => x.Especialidad).Distinct().ToList();
+                ddl_filtro_especialidad.DataValueField = "Id";
+                ddl_filtro_especialidad.DataTextField = "Nombre";
+                ddl_filtro_especialidad.DataBind();
+                ddl_filtro_especialidad.Items.Insert(0, new ListItem("Todas", "0"));
+                ddl_filtro_medico.Visible = true;
+                ddl_filtro_medico.DataSource = turnos.Select(x => x.Medico).Distinct().ToList();
+                ddl_filtro_medico.DataValueField = "Id";
+                ddl_filtro_medico.DataTextField = "NombreCompleto";
+                ddl_filtro_medico.DataBind();
+                ddl_filtro_medico.Items.Insert(0, new ListItem("Todos", "0"));
+            }
+
             repeaterTurnos.DataSource = turnos;
             repeaterTurnos.DataBind();
         }
-
+        protected void load_turnos(int filtroDia = -1, int filtroMedico = -1, int filtroEspecialidad = -1)
+        {
+            turnos = (List<Modelo.Turno>)Session["Turnos"];
+            if (EstaLogueado() && (EsTipoUsuario("recepcionista") || EsTipoUsuario("medico")))
+            {
+                ddl_filtro_especialidad.Visible = true;
+                ddl_filtro_especialidad.DataSource = turnos.Select(x => x.Especialidad).Distinct().ToList();
+                ddl_filtro_especialidad.DataValueField = "Id";
+                ddl_filtro_especialidad.DataTextField = "Nombre";
+                ddl_filtro_especialidad.Items.Insert(0, new ListItem("Todas", "-1"));
+                ddl_filtro_especialidad.DataBind();
+                ddl_filtro_medico.Visible = true;
+                ddl_filtro_medico.DataSource = turnos.Select(x => x.Medico).Distinct().ToList();
+                ddl_filtro_medico.DataValueField = "Id";
+                ddl_filtro_medico.DataTextField = "NombreCompleto";
+                ddl_filtro_medico.Items.Insert(0, new ListItem("Todos", "-1"));
+                ddl_filtro_medico.DataBind();
+            }
+            if (turnos == null)
+            {
+                TurnoNegocio turnoNegocio = new TurnoNegocio();
+                turnos = turnoNegocio.listTurnos();
+                Session.Add("Turnos", turnos);
+            }
+            if (filtroDia != -1)
+            {
+            turnos = turnos.FindAll(x => (int)x.Fecha.Date.DayOfWeek == filtroDia);
+            }
+            if (filtroMedico != 0)
+            {
+                turnos = turnos.FindAll(x => x.Medico.Id == Convert.ToInt32(filtroMedico));
+            }
+            if (filtroEspecialidad != 0)
+            {
+                  turnos = turnos.FindAll(x => x.Especialidad.Id == Convert.ToInt32(filtroEspecialidad));
+            }
+            repeaterTurnos.DataSource = turnos;
+            repeaterTurnos.DataBind();
+        }
         protected void repeaterTurnos_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             try
@@ -51,6 +143,34 @@ namespace VistaWeb
                 if (e.CommandName.ToString() == "Modificar")
                 {
                     Modelo.Turno turno = turnos.Find(x => x.id == Convert.ToInt32(e.CommandArgument));
+                    Session.Add("turnoActivo", turno);
+                    // cargamos especialidades
+                    if (Session["Especialidades"] is null)
+                    {
+                        EspecialidadNegocio especialidadNegocio = new EspecialidadNegocio();
+                        Session.Add("Especialidades", especialidadNegocio.listar());
+                        ddl_especialidad_modificar.DataSource = (List<Especialidad>)Session["Especialidades"];
+                    }
+                    else ddl_especialidad_modificar.DataSource = (List<Especialidad>)Session["Especialidades"];
+                    ddl_especialidad_modificar.DataTextField = "Nombre";
+                    ddl_especialidad_modificar.DataValueField = "Id";
+                    ddl_especialidad_modificar.DataBind();
+                    // en el ddl se selecciona la especialidad del turno
+                    ddl_especialidad_modificar.SelectedValue = turno.Especialidad.Id.ToString();
+                    // cargamos medicos
+                    MedicoNegocio medicoNegocio = new MedicoNegocio();
+                    ddl_medicos_modificar.DataSource = medicoNegocio.getMedicosFromEspecialidad(turno.Especialidad.Id);
+                    ddl_medicos_modificar.DataTextField = "NombreCompleto";
+                    ddl_medicos_modificar.DataValueField = "Id";
+                    ddl_medicos_modificar.DataBind();
+                    // en el ddl se selecciona el medico del turno
+                    ddl_medicos_modificar.SelectedValue = turno.Medico.Id.ToString();
+                    calendarAgenda_modificar.Visible = true;
+                    calendarAgenda_modificar.SelectedDate = turno.Fecha;
+                    calendarAgenda_modificar_SelectionChanged(null, EventArgs.Empty);
+                    ddl_hora_modificar.SelectedValue = turno.Fecha.ToString("HH:mm");
+
+                    ddl_estado_modificar.SelectedValue = turno.Estado.ToString();
 
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalModificarTurno').modal('show');", true);
                 }
@@ -67,12 +187,10 @@ namespace VistaWeb
                     }
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalEliminarTurno').modal('show');", true);
                 }
-                repeaterTurnos.DataSource = (List<Turno>)Session["Turnos"];
-                repeaterTurnos.DataBind();
+                load_turnos();
             }
             catch (Exception ex)
             {
-
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
@@ -86,8 +204,7 @@ namespace VistaWeb
                 TurnoNegocio turnoNegocio = new TurnoNegocio();
                 turnos.Remove(turnoActivo);
                 turnoNegocio.baja(turnoActivo.id);
-                repeaterTurnos.DataSource = turnos;
-                repeaterTurnos.DataBind();
+                Response.Redirect("ListadoTurnos.aspx", false);
             }
             catch (Exception ex)
             {
@@ -196,7 +313,7 @@ namespace VistaWeb
                     }
                 }
                 int day = (int)e.Day.Date.DayOfWeek;
-                if ((e.Day.Date <= fechaActual || e.Day.Date >= fechaLimite) || (diasTrabajo.Count > 0 && !diasTrabajo.Contains(day))) // en un futuro esto habria que modificarlo para ademas de esto cruce con turnos y se fije si en estos dias estan completos los horarios para bloquear esos tambien
+                if ((e.Day.Date <= fechaActual || e.Day.Date >= fechaLimite) || (diasTrabajo.Count > 0 && !diasTrabajo.Contains(day)))
                 {
                     e.Day.IsSelectable = false;
                     e.Cell.ForeColor = System.Drawing.Color.Gray;
@@ -214,7 +331,6 @@ namespace VistaWeb
         {
             try
             {
-                // en esta funcion se deberia obtener los horarios del medico y mostrar en el ddl de horas las horas disponibles
                 DateTime fechaSeleccionada = calendarAgenda.SelectedDate;
                 HorarioNegocio horarioNegocio = new HorarioNegocio();
                 List<Horario> horarios = horarioNegocio.listarPorMedicoYEspecialidad(Convert.ToInt32(ddl_medicos.SelectedValue), Convert.ToInt32(ddl_especialidad.SelectedValue));
@@ -222,25 +338,23 @@ namespace VistaWeb
 
                 turnos = (List<Modelo.Turno>)Session["Turnos"];
                 List<Turno> turnos_filtrados = turnos.FindAll(x => x.Fecha.Date == fechaSeleccionada && x.Medico.Id == Convert.ToInt32(ddl_medicos.SelectedValue));
-                // diccionario con los dias de la semana y horarios de atencion del medico
 
                 int diaSemana = (int)fechaSeleccionada.DayOfWeek;
                 Horario horarioDelDia = horarios.Find(x => (int)x.DiaSem == diaSemana);
+                ddl_hora.Items.Clear();
                 for (int i = horarioDelDia.HsEntrada; i <= horarioDelDia.HsSalida; i++)
                 {
-                    if (turnos_filtrados.Find(x => x.Fecha.ToString("HH") == i.ToString()) != null)
+                    string hora = i.ToString("00");
+
+                    if (turnos_filtrados.Find(x => x.Fecha.ToString("HH") == hora) != null)
                     {
                         continue;
                     }
-                    horasDisponibles.Add(i);
+                    ddl_hora.Items.Add(new ListItem($"{hora} HS", $"{i}"));
                 }
-                ddl_hora.DataSource = horasDisponibles;
-                ddl_hora.DataBind();
-                // Aca iria el horario de atencion del medico, pero no lo tengo la idea es que el calendario solamente permita seleccionar dias posteriores a la fecha actual y solo los dias en los que el medico atiende y no esta completa la agenda. una vez seleccionado se cargarian las horas que se encuentran disponibles para ese dia.
             }
             catch (Exception ex)
             {
-
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
@@ -271,11 +385,119 @@ namespace VistaWeb
             }
             catch (Exception ex)
             {
-
                 Session.Add("Error", ex.ToString());
                 Response.Redirect("Error.aspx", false);
             }
-                Response.Redirect("ListadoTurnos.aspx");
+            Response.Redirect("ListadoTurnos.aspx");
+        }
+
+        protected void ddl_especialidad_modificar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int idEspecialidad = Convert.ToInt32(ddl_especialidad_modificar.SelectedValue);
+            if (idEspecialidad == 0)
+            {
+                ddl_medicos_modificar.Items.Clear();
+                ddl_medicos_modificar.Items.Insert(0, new ListItem("Seleccione un médico", "0"));
+                return;
+            }
+            ddl_medicos_modificar.Items.Clear();
+            ddl_medicos_modificar.Items.Insert(0, new ListItem("Seleccione un médico", "0"));
+            MedicoNegocio medicoNegocio = new MedicoNegocio();
+            List<Medico> medicos = medicoNegocio.getMedicosFromEspecialidad(idEspecialidad);
+            foreach (Modelo.Medico medico in medicos)
+            {
+                ddl_medicos_modificar.Items.Add(new ListItem($"{medico.Apellido}, {medico.Nombre}", $"{medico.Id}"));
+            }
+        }
+
+        protected void ddl_medicos_modificar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int idMedico = Convert.ToInt32(ddl_medicos_modificar.SelectedValue);
+            if (idMedico == 0)
+            {
+                calendarAgenda_modificar.Visible = false;
+                return;
+            }
+            calendarAgenda_modificar.Visible = true;
+        }
+
+        protected void calendarAgenda_modificar_SelectionChanged(object sender, EventArgs e)
+        {
+            DateTime fechaSeleccionada = calendarAgenda_modificar.SelectedDate;
+            HorarioNegocio horarioNegocio = new HorarioNegocio();
+            List<Horario> horarios = horarioNegocio.listarPorMedicoYEspecialidad(Convert.ToInt32(ddl_medicos_modificar.SelectedValue), Convert.ToInt32(ddl_especialidad_modificar.SelectedValue));
+            List<int> horasDisponibles = new List<int>();
+
+            turnos = (List<Modelo.Turno>)Session["Turnos"];
+            List<Turno> turnos_filtrados = turnos.FindAll(x => x.Fecha.Date == fechaSeleccionada.Date && x.Medico.Id == Convert.ToInt32(ddl_medicos_modificar.SelectedValue));
+            int diaSemana = (int)fechaSeleccionada.DayOfWeek;
+            Horario horarioDelDia = horarios.Find(x => (int)x.DiaSem == diaSemana);
+            ddl_hora_modificar.Items.Clear();
+            for (int i = horarioDelDia.HsEntrada; i <= horarioDelDia.HsSalida; i++)
+            {
+                string hora = i.ToString("00");
+
+                if (turnos_filtrados.Find(x => x.Fecha.ToString("HH") == hora) != null)
+                {
+                    continue;
+                }
+                ddl_hora_modificar.Items.Add(new ListItem($"{hora} HS", $"{i}"));
+            }
+        }
+
+        protected void calendarAgenda_modificar_DayRender(object sender, DayRenderEventArgs e)
+        {
+            DateTime fechaActual = DateTime.Now;
+            DateTime fechaLimite = fechaActual.AddDays(30);
+
+            // si ddl especialidad y ddl medico tienen valores seleccionados se obtienen los horarios del medico
+            List<int> diasTrabajo = new List<int>();
+            if (ddl_especialidad_modificar.SelectedValue != "0" && ddl_medicos_modificar.SelectedValue != "0")
+            {
+                int idMedico = Convert.ToInt32(ddl_medicos_modificar.SelectedValue);
+                int idEspecialidad = Convert.ToInt32(ddl_especialidad_modificar.SelectedValue);
+                HorarioNegocio horarioNegocio = new HorarioNegocio();
+                List<Horario> horarios = horarioNegocio.listarPorMedicoYEspecialidad(idMedico, idEspecialidad);
+                foreach (Modelo.Horario horario in horarios)
+                {
+                    diasTrabajo.Add((int)horario.DiaSem);
+                }
+            }
+            int day = (int)e.Day.Date.DayOfWeek;
+            if ((e.Day.Date <= fechaActual || e.Day.Date >= fechaLimite) || (diasTrabajo.Count > 0 && !diasTrabajo.Contains(day)))
+            {
+                e.Day.IsSelectable = false;
+                e.Cell.ForeColor = System.Drawing.Color.Gray;
+            }
+        }
+
+        protected void btn_aceptarModificarTurno_Click(object sender, EventArgs e)
+        {
+            Turno turno = Session["turnoActivo"] as Turno;
+            TurnoNegocio turnoNegocio = new TurnoNegocio();
+            EspecialidadNegocio especialidadNegocio = new EspecialidadNegocio();
+            MedicoNegocio medicoNegocio = new MedicoNegocio();
+            turno.Medico = medicoNegocio.getMedico(Convert.ToInt32(ddl_medicos_modificar.SelectedValue));
+            turno.Especialidad = especialidadNegocio.GetEspecialidad(Convert.ToInt32(ddl_especialidad_modificar.SelectedValue));
+
+            DateTime fecha = calendarAgenda_modificar.SelectedDate.Date;
+            fecha = fecha.AddHours(Convert.ToInt32(ddl_hora_modificar.SelectedValue));
+            turno.Fecha = fecha;
+            turno.Estado = (EstadoTurno)Convert.ToInt32(ddl_estado_modificar.SelectedValue);
+            turnoNegocio.modificacion(turno);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalAgregarTurno').modal('hide');", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "alert('Turno agregado correctamente');", true);
+            Response.Redirect("ListadoTurnos.aspx");
+        }
+
+        protected void btn_limpiarFiltros_Click(object sender, EventArgs e)
+        {
+            load_turnos();
+        }
+
+        protected void btn_filtrar_Click(object sender, EventArgs e)
+        {
+            load_turnos(filtroDia: ddl_filtro_dia.SelectedIndex, filtroMedico: ddl_filtro_medico.SelectedIndex, filtroEspecialidad: ddl_filtro_especialidad.SelectedIndex);
         }
     }
 }
