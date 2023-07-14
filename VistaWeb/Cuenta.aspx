@@ -5,36 +5,38 @@
         { %>
 
 <div class="container my-5">
-  <div class="p-5 bg-body-tertiary rounded-3">
-    <h1 class="text-body-emphasis">Iniciar Sesión</h1>
-    <p class="fs-5">
-      Accede al sistema de nuestra clínica para gestionar tus tareas.
-    </p>
 
-    <div class="d-flex flex-row">
-      <div class="form-group mb-2">
-        <label for="MainContent_tbxUsernameLogin" class="sr-only">Usuario:</label>
-        <asp:TextBox runat="server" type="text" ID="tbxUsernameLogin" class="form-control" name="login-usuario" placeholder="Ingresa tu usuario..."></asp:TextBox>
-        <asp:RequiredFieldValidator ControlToValidate="tbxUsernameLogin" ID="RequiredUser" runat="server" ErrorMessage="* usuario requerido." ForeColor="red" ValidationGroup="input-login" Display="Dynamic"></asp:RequiredFieldValidator>
-    </div>
-      <div class="form-group mx-sm-3 mb-2">
-        <label for="MainContent_tbxPasswordLogin" class="sr-only">Contraseña:</label>
-        <asp:TextBox runat="server" type="password" ID="tbxPasswordLogin" class="form-control" name="login-password" placeholder="Ingresa tu contraseña..."></asp:TextBox>
-        <asp:RequiredFieldValidator ControlToValidate="tbxPasswordLogin" ID="RequiredPassword" runat="server" ErrorMessage="* contraseña requerida." ForeColor="red" ValidationGroup="input-login" Display="Dynamic"></asp:RequiredFieldValidator>
-   
-      </div>
-    </div>
-      <div class="form-group mb-2">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="remember" name="remember">
-          <label class="form-check-label" for="remember">Recordar sesión</label>
+    <div class="p-5 bg-body-tertiary rounded-3">
+        <h1 class="text-body-emphasis">Iniciar Sesión</h1>
+        <p class="fs-5">
+          Accede al sistema de nuestra clínica para gestionar tus tareas.
+        </p>
+
+        <div class="d-flex flex-row">
+          <div class="form-group mb-2">
+            <label for="MainContent_tbxUsernameLogin" class="sr-only">Usuario:</label>
+            <asp:TextBox runat="server" type="text" ID="tbxUsernameLogin" class="form-control" name="login-usuario" placeholder="Ingresa tu usuario..."></asp:TextBox>
+            <asp:RequiredFieldValidator ControlToValidate="tbxUsernameLogin" ID="RequiredUser" runat="server" ErrorMessage="* usuario requerido." ForeColor="red" ValidationGroup="input-login" Display="Dynamic"></asp:RequiredFieldValidator>
         </div>
-      </div>
-      <div class="mt-3">
-        <asp:Button Text="Iniciar sesión" class="btn btn-primary" ID="btnIniciarSesionSubmit" runat="server" ValidationGroup="input-login" OnClick="btnIniciarSesionSubmit_Click"/>
-        <a href="#" class="ml-3">¿Olvidaste tu contraseña?</a>
-      </div>
-  </div>
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="MainContent_tbxPasswordLogin" class="sr-only">Contraseña:</label>
+            <asp:TextBox runat="server" type="password" ID="tbxPasswordLogin" class="form-control" name="login-password" placeholder="Ingresa tu contraseña..."></asp:TextBox>
+            <asp:RequiredFieldValidator ControlToValidate="tbxPasswordLogin" ID="RequiredPassword" runat="server" ErrorMessage="* contraseña requerida." ForeColor="red" ValidationGroup="input-login" Display="Dynamic"></asp:RequiredFieldValidator>
+   
+          </div>
+        </div>
+          <div class="form-group mb-2">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="remember" name="remember">
+              <label class="form-check-label" for="remember">Recordar sesión</label>
+            </div>
+          </div>
+          <div class="mt-3">
+            <asp:Button Text="Iniciar sesión" class="btn btn-primary" ID="btnIniciarSesionSubmit" runat="server" ValidationGroup="input-login" OnClick="btnIniciarSesionSubmit_Click"/>
+            <a href="#" class="ml-3">¿Olvidaste tu contraseña?</a>
+          </div>
+    </div>
+
 </div>
         <% } %>
 

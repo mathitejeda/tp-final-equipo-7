@@ -5,9 +5,13 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+       <% if (EstaLogueado())
+          { %> 
+            <% if (EsTipoUsuario("admin"))
+                { %> 
+
     <div class="container">
         <div class="row" id="fila">
-            
             <div id="nuevoUser" class="alert alert-primary alert-dismissible fade show" role="alert" style="display:none;">
               <strong>Registro exitoso.</strong> Se ha ingresado un nuevo usuario.
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -90,7 +94,6 @@
                            </asp:Repeater>
                         </tbody>
                     </table>
-
                     <div class="d-flex justify-content-between">
                         <div>
                             <button type="button" id="agregarUser" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAgregarUsuario">Agregar nuevo usuario</button>
@@ -112,6 +115,7 @@
 
                 </div>
             </div>
+
 
 
         </div>
@@ -244,4 +248,16 @@
             </div>
         </div>
     </div>
+    <% } else
+        {
+            Session.Add("Error", "Debés tener permisos de administrador para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        } %>
+<% } else
+        {
+            Session.Add("Error", "Debés estar logueado para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        }%>
 </asp:Content> 

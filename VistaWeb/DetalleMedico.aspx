@@ -1,6 +1,11 @@
 ﻿<%@ Page Title="MedicDetail" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DetalleMedico.aspx.cs" Inherits="VistaWeb.DetalleMedico" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+
+           <% if (EstaLogueado())
+          { %> 
+            <% if (EsTipoUsuario("admin") || EsTipoUsuario("recepcionista") )
+                { %> 
 <h2>Detalle de Medico</h2>
     
         <div class="row align-text-center" style="margin-top:30px">
@@ -51,5 +56,18 @@
                 <a href="ListadoMedicos.aspx" class="btn btn-outline-primary">Volver</a>
             </div>
          </div>
+
+        <% } else
+        {
+            Session.Add("Error", "Debés tener permisos de administrador o recepcionista para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        } %>
+<% } else
+        {
+            Session.Add("Error", "Debés estar logueado para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        }%>
     
 </asp:Content>
