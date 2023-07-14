@@ -23,25 +23,34 @@ namespace VistaWeb
 
         protected void btn_agregar(object sender, EventArgs e)
         {
-            Medico aux = new Medico();
-            MedicoNegocio auxMedico = new MedicoNegocio();
-            aux.Nombre = nombre.Value;
-            aux.Apellido = apellido.Value;
-            aux.Mail = mail.Value;
-            aux.Dni = dni.Value;
-            aux.Telefono = telefono.Value;
-            aux.Direccion = direccion.Value;
-            aux.FechaNacimiento = DateTime.Parse(fechaNac.Value);
-            aux.Especialidades = new List<Especialidad>();
-            foreach (ListItem item in especialidadesMedicoAdd.Items)
+            try
             {
-                if (item.Selected)
+                Medico aux = new Medico();
+                MedicoNegocio auxMedico = new MedicoNegocio();
+                aux.Nombre = nombre.Value;
+                aux.Apellido = apellido.Value;
+                aux.Mail = mail.Value;
+                aux.Dni = dni.Value;
+                aux.Telefono = telefono.Value;
+                aux.Direccion = direccion.Value;
+                aux.FechaNacimiento = DateTime.Parse(fechaNac.Value);
+                aux.Especialidades = new List<Especialidad>();
+                foreach (ListItem item in especialidadesMedicoAdd.Items)
                 {
-                    aux.Especialidades.Add(new Especialidad(int.Parse(item.Value), item.Text));
+                    if (item.Selected)
+                    {
+                        aux.Especialidades.Add(new Especialidad(int.Parse(item.Value), item.Text));
+                    }
                 }
+                auxMedico.agregar(aux);
+                Response.Redirect("ListadoMedicos.aspx");
             }
-            auxMedico.agregar(aux);
-            Response.Redirect("ListadoMedicos.aspx");
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
         }
     }
 }

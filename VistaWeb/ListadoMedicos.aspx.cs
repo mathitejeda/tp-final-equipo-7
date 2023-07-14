@@ -35,7 +35,8 @@ namespace VistaWeb
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    Session.Add("Error", ex.ToString());
+                    Response.Redirect("Error.aspx", false);
                 }
             }
         }
@@ -43,36 +44,46 @@ namespace VistaWeb
 
         protected void Modal_btn(object sender, CommandEventArgs e)
         {
-            string modal = e.CommandName.ToString();
-            MedicoNegocio auxMedico = new MedicoNegocio();
-            int id = int.Parse(e.CommandArgument.ToString());
-            medicoActivo = auxMedico.getMedico(id);
-            if (Session["MedicoActivo"] == null) Session.Add("MedicoActivo", medicoActivo);
-            else Session["MedicoActivo"] = medicoActivo;
 
-            if (modal == "modalModificarMedico")
+            try
             {
-                medicoNombreMdf.Value= medicoActivo.Nombre;
-                medicoApellidoMdf.Value = medicoActivo.Apellido;
-                foreach (ListItem item in especialidadesMedicoMdf.Items)
+                string modal = e.CommandName.ToString();
+                MedicoNegocio auxMedico = new MedicoNegocio();
+                int id = int.Parse(e.CommandArgument.ToString());
+                medicoActivo = auxMedico.getMedico(id);
+                if (Session["MedicoActivo"] == null) Session.Add("MedicoActivo", medicoActivo);
+                else Session["MedicoActivo"] = medicoActivo;
+
+                if (modal == "modalModificarMedico")
                 {
-                    item.Selected = false;
-                }
-                foreach(Especialidad esp in medicoActivo.Especialidades)
-                {
-                    if(especialidadesMedicoMdf.Items.FindByValue(esp.Id.ToString())!=null)
+                    medicoNombreMdf.Value = medicoActivo.Nombre;
+                    medicoApellidoMdf.Value = medicoActivo.Apellido;
+                    foreach (ListItem item in especialidadesMedicoMdf.Items)
                     {
-                        especialidadesMedicoMdf.Items.FindByValue(esp.Id.ToString()).Selected = true;
+                        item.Selected = false;
+                    }
+                    foreach (Especialidad esp in medicoActivo.Especialidades)
+                    {
+                        if (especialidadesMedicoMdf.Items.FindByValue(esp.Id.ToString()) != null)
+                        {
+                            especialidadesMedicoMdf.Items.FindByValue(esp.Id.ToString()).Selected = true;
+                        }
                     }
                 }
+                if (modal == "modalVerHorarios")
+                {
+                    EspecialidadNegocio auxEsp = new EspecialidadNegocio();
+                    especialidadesRepeater.DataSource = auxEsp.getEspecialidadesFromIdMedico(medicoActivo.Id);
+                    especialidadesRepeater.DataBind();
+                }
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "openModal('" + modal + "')", true);
             }
-            if(modal == "modalVerHorarios")
+            catch (Exception ex)
             {
-                EspecialidadNegocio auxEsp = new EspecialidadNegocio();
-                especialidadesRepeater.DataSource = auxEsp.getEspecialidadesFromIdMedico(medicoActivo.Id);
-                especialidadesRepeater.DataBind();
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
             }
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "openModal('" + modal + "')", true);
         }
         protected void especialidadesRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -90,51 +101,79 @@ namespace VistaWeb
         }
         protected void btn_Agregar(object sender, EventArgs e)
         {
-            MedicoNegocio aux = new MedicoNegocio();
-            Medico medico = new Medico();
-            TextInfo auxText = new CultureInfo("es-ES", false).TextInfo;
-            medico.Nombre = auxText.ToTitleCase(medicoNombreAdd.Value.ToLower());
-            medico.Apellido = auxText.ToTitleCase(medicoApellidoAdd.Value.ToLower());
-            medico.Especialidades = new List<Especialidad>();
-            foreach (ListItem item in especialidadesMedicoAdd.Items)
+            try
             {
-                if (item.Selected)
+                MedicoNegocio aux = new MedicoNegocio();
+                Medico medico = new Medico();
+                TextInfo auxText = new CultureInfo("es-ES", false).TextInfo;
+                medico.Nombre = auxText.ToTitleCase(medicoNombreAdd.Value.ToLower());
+                medico.Apellido = auxText.ToTitleCase(medicoApellidoAdd.Value.ToLower());
+                medico.Especialidades = new List<Especialidad>();
+                foreach (ListItem item in especialidadesMedicoAdd.Items)
                 {
-                    medico.Especialidades.Add(new Especialidad(int.Parse(item.Value), item.Text));
+                    if (item.Selected)
+                    {
+                        medico.Especialidades.Add(new Especialidad(int.Parse(item.Value), item.Text));
+                    }
                 }
+                aux.agregar(medico);
+                Response.Redirect("ListadoMedicos.aspx");
             }
-            aux.agregar(medico);
-            Response.Redirect("ListadoMedicos.aspx");
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
 
         }
         protected void btn_Modificar(object sender, EventArgs e)
         {
-            medicoActivo = (Medico)Session["MedicoActivo"];
-            TextInfo auxText = new CultureInfo("es-ES", false).TextInfo;
-            MedicoNegocio aux = new MedicoNegocio();
-            Medico medico = new Medico();
-            medico= aux.getMedico(medicoActivo.Id);
-            medico.Nombre = auxText.ToTitleCase(medicoNombreMdf.Value.ToLower());
-            medico.Apellido = auxText.ToTitleCase(medicoApellidoMdf.Value.ToLower());
-            medico.Especialidades = new List<Especialidad>();
-            foreach (ListItem item in especialidadesMedicoMdf.Items)
+            try
             {
-                if (item.Selected)
+                medicoActivo = (Medico)Session["MedicoActivo"];
+                TextInfo auxText = new CultureInfo("es-ES", false).TextInfo;
+                MedicoNegocio aux = new MedicoNegocio();
+                Medico medico = new Medico();
+                medico = aux.getMedico(medicoActivo.Id);
+                medico.Nombre = auxText.ToTitleCase(medicoNombreMdf.Value.ToLower());
+                medico.Apellido = auxText.ToTitleCase(medicoApellidoMdf.Value.ToLower());
+                medico.Especialidades = new List<Especialidad>();
+                foreach (ListItem item in especialidadesMedicoMdf.Items)
                 {
-                    medico.Especialidades.Add(new Especialidad(int.Parse(item.Value), item.Text));
+                    if (item.Selected)
+                    {
+                        medico.Especialidades.Add(new Especialidad(int.Parse(item.Value), item.Text));
+                    }
                 }
+                aux.modificar(medico);
+                Response.Redirect("ListadoMedicos.aspx");
             }
-            aux.modificar(medico);
-            Response.Redirect("ListadoMedicos.aspx");
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
             
         }
         protected void btn_Eliminar(object sender, EventArgs e)
         {
-            medicoActivo = (Medico)Session["MedicoActivo"];
-            MedicoNegocio aux = new MedicoNegocio();
-            int id = int.Parse(medicoActivo.Id.ToString());
-            aux.bajaLogica(id);
-            Response.Redirect("ListadoMedicos.aspx");
+
+            try
+            {
+                medicoActivo = (Medico)Session["MedicoActivo"];
+                MedicoNegocio aux = new MedicoNegocio();
+                int id = int.Parse(medicoActivo.Id.ToString());
+                aux.bajaLogica(id);
+                Response.Redirect("ListadoMedicos.aspx");
+            }
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
         }
 
     }

@@ -92,6 +92,7 @@ namespace VistaWeb
             catch (Exception ex)
             {
                 Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
             }
         }
 

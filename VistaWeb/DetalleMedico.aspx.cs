@@ -17,21 +17,30 @@ namespace VistaWeb
             
             if (!IsPostBack)
             {
-                int medicoActivo= 0;
-                if (Request.QueryString["id"] != null) { medicoActivo = int.Parse(Request.QueryString["id"]); }
-                else Response.Redirect("ListadoMedicos.aspx");
-                Medico aux = new Medico();
-                MedicoNegocio medicoNegocio = new MedicoNegocio();
-                aux = medicoNegocio.getMedico(medicoActivo);
-                nombre.Value = aux.Nombre;
-                apellido.Value = aux.Apellido;
-                mail.Value = aux.Mail;
-                dni.Value = aux.Dni;
-                telefono.Value = aux.Telefono;
-                direccion.Value = aux.Direccion;
-                fechaNac.Value = aux.FechaNacimiento.ToString("dd-MM-yyyy");
-                especialidadesMedicoLista.DataSource = aux.Especialidades;
-                especialidadesMedicoLista.DataBind();
+                try
+                {
+                    int medicoActivo = 0;
+                    if (Request.QueryString["id"] != null) { medicoActivo = int.Parse(Request.QueryString["id"]); }
+                    else Response.Redirect("ListadoMedicos.aspx");
+                    Medico aux = new Medico();
+                    MedicoNegocio medicoNegocio = new MedicoNegocio();
+                    aux = medicoNegocio.getMedico(medicoActivo);
+                    nombre.Value = aux.Nombre;
+                    apellido.Value = aux.Apellido;
+                    mail.Value = aux.Mail;
+                    dni.Value = aux.Dni;
+                    telefono.Value = aux.Telefono;
+                    direccion.Value = aux.Direccion;
+                    fechaNac.Value = aux.FechaNacimiento.ToString("dd-MM-yyyy");
+                    especialidadesMedicoLista.DataSource = aux.Especialidades;
+                    especialidadesMedicoLista.DataBind();
+                }
+                catch (Exception ex)
+                {
+
+                    Session.Add("Error", ex.ToString());
+                    Response.Redirect("Error.aspx", false);
+                }
             }
         }
     }
