@@ -76,6 +76,15 @@ namespace VistaWeb
                     especialidadesRepeater.DataSource = auxEsp.getEspecialidadesFromIdMedico(medicoActivo.Id);
                     especialidadesRepeater.DataBind();
                 }
+                
+                if (modal == "modalVerTurnos")
+                {
+                    TurnoNegocio auxTurno = new TurnoNegocio();
+                    List<Turno> listaTurnos = auxTurno.listTurnosByMedicoId(medicoActivo.Id);
+                    List<Turno> listaMostrar = listaTurnos.Take(3).ToList();
+                    turnosRepeater.DataSource = listaMostrar;
+                    turnosRepeater.DataBind();
+                }
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "openModal('" + modal + "')", true);
             }
             catch (Exception ex)

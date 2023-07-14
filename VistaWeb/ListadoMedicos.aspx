@@ -58,10 +58,10 @@
                                         </asp:LinkButton>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVerTurnos">
+                                        <asp:LinkButton runat="server" type="button" class="btn btn-success" OnCommand="Modal_btn" CommandArgument='<%#Eval("Id")%>' CommandName="modalVerTurnos">
                                             <i class="bi bi-calendar3"></i>
                                             Ver
-                                        </button>
+                                        </asp:LinkButton>
                                     </td>
                                     <td>
                                         <a href="DetalleMedico.aspx?id=<%#Eval("Id")%>" class="btn btn-success">Ver Detalle</a>
@@ -147,34 +147,39 @@
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title fs-5" id="labelBtnmodalVerTurnos">EN CONSTRUCCION</h3> <!--Ver turnos de NOMBRE_MÉDICO-->
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <h3 class="modal-title fs-5" id="labelBtnmodalVerTurnos"><%:medicoActivo.NombreCompleto%></h3>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
+                    <asp:Repeater runat="server" ID="turnosRepeater">
+                        <ItemTemplate>
+
                     <div class="card border-dark mb-3">
                         <div class="card-header text-dark">
-                            <h5>Viernes 16 de Junio 2023 - 10:30hs</h5>
+                            <h5><%#Eval("Fecha")%></h5>
                         </div>
                         <div class="card-body text-dark">
                             <h6 class="card-title">Datos del turno:</h6>
                             <p class="card-text">
                                 <ul>
-                                    <li><strong>Paciente: </strong> NOMBRE y APELLIDO PACIENTE</li>
-                                    <li><strong>Especialidad: </strong> NOMBRE DE LA ESPECIALIDAD</li>
+                                    <li><strong>Paciente: </strong><%#Eval("Paciente.NombreCompletoYDni") %></li>
+                                    <li><strong>Especialidad: </strong><%# Eval("Especialidad.Nombre")%></li>
                                 
                                 </ul>
                             </p>
-                            <button type="button" class="btn btn-dark">
+                            <a href="ListadoTurnos.aspx" type="button" class="btn btn-dark">
                                 <i class="bi bi-eye"></i>
                                 Ver turno
-                            </button>
+                            </a>
 
                         </div>
                     </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
                 </div>
             </div>
         </div>

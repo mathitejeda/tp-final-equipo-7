@@ -88,7 +88,10 @@
                             <div class="card border-primary mb-3">
 
                                 <div class="card-header text-primary">
+                                    <h5> <%#Eval("Apellido")+", "+Eval("Nombre")%></h5>
+                                    <!--
                                     <a href="./ListadoTurnos.aspx?id=<%#Eval("id") %>"> <%#Eval("Apellido")+", "+Eval("Nombre")%></a>
+-->
                                 </div>
 
                        
