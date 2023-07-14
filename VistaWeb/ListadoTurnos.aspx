@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Turnos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListadoTurnos.aspx.cs" Inherits="VistaWeb.ListadoTurnos" %>
+﻿<%@ Page Title="Turnos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListadoTurnos.aspx.cs" Inherits="VistaWeb.ListadoTurnos" EnableEventValidation="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -101,7 +101,7 @@
                             <asp:LinkButton runat="server" ID="btn_agregarTurno" CssClass="btn btn-primary" Text="Agregar un turno" OnClick="btn_agregarTurno_Click"></asp:LinkButton>
                         </div>
                         <div>
-                            <nav aria-label="Menu de navegación del listado">
+<%--                            <nav aria-label="Menu de navegación del listado">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
                                     <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -109,7 +109,7 @@
                                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
                                 </ul>
-                            </nav>
+                            </nav>--%>
                         </div>
                     </div>
 
@@ -208,7 +208,7 @@
 
                     <div class="mb-3">
                         <label for="turno-paciente" class="form-label">Paciente:</label>
-                        <asp:DropDownList runat="server" ID="ddl_paciente" CssClass="form-select" ></asp:DropDownList> 
+                        <asp:DropDownList runat="server" ID="ddl_paciente" CssClass="form-select"></asp:DropDownList>
                     </div>
                     <!-- -->
 
@@ -223,58 +223,72 @@
     <!-- fin modal Agregar -->
 
     <!-- modal modificar -->
-    <div class="modal fade" id="modalModificarTurno" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="labelBtnModalModificarTurno" aria-hidden="true">
+    <div class="modal fade" id="modalModificarTurno" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="labelBtnModalModificarTurno" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title fs-5" id="labelBtnModalModificarTurno">Modificar turno</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
 
                     <!-- Inicio Form Datos Turno -->
                     <div class="mb-3">
-                        <label for="fecha" class="form-label">Fecha:</label>
-                        <input type="date" class="form-control" id="fecha" name="fecha" required>
+                        <label for="turno-especialidad" class="form-label">Especialidad:</label>
+                        <asp:DropDownList runat="server" ID="ddl_especialidad_modificar" CssClass="form-select" OnSelectedIndexChanged="ddl_especialidad_modificar_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                     </div>
+
+                    <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <div class="mb-3">
+                                <label for="medico" class="form-label">Médico:</label>
+                                <asp:DropDownList runat="server" ID="ddl_medicos_modificar" CssClass="form-select" OnSelectedIndexChanged="ddl_medicos_modificar_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                            </div>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="ddl_especialidad_modificar" EventName="SelectedIndexChanged" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+
+
+                    <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <div class="mb-3">
+                                <label for="turno-fecha" class="form-label">Fecha:</label>
+                                <asp:Calendar ID="calendarAgenda_modificar" runat="server" OnDayRender="calendarAgenda_modificar_DayRender" OnSelectionChanged="calendarAgenda_modificar_SelectionChanged" Visible="false"></asp:Calendar>
+                            </div>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="ddl_medicos_modificar" EventName="SelectedIndexChanged" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+
+                    <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <div class="mb-3">
+                                <label for="turno-hora" class="form-label">Hora:</label>
+                                <asp:DropDownList runat="server" ID="ddl_hora_modificar" CssClass="form-select" AutoPostBack="true"></asp:DropDownList>
+                            </div>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="calendarAgenda_modificar" EventName="SelectionChanged" />
+                        </Triggers>
+                    </asp:UpdatePanel>
                     <div class="mb-3">
-                        <label for="horario" class="form-label">Horario:</label>
-                        <select class="form-select" id="horario" name="horario" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="10:30">10:30</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="medico" class="form-label">Médico:</label>
-                        <select class="form-select" id="medico" name="medico" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="Dr. Pérez">Dr. Pérez</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="especialidad" class="form-label">Especialidad:</label>
-                        <select class="form-select" id="especialidad" name="especialidad" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="cardiología">Cardiología</option>
-                            <option value="clínica">Clínica</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="paciente" class="form-label">Paciente:</label>
-                        <select class="form-select" id="paciente" name="paciente" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="Juan Topo">Juan Topo</option>
-                            <option value="Elvis Cocho">Elvis Cocho</option>
-                        </select>
+                        <label for="turno-estado" class="form-label">Estado:</label>
+                        <asp:DropDownList runat="server" ID="ddl_estado_modificar" CssClass="form-select">
+                            <asp:ListItem Text="Nuevo" Value="1"></asp:ListItem>
+                            <asp:ListItem Text="Cancelado" Value="2"></asp:ListItem>
+                            <asp:ListItem Text="Atendido" Value="3"></asp:ListItem>
+                            <asp:ListItem Text="Reprogramado" Value="4"></asp:ListItem>
+                            <asp:ListItem Text="No asistió" Value="5"></asp:ListItem>
+                        </asp:DropDownList>
                     </div>
                     <!-- -->
-
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Volver</button>
-                    <button type="button" class="btn btn-primary">Guardar cambios</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
+                    <asp:LinkButton runat="server" ID="btn_aceptarModificarTurno" CssClass="btn btn-primary" OnClick="btn_aceptarModificarTurno_Click">Guardar cambios</asp:LinkButton>
                 </div>
             </div>
         </div>
@@ -289,7 +303,7 @@
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <h4>¿Estás seguro de borrar el turno?</h4>
+                    <h4>¿Estás seguro de que desea borrar el turno?</h4>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Volver</button>
