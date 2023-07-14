@@ -86,7 +86,7 @@
                         <div class="card border-primary mb-3">
                           <div class="card-header text-primary d-flex justify-content-md-between">
                               <h5>Turno para <%#Eval("Especialidad.Nombre") %></h5>
-                              <span class="badge text-bg-primary my-auto">13/06/2023</span>
+                             <!-- <span class="badge text-bg-primary my-auto">13/06/2023</span> -->
                           </div>
                           <div class="card-body text-primary">
                               <div class="card-text">
