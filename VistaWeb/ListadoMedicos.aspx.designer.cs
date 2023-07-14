@@ -69,6 +69,15 @@ namespace VistaWeb
         protected global::System.Web.UI.HtmlControls.HtmlInputText medicoNombreMdf;
 
         /// <summary>
+        /// rfvEspecialidadNombreAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEspecialidadNombreAdd;
+
+        /// <summary>
         /// medicoApellidoMdf control.
         /// </summary>
         /// <remarks>
@@ -76,6 +85,15 @@ namespace VistaWeb
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText medicoApellidoMdf;
+
+        /// <summary>
+        /// RequiredFieldValidator1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
 
         /// <summary>
         /// especialidadesMedicoMdf control.

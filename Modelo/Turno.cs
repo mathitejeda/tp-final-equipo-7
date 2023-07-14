@@ -13,7 +13,8 @@ namespace Modelo
         Cancelado = 2,
         Atendido = 3,
         Reprogramado = 4,
-		No_asistio = 5
+		No_asistio = 5,
+        Reprogramar = 6
     }
     public class Turno
     {
