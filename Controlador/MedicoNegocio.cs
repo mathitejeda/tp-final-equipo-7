@@ -110,7 +110,7 @@ namespace Controlador
                 accesoDatos.setearParametro("@dni", aux.Dni);
                 accesoDatos.setearParametro("@telefono", aux.Telefono);
                 accesoDatos.setearParametro("@direccion", aux.Direccion);
-                accesoDatos.setearParametro("@fechaNac", aux.FechaNacimiento.ToString("dd/MM/yyyy"));
+                accesoDatos.setearParametro("@fechaNac", aux.FechaNacimiento.Date);
                 accesoDatos.EjecutarAccion();
                 aux.Id = id;
                 EspecialidadNegocio especialidadNegocio = new EspecialidadNegocio();

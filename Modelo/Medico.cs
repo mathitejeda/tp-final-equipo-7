@@ -32,5 +32,9 @@ namespace Modelo
         {
             Especialidades.Add(especialidad);
         }
+        public string NombreCompleto
+        {
+            get { return Nombre + ", " + Apellido; }
+        }
     }
 }
