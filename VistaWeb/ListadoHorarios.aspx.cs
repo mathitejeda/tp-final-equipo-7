@@ -99,21 +99,38 @@ namespace VistaWeb
             ScriptManager.RegisterStartupScript(this, GetType(), "limitarHs", script, false);
             if (!IsPostBack)
             {
-                loadHorarios();
+                try
+                {
+                    loadHorarios();
+                }
+                catch (Exception ex)
+                {
+                    Session.Add("Error", ex.ToString());
+                    Response.Redirect("Error.aspx", false);
+                }
             }
 
         }
         protected void loadHorarios()
         {
-            listaHorarios = (List<Horario>)Session["Horarios"];
-            if (listaHorarios == null)
+
+            try
             {
-                HorarioNegocio hsNegocio = new HorarioNegocio();
-                listaHorarios = hsNegocio.listar();
-                Session.Add("Horarios", listaHorarios);
+                listaHorarios = (List<Horario>)Session["Horarios"];
+                if (listaHorarios == null)
+                {
+                    HorarioNegocio hsNegocio = new HorarioNegocio();
+                    listaHorarios = hsNegocio.listar();
+                    Session.Add("Horarios", listaHorarios);
+                }
+                horariosRepeater.DataSource = listaHorarios;
+                horariosRepeater.DataBind();
             }
-            horariosRepeater.DataSource = listaHorarios;
-            horariosRepeater.DataBind();
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         protected void horariosRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
