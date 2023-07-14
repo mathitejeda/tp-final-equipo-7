@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Mi Cuenta" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Cuenta.aspx.cs" Inherits="VistaWeb.Cuenta" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     
-    <% if (((Modelo.Usuario)Session["UsuarioLogueado"]) == null)
+    <% if (!EstaLogueado())
         { %>
 
 <div class="container my-5">
@@ -40,27 +40,31 @@
 
 
 
- <% if (((Modelo.Usuario)Session["UsuarioLogueado"]) != null)
+ <% if (EstaLogueado())
     { %>
+    <div id="loginExitoso" class="alert alert-primary alert-dismissible fade show" role="alert" style="display:none;">
+        <strong>Login exitoso.</strong> Ingresaste correctamente a tu cuenta.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 
     <div class="container mt-3">
 
-        <h3 class="mb-3 text-center">  <asp:Label ID="lbl_BienvenidaUser" runat="server">¡Hola <% Response.Write(((Modelo.Usuario)Session["UsuarioLogueado"]).User); %> !</asp:Label> </h3>
+        <h3 class="mb-3 text-center">  <asp:Label ID="lbl_BienvenidaUser" runat="server">¡Hola <% imprimirDatos("user"); %>!</asp:Label> </h3>
        
         <div class="row">
             <h4 class="mb-3">Mi Cuenta</h4>
             <div class="col-4">
                 <div class="list-group" id="list-tab-acciones-user" role="tablist">
                     <a class="list-group-item list-group-item-action active" id="list-home-list" data-bs-toggle="list" href="#list-turnos" role="tab" aria-controls="list-turnos">Mis turnos</a>
-                    <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-profile">Historia Clínica</a>
-                    <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages">Datos Personales</a>
-                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Datos de Contacto</a>
-                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Modificar contraseña</a>
-                    <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Cerrar sesión</a>
+                    <a class="list-group-item list-group-item-action" id="list-datos-list" data-bs-toggle="list" href="#list-datos" role="tab" aria-controls="list-datos">Datos Personales</a>
+                    <a class="list-group-item list-group-item-action" id="list-contacto-list" data-bs-toggle="list" href="#list-contacto" role="tab" aria-controls="list-contacto">Datos de Contacto</a>
+                    <a class="list-group-item list-group-item-action" id="list-cambiar-password-list" data-bs-toggle="list" href="#list-password" role="tab" aria-controls="list-password">Modificar contraseña</a>
+                    <a class="list-group-item list-group-item-action" id="list-logout-list" data-bs-toggle="list" href="#list-logout" role="tab" aria-controls="list-logout">Cerrar sesión</a>
                 </div>
             </div>
             <div class="col-8">
                 <div class="tab-content" id="nav-list-tab-acciones-user">
+                    <!-- acá hacer un if para mostrarlo solamente a pacientes. --> <!-- tambien hacer un else para dejar active el otro -->
                     <div class="tab-pane fade show active" id="list-turnos" role="tabpanel" aria-labelledby="list-turnos">
                         <div class="card border-primary mb-3">
                       <div class="card-header text-primary d-flex justify-content-md-between">
@@ -78,9 +82,20 @@
                       </div>
                     </div>
                     </div>
-                    <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
-                    <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
-                    <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
+                    <!-- /////////////////// -->
+                    <div class="tab-pane fade" id="list-datos" role="tabpanel" aria-labelledby="list-datos-list">
+                        datos personales
+                    </div>
+                    <div class="tab-pane fade" id="list-contacto" role="tabpanel" aria-labelledby="list-contacto-list">
+                        datos contacto
+                    </div>
+                    <div class="tab-pane fade" id="list-password" role="tabpanel" aria-labelledby="list-cambiar-password-list">
+                        change password
+                    </div>
+                    <div class="tab-pane fade" id="list-logout" role="tabpanel" aria-labelledby="list-logout-list">
+                        <h5 class="fs-5">¿Estás seguro de cerrar sesión?</h5>
+                        <asp:Button ID="btnLogoutCuentaSubmit" OnClick="btnLogoutCuentaSubmit_Click" cssclass="btn btn-primary mt-3" runat="server" Text="Cerrar sesión" />
+                    </div>
                 </div>
             </div>
         </div>

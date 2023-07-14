@@ -11,15 +11,46 @@ namespace VistaWeb
 {
     public partial class Cuenta : System.Web.UI.Page
     {
+        public bool EstaLogueado()
+        {
+            if(((Modelo.Usuario)Session["UsuarioLogueado"]) != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void imprimirDatos(string type)
+        {
+            if (type == "user")
+            {
+                Response.Write(((Modelo.Usuario)Session["UsuarioLogueado"]).User);
+            }
+        }
+        
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(Session["UsuarioLogueado"] != null)
+            {
+                if (!IsPostBack && (bool)Session["MensajeLeido"] == false)
+                {
+                    string script = @"<script>
+                             var div = document.getElementById('loginExitoso');
+                             if (div) {
+                                 div.style.display = 'block';
+                             }
+                             </script>";
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowLogin", script);
+                    Session.Add("MensajeLeido", true);
+                }
+            }
 
         }
 
         protected void btnIniciarSesionSubmit_Click(object sender, EventArgs e)
         {
             Usuario user;
-            UsuarioNegocio  negocioUsuario = new UsuarioNegocio();
+            UsuarioNegocio negocioUsuario = new UsuarioNegocio();
             try
             {
                 user = new Usuario(tbxUsernameLogin.Text, tbxPasswordLogin.Text);
@@ -29,6 +60,7 @@ namespace VistaWeb
                     user = negocioUsuario.getUsuario(id);
                     Session.Add("UsuarioLogueado", user);
                     Response.Redirect("Cuenta.aspx", false);
+                    Session.Add("MensajeLeido", false);
                 } else
                 {
                     Session.Add("Error", "Los datos ingresados no son correctos. Intente nuevamente");
@@ -38,8 +70,15 @@ namespace VistaWeb
             }
             catch (Exception ex)
             {
-
                 Session.Add("Error", ex.ToString());
+            }
+        }
+
+        protected void btnLogoutCuentaSubmit_Click(object sender, EventArgs e)
+        {
+            if (Session["UsuarioLogueado"] != null)
+            {
+                Session.Remove("UsuarioLogueado");
             }
         }
     }
