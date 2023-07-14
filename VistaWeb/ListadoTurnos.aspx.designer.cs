@@ -15,6 +15,51 @@ namespace VistaWeb
     {
 
         /// <summary>
+        /// ddl_filtro_dia control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_filtro_dia;
+
+        /// <summary>
+        /// ddl_filtro_especialidad control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_filtro_especialidad;
+
+        /// <summary>
+        /// ddl_filtro_medico control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddl_filtro_medico;
+
+        /// <summary>
+        /// btn_filtrar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btn_filtrar;
+
+        /// <summary>
+        /// btn_limpiarFiltros control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btn_limpiarFiltros;
+
+        /// <summary>
         /// repeaterTurnos control.
         /// </summary>
         /// <remarks>

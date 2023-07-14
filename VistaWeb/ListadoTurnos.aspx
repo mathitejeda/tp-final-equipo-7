@@ -4,6 +4,10 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <% if (EstaLogueado())
+        { %>
+    <% if (EsTipoUsuario("admin") || EsTipoUsuario("recepcionista") || EsTipoUsuario("medico"))
+        { %>
 
     <div class="container">
         <div class="row">
@@ -16,35 +20,32 @@
 
                         <div class="p-1">
                             <label for="filtro-dia" class="form-label">Día:</label>
-                            <select class="form-select" id="filtro-dia" name="filtro-dia">
-                                <option value="">Todos los días</option>
-                                <option value="lunes">Lunes</option>
-                                <option value="martes">Martes</option>
-                                <option value="miercoles">Miércoles</option>
-                                <option value="jueves">Jueves</option>
-                                <option value="viernes">Viernes</option>
-                                <option value="sabado">Sábado</option>
-                                <option value="domingo">Domingo</option>
-                            </select>
+
+                            <asp:DropDownList runat="server" ID="ddl_filtro_dia" CssClass="form-select">
+                                <asp:ListItem Text="Todos los días" Value="-1"></asp:ListItem>
+                                <asp:ListItem Text="Lunes" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="Martes" Value="2"></asp:ListItem>
+                                <asp:ListItem Text="Miércoles" Value="3"></asp:ListItem>
+                                <asp:ListItem Text="Jueves" Value="4"></asp:ListItem>
+                                <asp:ListItem Text="Viernes" Value="5"></asp:ListItem>
+                                <asp:ListItem Text="Sábado" Value="6"></asp:ListItem>
+                                <asp:ListItem Text="Domingo" Value="7"></asp:ListItem>
+                            </asp:DropDownList>
+
                         </div>
                         <div class="p-1">
                             <label for="filtro-especialidad" class="form-label">Especialidad:</label>
-                            <select class="form-select" id="filtro-especialidad" name="filtro-especialidad">
-                                <option value="">Todas las especialidades</option>
-                                <option value="cardiologia">Cardiología</option>
-                                <option value="clínica">Clínica</option>
-                            </select>
+                            <asp:DropDownList runat="server" ID="ddl_filtro_especialidad" Visible="false" CssClass="form-select">
+                            </asp:DropDownList>
                         </div>
                         <div class="p-1">
                             <label for="filtro-medico" class="form-label">Médico:</label>
-                            <select class="form-select" id="filtro-medico" name="filtro-medico">
-                                <option value="">Todos los médicos</option>
-                                <option value="Dr. Pérez">Dr. Pérez</option>
-                            </select>
+                            <asp:DropDownList runat="server" ID="ddl_filtro_medico" Visible="false" CssClass="form-select">
+                            </asp:DropDownList>
                         </div>
                         <div class="my-auto pt-4 ml-3">
-
-                            <button type="submit" class="btn btn-outline-primary px-4">Filtrar</button>
+                            <asp:LinkButton runat="server" ID="btn_filtrar" CssClass="btn btn-outline-primary px-4" Text="Filtrar" OnClick="btn_filtrar_Click"></asp:LinkButton>
+                            <asp:LinkButton runat="server" ID="btn_limpiarFiltros" CssClass="btn btn-outline-secondary" Text="Limpiar filtros" OnClick="btn_limpiarFiltros_Click"></asp:LinkButton>
                         </div>
 
                     </div>
@@ -98,10 +99,13 @@
                     </table>
                     <div class="d-flex justify-content-between">
                         <div>
+                            <%if (EsTipoUsuario("admin") || EsTipoUsuario("recepcionista"))
+                                {%>
                             <asp:LinkButton runat="server" ID="btn_agregarTurno" CssClass="btn btn-primary" Text="Agregar un turno" OnClick="btn_agregarTurno_Click"></asp:LinkButton>
+                            <%} %>
                         </div>
                         <div>
-<%--                            <nav aria-label="Menu de navegación del listado">
+                            <%--                            <nav aria-label="Menu de navegación del listado">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
                                     <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -312,4 +316,19 @@
             </div>
         </div>
     </div>
+
+    <% }
+        else
+        {
+            Session.Add("Error", "Debés tener permisos de administrador, recepcionista o médico para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        } %>
+    <% }
+        else
+        {
+            Session.Add("Error", "Debés estar logueado para ver esta sección.");
+            Response.Redirect("Error.aspx", false);
+
+        }%>
 </asp:Content>

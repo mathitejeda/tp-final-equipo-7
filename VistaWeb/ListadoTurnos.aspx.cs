@@ -59,10 +59,72 @@ namespace VistaWeb
                 turnos = turnoNegocio.listTurnos();
                 Session.Add("Turnos", turnos);
             }
+            if (EstaLogueado() && EsTipoUsuario("medico"))
+            {
+                turnos = turnos.FindAll(x => x.Medico.Id == ((Usuario)Session["UsuarioLogueado"]).Id);
+            }
+            if (EstaLogueado() && EsTipoUsuario("paciente"))
+            {
+                turnos = turnos.FindAll(x => x.Paciente.Id == ((Usuario)Session["UsuarioLogueado"]).Id);
+            }
+            if (EstaLogueado() && (EsTipoUsuario("recepcionista") || EsTipoUsuario("paciente")))
+            {
+                ddl_filtro_especialidad.Visible = true;
+                ddl_filtro_especialidad.DataSource = turnos.Select(x => x.Especialidad).Distinct().ToList();
+                ddl_filtro_especialidad.DataValueField = "Id";
+                ddl_filtro_especialidad.DataTextField = "Nombre";
+                ddl_filtro_especialidad.DataBind();
+                ddl_filtro_especialidad.Items.Insert(0, new ListItem("Todas", "0"));
+                ddl_filtro_medico.Visible = true;
+                ddl_filtro_medico.DataSource = turnos.Select(x => x.Medico).Distinct().ToList();
+                ddl_filtro_medico.DataValueField = "Id";
+                ddl_filtro_medico.DataTextField = "NombreCompleto";
+                ddl_filtro_medico.DataBind();
+                ddl_filtro_medico.Items.Insert(0, new ListItem("Todos", "0"));
+            }
+
             repeaterTurnos.DataSource = turnos;
             repeaterTurnos.DataBind();
         }
-
+        protected void load_turnos(int filtroDia = -1, int filtroMedico = -1, int filtroEspecialidad = -1)
+        {
+            turnos = (List<Modelo.Turno>)Session["Turnos"];
+            if (EstaLogueado() && (EsTipoUsuario("recepcionista") || EsTipoUsuario("medico")))
+            {
+                ddl_filtro_especialidad.Visible = true;
+                ddl_filtro_especialidad.DataSource = turnos.Select(x => x.Especialidad).Distinct().ToList();
+                ddl_filtro_especialidad.DataValueField = "Id";
+                ddl_filtro_especialidad.DataTextField = "Nombre";
+                ddl_filtro_especialidad.Items.Insert(0, new ListItem("Todas", "-1"));
+                ddl_filtro_especialidad.DataBind();
+                ddl_filtro_medico.Visible = true;
+                ddl_filtro_medico.DataSource = turnos.Select(x => x.Medico).Distinct().ToList();
+                ddl_filtro_medico.DataValueField = "Id";
+                ddl_filtro_medico.DataTextField = "NombreCompleto";
+                ddl_filtro_medico.Items.Insert(0, new ListItem("Todos", "-1"));
+                ddl_filtro_medico.DataBind();
+            }
+            if (turnos == null)
+            {
+                TurnoNegocio turnoNegocio = new TurnoNegocio();
+                turnos = turnoNegocio.listTurnos();
+                Session.Add("Turnos", turnos);
+            }
+            if (filtroDia != -1)
+            {
+            turnos = turnos.FindAll(x => (int)x.Fecha.Date.DayOfWeek == filtroDia);
+            }
+            if (filtroMedico != 0)
+            {
+                turnos = turnos.FindAll(x => x.Medico.Id == Convert.ToInt32(filtroMedico));
+            }
+            if (filtroEspecialidad != 0)
+            {
+                  turnos = turnos.FindAll(x => x.Especialidad.Id == Convert.ToInt32(filtroEspecialidad));
+            }
+            repeaterTurnos.DataSource = turnos;
+            repeaterTurnos.DataBind();
+        }
         protected void repeaterTurnos_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             try
@@ -125,8 +187,7 @@ namespace VistaWeb
                     }
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalEliminarTurno').modal('show');", true);
                 }
-                repeaterTurnos.DataSource = (List<Turno>)Session["Turnos"];
-                repeaterTurnos.DataBind();
+                load_turnos();
             }
             catch (Exception ex)
             {
@@ -143,8 +204,7 @@ namespace VistaWeb
                 TurnoNegocio turnoNegocio = new TurnoNegocio();
                 turnos.Remove(turnoActivo);
                 turnoNegocio.baja(turnoActivo.id);
-                repeaterTurnos.DataSource = turnos;
-                repeaterTurnos.DataBind();
+                Response.Redirect("ListadoTurnos.aspx", false);
             }
             catch (Exception ex)
             {
@@ -428,6 +488,16 @@ namespace VistaWeb
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "$('#modalAgregarTurno').modal('hide');", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "alert('Turno agregado correctamente');", true);
             Response.Redirect("ListadoTurnos.aspx");
+        }
+
+        protected void btn_limpiarFiltros_Click(object sender, EventArgs e)
+        {
+            load_turnos();
+        }
+
+        protected void btn_filtrar_Click(object sender, EventArgs e)
+        {
+            load_turnos(filtroDia: ddl_filtro_dia.SelectedIndex, filtroMedico: ddl_filtro_medico.SelectedIndex, filtroEspecialidad: ddl_filtro_especialidad.SelectedIndex);
         }
     }
 }
