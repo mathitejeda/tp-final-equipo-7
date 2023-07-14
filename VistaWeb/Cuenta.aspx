@@ -46,6 +46,11 @@
         <strong>Login exitoso.</strong> Ingresaste correctamente a tu cuenta.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+    
+    <div id="modificarUser" class="alert alert-secondary alert-dismissible fade show" role="alert" style="display:none;">
+        <strong>Modificación exitosa.</strong> Se ha modificado la contraseña.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 
     <div class="container mt-3">
 
@@ -90,7 +95,14 @@
                         datos contacto
                     </div>
                     <div class="tab-pane fade" id="list-password" role="tabpanel" aria-labelledby="list-cambiar-password-list">
-                        change password
+                        <h5 class="fs-5">Vas a modificar tu contraseña. Escribí la nueva a continuación: </h5>
+                        <div class="mb-3">
+                            <label for="MainContent_tbx_CambiarPass" class="form-label">Tu contraseña:</label>
+                            <asp:TextBox runat="server" type="password" ID="tbx_CambiarPass" Style="background: #fff" class="form-control" name="contraseña"></asp:TextBox>
+                            <asp:RequiredFieldValidator ControlToValidate="tbx_CambiarPass" ID="RequiredFieldValidator1" runat="server" ErrorMessage="* contraseña requerida." ForeColor="red" ValidationGroup="input-cambiar-password" Display="Dynamic"></asp:RequiredFieldValidator>
+                            <asp:LinkButton runat="server" ID="btnCambiarPasswordSubmit" OnClick="btnCambiarPasswordSubmit_Click" type="button" class="btn btn-primary" Text="Cambiar password" ValidationGroup="input-cambiar-password"></asp:LinkButton>
+                        </div>
+
                     </div>
                     <div class="tab-pane fade" id="list-logout" role="tabpanel" aria-labelledby="list-logout-list">
                         <h5 class="fs-5">¿Estás seguro de cerrar sesión?</h5>

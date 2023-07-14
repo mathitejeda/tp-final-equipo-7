@@ -32,6 +32,8 @@ namespace VistaWeb
         {
             if(Session["UsuarioLogueado"] != null)
             {
+                // cargo la pass en el textbox
+                //tbx_CambiarPass.Text = ((Usuario)Session["UsuarioLogueado"]).Pass;
                 if (!IsPostBack && (bool)Session["MensajeLeido"] == false)
                 {
                     string script = @"<script>
@@ -43,6 +45,7 @@ namespace VistaWeb
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowLogin", script);
                     Session.Add("MensajeLeido", true);
                 }
+
             }
 
         }
@@ -80,6 +83,35 @@ namespace VistaWeb
             {
                 Session.Remove("UsuarioLogueado");
             }
+        }
+
+        protected void btnCambiarPasswordSubmit_Click(object sender, EventArgs e)
+        {
+            Usuario usuario = (Usuario)Session["UsuarioLogueado"];
+            UsuarioNegocio aux = new UsuarioNegocio();
+
+            usuario.Pass = tbx_CambiarPass.Text;
+
+            try
+            {
+                aux.modificar(usuario);
+                Session.Add("UsuarioLogueado", usuario);
+                string script = @"<script>
+                         var divModificarUser = document.getElementById('modificarUser');
+                         if (divModificarUser) {
+                             divModificarUser.style.display = 'block';
+                         }
+                        </script>";
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowModificarDiv", script);
+            }
+            catch (Exception ex)
+            {
+
+                Session.Add("Error", ex.ToString());
+                Response.Redirect("Error.aspx", false);
+
+            }
+
         }
     }
 }
