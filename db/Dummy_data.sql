@@ -1,5 +1,6 @@
 USE DB_CLINICA
 GO
+SET DATEFORMAT 'YMD'
 -- Inserts para la tabla 'usuario'
 INSERT INTO usuario (usuario, contrasenia, tipo, estado) VALUES
 ('admin01', 'admin123', 0, 1),
@@ -61,18 +62,18 @@ INSERT INTO horarios (medico_id, especialidad_id, hora_entrada, hora_salida, dia
 (5, 3, 9, 17, 2), -- El médico con ID 5 tiene horario de 9 AM a 5 PM los martes para Pediatría
 (9, 4, 9, 17, 2), -- El médico con ID 9 tiene horario de 9 AM a 5 PM los martes para Ginecología
 (9, 5, 11, 19, 4), -- El médico con ID 9 tiene horario de 11 AM a 7 PM los jueves para Oftalmología
-(11, 6, 8, 16, 3) -- El médico con ID 11 tiene horario de 8 AM a 4 PM los miércoles para Ortopedia
+(11, 6, 8, 16, 5) -- El médico con ID 11 tiene horario de 8 AM a 4 PM los viernes para Ortopedia
 
 -- Agrega más registros de horarios aquí...
 
 -- Inserts para la tabla 'turno'
 INSERT INTO turno (medico_id, especialidad_id, paciente_id, observaciones, estado, fecha) VALUES
-(3, 1, 4, 'El paciente presenta dolor en el pecho.', 1, '2023-07-15 10:00:00'),
-(3, 2, 4, 'El paciente necesita una consulta de rutina.', 1, '2023-07-17 15:30:00'),
-(5, 3, 6, 'El paciente tiene fiebre alta.', 1, '2023-07-16 11:15:00'),
+(3, 1, 4, 'El paciente presenta dolor en el pecho.', 1, '2023-07-17 10:00:00'),
+(3, 2, 4, 'El paciente necesita una consulta de rutina.', 1, '2023-07-26 15:30:00'),
+(5, 3, 6, 'El paciente tiene fiebre alta.', 1, '2023-07-25 11:15:00'),
 (9, 4, 10, 'La paciente necesita una consulta de rutina.', 1, '2023-07-18 14:30:00'),
-(9, 5, 12, 'El paciente tiene problemas de visión.', 1, '2023-07-19 16:45:00'),
-(11, 6, 12, 'El paciente se fracturó el brazo.', 1, '2023-07-20 10:00:00')
+(9, 5, 12, 'El paciente tiene problemas de visión.', 1, '2023-07-27 16:45:00'),
+(11, 6, 12, 'El paciente se fracturó el brazo.', 1, '2023-07-21 10:00:00')
 
 -- Agrega más registros de turno aquí...
 
